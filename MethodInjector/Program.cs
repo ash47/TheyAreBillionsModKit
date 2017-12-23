@@ -61,8 +61,8 @@ namespace MethodInjector
             ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
 
             // Instant Build
-            ReplaceMethod("ZX.ZXCommandDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance);
-            ReplaceMethod("ZX.ZXEntityDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance);
+            ReplaceMethod("ZX.ZXCommandDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
+            ReplaceMethod("ZX.ZXEntityDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
 
 
             // Get a reference to the Main method
@@ -112,7 +112,7 @@ namespace MethodInjector
         }
 
         // Replaces a method with one defined below
-        public static void ReplaceMethod(string className, string methodName, BindingFlags attr)
+        public static void ReplaceMethod(string className, string methodName, BindingFlags attr, bool bothWays = true)
         {
             // Grab the method we will replace
             Type theType = theyAreBillionsAssembly.GetType(className);
@@ -182,7 +182,12 @@ namespace MethodInjector
                     #else
                         //Console.WriteLine("\nVersion x64 Release\n");
                         *tar = *inj;
-                        *inj = tarOriginal;
+
+                        // Do we want to patch both directions of the method?
+                        if (bothWays)
+                        {
+                            *inj = tarOriginal;
+                        }
                     #endif
                 }
             }
@@ -225,6 +230,7 @@ namespace MethodInjector
         // The amount of time that things take to build
         public int get_BuildingTime()
         {
+            LogMessage("Getting build time!");
             // Lowest possible build time
             return 1;
         }
