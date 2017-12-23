@@ -21,16 +21,18 @@ Tools &amp; Research notes for modding "They Are Billions"
 ### Cheats
  - Enable cheats by pressing `control` + `shift` + `H`
 
- +			Speed Up Time
- -			Slow Down Time
- CTR + F	Toggle Fog
- CTR + R	Grant Resources
- CTR + L	Toggle God Mode (Damage on / off)
- ALT + R	Toggle Resource Grid
- CTR + F9	Grant All Research
- F9			Activate Cinematic Mode
- ALT + F12	Instant Victory
- CTR + P	???
+|  Hotkey	| Result                            	|
+| --------	| ------------------------------------- |
+| +			| Speed Up Time							|
+| -			| Slow Down Time						|
+| CTR + F	| Toggle Fog							|
+| CTR + R	| Grant Resources						|
+| CTR + L	| Toggle God Mode (Damage on / off)		|
+| ALT + R	| Toggle Resource Grid					|
+| CTR + F9	| Grant All Research					|
+| F9		| Activate Cinematic Mode				|
+| ALT + F12	| Instant Victory						|
+| CTR + P	| ???									|
 
 
 # Notes
