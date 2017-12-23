@@ -16,10 +16,7 @@ namespace MethodInjector
 
         // A reference to the assembly we are hacking
         private static Assembly theyAreBillionsAssembly;
-
-        // Original methods
-        private static MethodInfo originalEntity_EventOnUpdate = null;
-
+        
         // Called when the program is launched
         static void Main(string[] args)
         {
@@ -64,7 +61,9 @@ namespace MethodInjector
             ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
 
             // Instant Build
-            //originalEntity_EventOnUpdate = ReplaceMethod("ZX.Components.CBuildable", "Entity_EventOnUpdate", BindingFlags.NonPublic | BindingFlags.Instance);
+            ReplaceMethod("ZX.ZXCommandDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance);
+            ReplaceMethod("ZX.ZXEntityDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance);
+
 
             // Get a reference to the Main method
             MethodInfo main = ZXProgram.GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic);
@@ -91,22 +90,43 @@ namespace MethodInjector
             
         }
 
+        // Returns a field
+        public static FieldInfo GetField(string className, string fieldName, BindingFlags attr)
+        {
+            // Grab the method we will replace
+            Type theType = theyAreBillionsAssembly.GetType(className);
+            if (theType == null)
+            {
+                LogMessage("Failed to find class: " + className);
+                return null;
+            }
+
+            // Return the field
+            FieldInfo field = theType.GetField(fieldName, attr);
+
+            if(field == null)
+            {
+                LogMessage("Failed to find field: " + className + " :: " + fieldName);
+            }
+            return field;
+        }
+
         // Replaces a method with one defined below
-        public static MethodInfo ReplaceMethod(string className, string methodName, BindingFlags attr)
+        public static void ReplaceMethod(string className, string methodName, BindingFlags attr)
         {
             // Grab the method we will replace
             Type theType = theyAreBillionsAssembly.GetType(className);
             if(theType == null)
             {
                 LogMessage("Failed to find class: " + className);
-                return null;
+                return;
             }
 
             MethodInfo targetMethod = theType.GetMethod(methodName, attr);
             if(targetMethod == null)
             {
                 LogMessage("Failed to find method: " + className + " :: " + methodName);
-                return null;
+                return;
             }
 
             // Grab the method we will inject
@@ -114,7 +134,7 @@ namespace MethodInjector
             if (newMethod == null)
             {
                 LogMessage("Failed to find replacement method: " + className + " :: " + methodName);
-                return null;
+                return;
             }
 
             // Prepare methods
@@ -148,6 +168,7 @@ namespace MethodInjector
 
                     long* inj = (long*)newMethod.MethodHandle.Value.ToPointer() + 1;
                     long* tar = (long*)targetMethod.MethodHandle.Value.ToPointer() + 1;
+                    long tarOriginal = *tar;
                     #if DEBUG
                         //Console.WriteLine("\nVersion x64 Debug\n");
                         byte* injInst = (byte*)*inj;
@@ -161,15 +182,13 @@ namespace MethodInjector
                     #else
                         //Console.WriteLine("\nVersion x64 Release\n");
                         *tar = *inj;
+                        *inj = tarOriginal;
                     #endif
                 }
             }
 
             // Log success
             LogMessage("Successfully replaced: " + className + " :: " + methodName);
-
-            // Sucess
-            return targetMethod;
         }
 
         // Replacement for can pay resources
@@ -203,12 +222,13 @@ namespace MethodInjector
             return true;
         }
 
-        // Entity Update replacement
-        private void Entity_EventOnUpdate()
+        // The amount of time that things take to build
+        public int get_BuildingTime()
         {
-            
+            // Lowest possible build time
+            return 1;
         }
-
+        
         private static void LogMessage(string error)
         {
             System.IO.File.AppendAllText("inject.log", "error: " + error + Environment.NewLine);

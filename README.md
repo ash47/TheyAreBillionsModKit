@@ -18,6 +18,7 @@ Tools &amp; Research notes for modding "They Are Billions"
  - Allow loading of hacked save games -- This simply turns of the save game checksum code that is being used.
  - Building costs no money -- This removes the cost of buildings, and allows you to build even if you have negative resources.
  - Enable DEV and PRIVATE modes.
+ - Instant Build -- Makes buildings build almost instantly
 
 ### Cheats
  - Enable cheats by pressing `control` + `shift` + `H`
