@@ -14,7 +14,11 @@ namespace MethodInjector
         // The name of the executable to inject into
         private static string theExecutable = "TheyAreBillions.exe";
 
+        // A reference to the assembly we are hacking
         private static Assembly theyAreBillionsAssembly;
+
+        // Original methods
+        private static MethodInfo originalEntity_EventOnUpdate = null;
 
         // Called when the program is launched
         static void Main(string[] args)
@@ -22,13 +26,20 @@ namespace MethodInjector
             LogMessage("Injector was started!");
 
             // Attempt to load the assembly
-            theyAreBillionsAssembly = Assembly.LoadFile(Path.GetFullPath(theExecutable));
-            if(theyAreBillionsAssembly == null)
+            try
+            {
+                theyAreBillionsAssembly = Assembly.LoadFile(Path.GetFullPath(theExecutable));
+                if (theyAreBillionsAssembly == null)
+                {
+                    throw new Exception("assembly didnt load :/");
+                }
+            }
+            catch
             {
                 LogMessage("Failed to load assembly, ensure this executable is run from the folder containing: " + theExecutable);
                 return;
             }
-
+            
             // Grab ZXProgram
             Type ZXProgram = theyAreBillionsAssembly.GetType("ZX.Program");
             if(ZXProgram == null)
@@ -51,7 +62,10 @@ namespace MethodInjector
             // Enable dev tools & private stuff
             ReplaceMethod("ZX.ZXGame", "get_IsDevelopmentVersion", BindingFlags.Static | BindingFlags.Public);
             ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
-            
+
+            // Instant Build
+            //originalEntity_EventOnUpdate = ReplaceMethod("ZX.Components.CBuildable", "Entity_EventOnUpdate", BindingFlags.NonPublic | BindingFlags.Instance);
+
             // Get a reference to the Main method
             MethodInfo main = ZXProgram.GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic);
             if(main == null)
@@ -78,15 +92,21 @@ namespace MethodInjector
         }
 
         // Replaces a method with one defined below
-        public static void ReplaceMethod(string className, string methodName, BindingFlags attr)
+        public static MethodInfo ReplaceMethod(string className, string methodName, BindingFlags attr)
         {
             // Grab the method we will replace
             Type theType = theyAreBillionsAssembly.GetType(className);
+            if(theType == null)
+            {
+                LogMessage("Failed to find class: " + className);
+                return null;
+            }
+
             MethodInfo targetMethod = theType.GetMethod(methodName, attr);
             if(targetMethod == null)
             {
                 LogMessage("Failed to find method: " + className + " :: " + methodName);
-                return;
+                return null;
             }
 
             // Grab the method we will inject
@@ -94,7 +114,7 @@ namespace MethodInjector
             if (newMethod == null)
             {
                 LogMessage("Failed to find replacement method: " + className + " :: " + methodName);
-                return;
+                return null;
             }
 
             // Prepare methods
@@ -145,7 +165,11 @@ namespace MethodInjector
                 }
             }
 
+            // Log success
             LogMessage("Successfully replaced: " + className + " :: " + methodName);
+
+            // Sucess
+            return targetMethod;
         }
 
         // Replacement for can pay resources
@@ -177,6 +201,12 @@ namespace MethodInjector
         public static bool get_IsBetaPrivateVersion()
         {
             return true;
+        }
+
+        // Entity Update replacement
+        private void Entity_EventOnUpdate()
+        {
+            
         }
 
         private static void LogMessage(string error)
