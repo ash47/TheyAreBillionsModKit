@@ -11,6 +11,7 @@ Tools &amp; Research notes for modding "They Are Billions"
 
  - This tool is used to inject custom code into the memory of the game without modifying the actual executable itself.
  - If you are using this, you need to build RELEASE x64, or it WILL FAIL TO INJECT!
+ - You can find precompiled executables in the [Releases Section](https://github.com/ash47/TheyAreBillionsModKit/releases)
 
 ### Current Patches
 
