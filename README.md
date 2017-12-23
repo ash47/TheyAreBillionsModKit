@@ -36,7 +36,7 @@ Tools &amp; Research notes for modding "They Are Billions"
 | CTR + P	| ???									|
 
 
-# Notes
+# Personal Notes (You can probably ignore these)
 
 ## Enabling Development / Private Beta Tools
  - ZX.Program
