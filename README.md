@@ -13,6 +13,13 @@ Tools &amp; Research notes for modding "They Are Billions"
  - If you are using this, you need to build RELEASE x64, or it WILL FAIL TO INJECT!
  - You can find precompiled executables in the [Releases Section](https://github.com/ash47/TheyAreBillionsModKit/releases)
 
+### Data Editors
+ - Currently only `ZXRules.dat` can be edited.
+ - Place `.dat` files into `DataEditor/output/` folder.
+ - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
+ - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
+ - Copy the file from `output` into your game's directory
+
 ### Current Patches
 
  - Allow loading of hacked save games -- This simply turns of the save game checksum code that is being used.

@@ -1,0 +1,33 @@
+{
+  "name": "dataeditor",
+  "version": "1.0.0",
+  "description": "An editor for \"They Are Billions\" data files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ash47/TheyAreBillionsModKit.git"
+  },
+  "keywords": [
+    "TheyAreBillions",
+    "They",
+    "Are",
+    "Billions",
+    "Billions",
+    "Mod",
+    "Editor"
+  ],
+  "author": "Ash47",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ash47/TheyAreBillionsModKit/issues"
+  },
+  "homepage": "https://github.com/ash47/TheyAreBillionsModKit#readme",
+  "dependencies": {
+    "adm-zip": "^0.4.7",
+    "node-zip": "^1.1.1",
+    "xml2js": "^0.4.19"
+  }
+}

@@ -1,2 +1,6 @@
 MethodInjector/obj/*
 MethodInjector/bin/*
+DataEditor/input/*
+DataEditor/working/*
+DataEditor/output/*
+DataEditor/node_modules/*
