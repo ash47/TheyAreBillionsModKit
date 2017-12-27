@@ -7,7 +7,7 @@ var buf = new Buffer(data, 'base64');
 
 // Map size info
 var intSize = 4;
-var mapSize = 512;
+var mapSize = 256;
 var totalData = buf.length / intSize;
 var outputArray = [];
 
@@ -20,6 +20,7 @@ for (var i = 0; i < totalData; i++) {
 function getColor(colorNumber) {
 	switch(colorNumber) {
 		// None
+		case undefined:
 		case 0:
 			return {
 				red: 255,
@@ -29,77 +30,77 @@ function getColor(colorNumber) {
 			};
 		break;
 
-		// Sea
+		// Sea - MidNightBlue
 		case 10:
 			return {
-				red: 0,
-				green: 0,
-				blue: 255,
+				red: 25,
+				green: 25,
+				blue: 112,
 				alpha: 255
 			};
 		break;
 
-		// Earth
+		// Earth - Wheat
 		case 20:
 			return {
-				red: 255,
-				green: 255,
-				blue: 0,
+				red: 245,
+				green: 222,
+				blue: 179,
 				alpha: 255
 			};
 		break;
 
-		// Grass
+		// Grass - LawnGreen
 		case 30:
 			return {
-				red: 0,
-				green: 255,
+				red: 124,
+				green: 252,
 				blue: 0,
 				alpha: 255
 			};
 		break;
 
-		// Stone
+		// Stone - Dark Gray
 		case 40:
 			return {
-				red: 50,
-				green: 50,
-				blue: 50,
+				red: 169,
+				green: 169,
+				blue: 169,
 				alpha: 255
 			};
 		break;
 
-		// Iron
+		// Iron - LightSkyBlue
 		case 50:
 			return {
-				red: 150,
-				green: 150,
-				blue: 150,
+				red: 135,
+				green: 206,
+				blue: 250,
 				alpha: 255
 			};
 		break;
 
-		// Oil
+		// Oil - Purple
 		case 60:
 			return {
-				red: 255,
+				red: 128,
 				green: 0,
-				blue: 255,
+				blue: 128,
 				alpha: 255
 			};
 		break;
 
-		// Gold
+		// Gold - Gold
 		case 70:
 			return {
 				red: 255,
-				green: 255,
+				green: 215,
 				blue: 0,
 				alpha: 255
 			};
 		break;
 
-		// Road
+		// Road - White
 		case 80:
 			return {
 				red: 255,
@@ -109,17 +110,17 @@ function getColor(colorNumber) {
 			};
 		break;
 
-		// Wood
+		// Wood - Dark Green
 		case 90:
 			return {
-				red: 139,
-				green: 69,
-				blue: 19,
+				red: 0,
+				green: 100,
+				blue: 0,
 				alpha: 255
 			};
 		break;
 
-		// Mountain
+		// Mountain - Black
 		case 100:
 			return {
 				red: 0,
@@ -128,11 +129,44 @@ function getColor(colorNumber) {
 				alpha: 255
 			};
 		break;
+
+		// Unknown Color
+		default:
+			console.log('Unknown color: ' + colorNumber);
+		break;
 	}
 }
 
+var possibleColors = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+var inverseColors = possibleColors.map(function(a) {
+	return getColor(a);
+});
+
+function getColorInverse(theirColor) {
+	var maxDifference = 9999;
+	var closestColor = 0;
+
+	for(var i=0; i<possibleColors.length; ++i) {
+		var possibleColor = possibleColors[i];
+		var inverseColor = inverseColors[i];
+
+		var difference = 
+			Math.abs(theirColor.red - inverseColor.red) + 
+			Math.abs(theirColor.green - inverseColor.green) + 
+			Math.abs(theirColor.blue - inverseColor.blue) + 
+			Math.abs(theirColor.alpha - inverseColor.alpha);
+
+		if(difference < maxDifference) {
+			maxDifference = difference;
+			closestColor = possibleColors[i];
+		}
+	}
+
+	return closestColor;
+}
+
 // Create an image
-var image = PNGImage.createImage(512, 512);
+var image = PNGImage.createImage(256, 256);
 
 // Popular the image based on the numbers from the files
 for(var y=0; y<mapSize; ++y) {
@@ -150,4 +184,42 @@ for(var y=0; y<mapSize; ++y) {
 image.writeImage('test.png', function (err) {
     if (err) throw err;
     console.log('Written to the file');
+});
+
+
+PNGImage.readImage('map2.png', function (err, image) {
+    if (err) throw err;
+ 
+ 	var totalSize = mapSize * mapSize * 4;
+    var array = new Buffer(totalSize);
+
+    for(var y=0; y<mapSize; ++y) {
+		for(var x=0; x<mapSize; ++x) {
+			var mapPos = mapSize * y + x;
+
+			var theIndex = image.getIndex(x, y);
+			var theColor = {
+				red: image.getRed(theIndex),
+				green: image.getGreen(theIndex),
+				blue: image.getBlue(theIndex),
+				alpha: image.getAlpha(theIndex)
+			}
+
+			var theirRealColor = getColorInverse(theColor);
+
+			var writePos = Math.floor(mapPos * 4);
+			array.writeUInt32LE(theirRealColor, writePos);
+		}
+	}
+
+	// Convert to base64
+	var theOutput = array.toString('base64');
+
+	fs.writeFile('custommap.txt', theOutput, function(err) {
+		if(err) {
+			console.log(err);
+		}
+
+		console.log('all good!');
+	});
 });

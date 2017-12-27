@@ -6,4 +6,6 @@ DataEditor/output/*
 DataEditor/node_modules/*
 MapEditor/node_modules/*
 MapEditor/test.png
+MapEditor/map2.png
 MapEditor/input.txt
+MapEditor/custommap.txt
