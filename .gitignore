@@ -4,3 +4,6 @@ DataEditor/input/*
 DataEditor/working/*
 DataEditor/output/*
 DataEditor/node_modules/*
+MapEditor/node_modules/*
+MapEditor/test.png
+MapEditor/input.txt

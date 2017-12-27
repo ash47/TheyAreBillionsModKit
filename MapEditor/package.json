@@ -1,0 +1,22 @@
+{
+  "name": "billions_map_editor",
+  "version": "1.0.0",
+  "description": "A map editor for they are billions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ash47/TheyAreBillionsModKit.git"
+  },
+  "author": "Ash47",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ash47/TheyAreBillionsModKit/issues"
+  },
+  "homepage": "https://github.com/ash47/TheyAreBillionsModKit#readme",
+  "dependencies": {
+    "pngjs-image": "^0.11.7"
+  }
+}
