@@ -247,7 +247,7 @@ function mapArrayToImage(dataArray, dataWidth, dataHeight, dataMapObject) {
 			var theNumber = dataArray[mapPos];
 			var theColor = dataMapObject[theNumber] || colorDefault;
 
-			image.setAt(x, y, theColor);
+			image.setAt(dataWidth - x, y, theColor);
 		}
 	}
 
@@ -266,7 +266,7 @@ function mapImageToBase64(dataImage, dataMapObject) {
 		for(var x=0; x<dataWidth; ++x) {
 			var mapPos = dataWidth * y + x;
 
-			var theColorPos = dataImage.getIndex(x, y);
+			var theColorPos = dataImage.getIndex(dataWidth - x, y);
 			var theColor = {
 				red: dataImage.getRed(theColorPos),
 				green: dataImage.getGreen(theColorPos),
