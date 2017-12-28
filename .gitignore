@@ -9,3 +9,6 @@ MapEditor/test.png
 MapEditor/map2.png
 MapEditor/input.txt
 MapEditor/custommap.txt
+MapEditor/input/*
+MapEditor/working/*
+MapEditor/output/*
