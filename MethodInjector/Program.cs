@@ -45,25 +45,107 @@ namespace MethodInjector
                 return;
             }
 
+            bool allowModifiedSaveGames = true;
+            bool enableDevTools = true;
+            bool enableInstantBuild = true;
+            bool allowFreeBuildings = true;
+
+            try
+            {
+                // Read in all the lines of the config file
+                string[] cfg = System.IO.File.ReadAllLines("config.txt");
+
+                // Loop over each line in the config file
+                foreach(string line in cfg)
+                {
+                    // Our config is   x = y, split based on an equals
+                    string[] lineConfig = line.Split('=');
+                    if(lineConfig.Length != 2)
+                    {
+                        // There should always be two sides of the equals
+                        Console.WriteLine("Invalid config line: " + line);
+                        continue;
+                    }
+
+                    // Remove any spaces, convert to lowercase
+                    lineConfig[0] = lineConfig[0].Trim().ToLower();
+                    lineConfig[1] = lineConfig[1].Trim().ToLower();
+
+                    switch(lineConfig[0])
+                    {
+                        case "allowModifiedSaveGames":
+                            if (lineConfig[1] == "false")
+                            {
+                                allowModifiedSaveGames = false;
+                            }
+                            break;
+
+                        case "enableDevTools":
+                            if (lineConfig[1] == "false")
+                            {
+                                enableDevTools = false;
+                            }
+                            break;
+
+                        case "enableInstantBuild":
+                            if (lineConfig[1] == "false")
+                            {
+                                enableInstantBuild = false;
+                            }
+                            break;
+
+                        case "allowFreeBuildings":
+                            if (lineConfig[1] == "false")
+                            {
+                                allowFreeBuildings = false;
+                            }
+                            break;
+
+                        default:
+                            Console.WriteLine("Unknown config: " + lineConfig[0]);
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Failed to parse config.txt");
+            }
+
             /*
                 Perform patching
             */
 
-            // Buildings dont cost anything to build
-            ReplaceMethod("ZX.ZXLevelState", "CanPayResources", BindingFlags.Instance | BindingFlags.Public);
-            ReplaceMethod("ZX.ZXLevelState", "PayResources", BindingFlags.Instance | BindingFlags.Public);
-
             // Allow hacked save games to be loaded
-            ReplaceMethod("ZX.ZXGame", "CheckSaveGame", BindingFlags.Static | BindingFlags.NonPublic);
+            if(allowModifiedSaveGames)
+            {
+                ReplaceMethod("ZX.ZXGame", "CheckSaveGame", BindingFlags.Static | BindingFlags.NonPublic);
+            }
 
             // Enable dev tools & private stuff
-            ReplaceMethod("ZX.ZXGame", "get_IsDevelopmentVersion", BindingFlags.Static | BindingFlags.Public);
-            ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
+            if (enableDevTools)
+            {
+                ReplaceMethod("ZX.ZXGame", "get_IsDevelopmentVersion", BindingFlags.Static | BindingFlags.Public);
+                ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
+            }
+            ReplaceMethod("ZX.ZXGame", "get_IsSteam", BindingFlags.Static | BindingFlags.Public);
 
             // Instant Build
-            ReplaceMethod("ZX.ZXCommandDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
-            ReplaceMethod("ZX.ZXEntityDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
+            if (enableInstantBuild)
+            {
+                ReplaceMethod("ZX.ZXCommandDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
+                ReplaceMethod("ZX.ZXEntityDefaultParams", "get_BuildingTime", BindingFlags.Public | BindingFlags.Instance, false);
+            }
 
+            // Buildings dont cost anything to build
+            if(allowFreeBuildings)
+            {
+                ReplaceMethod("ZX.ZXLevelState", "CanPayResources", BindingFlags.Instance | BindingFlags.Public);
+                ReplaceMethod("ZX.ZXLevelState", "PayResources", BindingFlags.Instance | BindingFlags.Public);
+            }
+
+            // Allow steam version to load
+            
 
             // Get a reference to the Main method
             MethodInfo main = ZXProgram.GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic);
@@ -219,6 +301,12 @@ namespace MethodInjector
         public static bool get_IsDevelopmentVersion()
         {
             return true;
+        }
+
+        // Returns if this is a steam build
+        public static bool get_IsSteam()
+        {
+            return false;
         }
 
         // Returns that this is a private build
