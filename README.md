@@ -13,12 +13,16 @@ Tools &amp; Research notes for modding "They Are Billions"
  - If you are using this, you need to build RELEASE x64, or it WILL FAIL TO INJECT!
  - You can find precompiled executables in the [Releases Section](https://github.com/ash47/TheyAreBillionsModKit/releases)
 
-### Data Editors
- - Currently only `ZXRules.dat` can be edited.
- - Place `.dat` files into `DataEditor/output/` folder.
- - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
- - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
- - Copy the file from `output` into your game's directory
+### Configuration Options
+
+ - You can set configuration options by editing the `config.txt` file that is included with the MethodInjector releases.
+ - The format is "option=value"
+
+They following options exist:
+ - allowModifiedSaveGames - Allow save files that have been edited to be loaded
+ - enableDevTools - Enable the development tools and private beta builds
+ - enableInstantBuild - This will make buildings build very fast
+ - allowFreeBuildings - This will make buildings completely free, and allow you to build even if you don't have enough resources
 
 ### Current Patches
 
@@ -43,6 +47,17 @@ Tools &amp; Research notes for modding "They Are Billions"
 | ALT + F12	| Instant Victory						|
 | CTR + P	| ???									|
 
+## Data Editors
+ - Currently only `ZXRules.dat` can be edited.
+ - Place `.dat` files into `DataEditor/output/` folder.
+ - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
+ - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
+ - Copy the file from `output` into your game's directory
+
+## Map Editor
+ - The map editor allows you to edit save files
+ - It will export the layers from the map file into PNG files which can be edited
+ - The process is currently still very hacky
 
 # Personal Notes (You can probably ignore these)
 
