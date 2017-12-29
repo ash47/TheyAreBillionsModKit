@@ -140,6 +140,113 @@ var colorSerTerrain = {
 	100: colorMountain
 };
 
+var colorZombieNone = {
+	red: 255,
+	green: 255,
+	blue: 255,
+	alpha: 0
+};
+
+var colorZombieWeak1 = {	// Light green
+	red: 144,
+	green: 238,
+	blue: 144,
+	alpha: 255
+};
+
+var colorZombieWeak2 = {	// Lime
+	red: 0,
+	green: 255,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombieWeak3 = {	// Green
+	red: 0,
+	green: 128,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombieMedium1 = {	// Light Yellow
+	red: 255,
+	green: 255,
+	blue: 153,
+	alpha: 255
+};
+
+var colorZombieMedium2 = {	// Yellow
+	red: 255,
+	green: 255,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombieMedium3 = {	// Yellow
+	red: 204,
+	green: 204,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombieStrong1 = {	// Orange
+	red: 255,
+	green: 165,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombieStrong2 = {	// Coral
+	red: 255,
+	green: 127,
+	blue: 80,
+	alpha: 255
+};
+
+var colorZombieStrong3 = {	// Orange Red
+	red: 255,
+	green: 69,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombiePowerful1 = {	// Red
+	red: 255,
+	green: 0,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombiePowerful2 = {	// Crimson
+	red: 220,
+	green: 20,
+	blue: 60,
+	alpha: 255
+};
+
+var colorZombieUltra1 = {	// Dark Red
+	red: 139,
+	green: 0,
+	blue: 0,
+	alpha: 255
+};
+
+var colorZombies = {
+	0: colorZombieNone,
+	1: colorZombieWeak1,
+	2: colorZombieWeak2,
+	3: colorZombieWeak3,
+	4: colorZombieMedium1,
+	5: colorZombieMedium2,
+	6: colorZombieMedium3,
+	7: colorZombieStrong1,
+	8: colorZombieStrong2,
+	9: colorZombieStrong3,
+	10: colorZombiePowerful1,
+	11: colorZombiePowerful2,
+	12: colorZombieUltra1
+};
+
 // Creates a directory if it doesn't exist
 function ensureDirectoryExists(dir) {
 	try {
@@ -463,7 +570,7 @@ function processSaveFile(fileName) {
 	var xmlData = zip.files.Data.asText();
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerTerrain', 'terrain.png', colorTerrain);
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerObjects', 'object.png', colorObject);
-	//xmlData = editLayer(dirMyWorking, xmlData, 'LayerZombies', 'object.png', colorObject);
+	xmlData = editLayer(dirMyWorking, xmlData, 'LayerZombies', 'zombies.png', colorZombies);
 
 	// Merge the images, used in ser terrain gen
 	var mergedImage = mergeImages(
@@ -590,4 +697,4 @@ function editSection(xmlData, startPoint, endPoint, editFunction) {
 	}
 }
 
-processSaveFile('challenge01.zxsav');
+processSaveFile('SageePrime.zxsav');
