@@ -538,6 +538,9 @@ function unmergeImages(mergedImageFilename, imageProps) {
 
 // Processes a save file
 function processSaveFile(fileName) {
+	console.log('Processing save file: ' + fileName);
+	console.log('Opening save file...');
+
 	const dirMyWorking = path.join(dirWorking, fileName);
 	ensureDirectoryExists(dirMyWorking);
 
@@ -548,11 +551,23 @@ function processSaveFile(fileName) {
 		checkCRC32: true
 	});
 
+	console.log('Save file opened! Reading data...');
+
+	// Grab the data
+	var xmlData = zip.files.Data.asText();
+
+	console.log('Data was read!');
+
+	// Extract entities
+	xmlData = editLevelEntities(dirMyWorking, xmlData);
+
 	// Attempt to merge layers
 	const mergedFileName = path.join(dirMyWorking, 'merged.png');
 	const mergedFileName2 = path.join(dirMyWorking, 'merged2.png');
 	const terrainFileName = path.join(dirMyWorking, 'terrain.png');
 	const objectFileName = path.join(dirMyWorking, 'object.png');
+
+	console.log('Attempting to perform map unmerging...');
 
 	// Attempt an unmerge
 	unmergeImages(mergedFileName2, {
@@ -567,10 +582,15 @@ function processSaveFile(fileName) {
 		bg: colorNone
 	});
 
-	var xmlData = zip.files.Data.asText();
+	console.log('Map unmerging complete!');
+	console.log('Editing various layers...');
+
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerTerrain', 'terrain.png', colorTerrain);
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerObjects', 'object.png', colorObject);
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerZombies', 'zombies.png', colorZombies);
+
+	console.log('Layers successfully edited!');
+	console.log('Merging images...');
 
 	// Merge the images, used in ser terrain gen
 	var mergedImage = mergeImages(
@@ -582,11 +602,16 @@ function processSaveFile(fileName) {
 	// Copy merged image in
 	xmlData = editLayerSer(dirMyWorking, xmlData, 'SerTerrainResourceCells', 'merged.png', colorSerTerrain);
 
+	console.log('Done merging images!');
+	console.log('Generating save file...');
+
 	zip.file('Data', xmlData);
 	var toWrite = zip.generate({
 		base64:false,
 		compression:'DEFLATE'
 	});
+
+	console.log('Save file generated! Saving to disk...');
 
 	// Store it
 	fs.writeFileSync(path.join(dirOutput, fileName), toWrite, 'binary');
@@ -594,6 +619,8 @@ function processSaveFile(fileName) {
 	// Store checksum
 	var checksum = generateChecksum(toWrite);
 	fs.writeFileSync(path.join(dirOutput, path.basename(fileName, '.zxsav') + '.zxcheck'), checksum);
+
+	console.log('Save file written to disk!');
 }
 
 // Generates a checksum for a string
@@ -673,28 +700,209 @@ function editLayerDirect(workingDir, theData2, layerFileName, objectMap) {
 	}
 }
 
-function editSection(xmlData, startPoint, endPoint, editFunction) {
-	// Grab the start chunk we were looking for
-	var startPos = xmlData.indexOf(startPoint);
-	if(startPos == -1) return xmlData;
-	startPos += startPoint.length;
+function editSection(xmlData, startPoint, endPoint, editFunction, loopMatches, includeHeaders) {
+	var firstMatchPos = null;
 
-	// Grab the end chunk we were looking for
-	var endPos = xmlData.indexOf(endPoint, startPos);
-	if(endPoint == -1) return xmlData;
+	// Infinite loop
+	while(true) {
+		// Grab the start chunk we were looking for
+		var startPos = xmlData.indexOf(startPoint, firstMatchPos);
+		if(startPos == -1) return xmlData;
 
-	// Grab the data we wanted to edit
-	var toEditData = xmlData.substring(startPos, endPos);
+		if(!includeHeaders) {
+			startPos += startPoint.length;
+		}
 
-	// Attempt an edit
-	var possibleReturn = editFunction(toEditData);
-	if(possibleReturn != null) {
-		// There was a change, merge the change
-		return xmlData.substring(0, startPos) + possibleReturn + xmlData.substring(endPos);
-	} else {
-		// There was no change, return original data
-		return xmlData;
+		// Grab the end chunk we were looking for
+		var endPos = -1;
+		if(typeof(endPoint) == 'string') {
+			endPos = xmlData.indexOf(endPoint, startPos);
+
+			if(includeHeaders) {
+				endPos += endPoint.length;
+			}
+		} else {
+			if(typeof(endPoint.exec) == 'function') {
+				var match = endPoint.exec(xmlData.substr(startPos));
+
+				if(match && match.index != -1) {
+					endPos = match.index + startPos;
+
+					if(includeHeaders) {
+						endPos += match[0].length;
+					}
+				}
+			}
+		}
+		
+		if(endPos == -1) return xmlData;
+
+		// Grab the data we wanted to edit
+		var toEditData = xmlData.substring(startPos, endPos);
+
+		// Attempt an edit
+		var possibleReturn = editFunction(toEditData);
+		if(possibleReturn != null) {
+			// There was a change, merge the change
+			xmlData = xmlData.substring(0, startPos) + possibleReturn + xmlData.substring(endPos);
+		}
+
+		// Are we going to continue looping and find more matches?
+		if(!loopMatches) {
+			// Nope, return the modified data
+			return xmlData;
+		}
+
+		// Store where this match was
+		firstMatchPos = endPos;
 	}
+}
+
+function replaceEntityProperty(entityXML, useReplace1, regexMatch1, regexMatch2, replace1, replace2) {
+	var theRes = null;
+	if(useReplace1) {
+		theRes = replace1;
+	} else {
+		theRes = replace2;
+	}
+
+	if(regexMatch1 != null) entityXML = entityXML.replace(regexMatch1, theRes);
+	if(regexMatch2 != null) entityXML = entityXML.replace(regexMatch2, theRes);
+
+	return entityXML;
+}
+
+// Allows entities in the level to be edited
+function editLevelEntities(workingDir, xmlData) {
+	console.log('Loading entities...');
+
+	return editSection(
+		xmlData,
+		'<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">',
+		/<\/Items>[\n\r ]*<\/Dictionary>/,
+		function(theData) {
+			// We need to break this into individual entities
+
+			console.log('Done loading entites, making changes...');
+
+			// Dump the entity map
+			var myFileName = path.join(workingDir, 'entities.json');
+
+			var referneceData = null;
+			if(fs.existsSync(myFileName)) {
+				try {
+					referneceData = require(myFileName);
+				} catch(e) {
+					// Failure, log it
+					console.log('Failed to read input entity file:');
+					console.log(myFileName);
+				}
+			}
+
+			// Can we make changes?
+			if(referneceData != null) {
+				// We will use referenceData to build a new xmlData output
+
+				var theOutput = '';
+				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
+				theOutput += '<Items>\n';
+				
+				for(entityId in referneceData) {
+					var thisEntity = referneceData[entityId];
+					var thisXML = thisEntity.rawXML;
+
+					// Normal properties
+					for(propertyName in thisEntity) {
+						var theValue = thisEntity[propertyName];
+						if(theValue == null || theValue == "") {
+							theValue = '<Null name="' + propertyName + '" />';
+						} else {
+							theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+						}
+
+						// Replace the property
+						thisXML = thisXML.replace(
+							new RegExp('<Simple name="' + propertyName + '" value="[^"]*" \/>'),
+							theValue
+						);	
+					}
+
+					// EntityId
+					thisXML = replaceEntityProperty(
+						thisXML,
+						true,
+						/<Simple value="[^"]*" \/>/,
+						null,
+						'<Simple value="' + entityId + '" />'
+					);
+
+					// EntityId again
+					thisXML = replaceEntityProperty(
+						thisXML,
+						true,
+						/<Simple name="ID" value="[^"]*" \/>/,
+						null,
+						'<Simple name="ID" value="' + entityId + '" />'
+					);
+
+					// Add the XML
+					theOutput += thisXML;
+				}
+
+				theOutput += '</Items>\n';
+				theOutput += '</Dictionary>';
+
+				console.log('Done importing entity changes!');
+
+				return theOutput;
+			}
+
+			var allEntities = {};
+			
+			// This will edit every individual item in the map
+			var toReturn = editSection(
+				theData,
+				'<Item>',
+				/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Item>/,
+				function(thisItemData) {
+					// Return an empty string from here to delete the entity!
+
+					var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
+					var possibleEntityId = findEntityId.exec(thisItemData);
+					if(possibleEntityId == null || possibleEntityId.length != 2) return;
+					var entityId = possibleEntityId[1];
+
+					allEntities[entityId] = {
+						Type: (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1]
+					}
+
+					var thisEntityStore = allEntities[entityId];
+
+					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+					var theMatch;
+					while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
+						if(theMatch.length < 3) continue;
+
+						// Grab stuff
+						var propertyName = theMatch[1];
+						var propertyValue = theMatch[2];
+
+						// Store it
+						thisEntityStore[propertyName] = propertyValue;
+					}
+
+					// Add raw xml
+					thisEntityStore.rawXML = thisItemData;
+				}, true, true);
+
+			console.log('Done making entity changes, saving...');
+
+			fs.writeFileSync(myFileName, JSON.stringify(allEntities, null, 4));
+
+			// Return it
+			return toReturn;
+		}, false, true
+	)
 }
 
 processSaveFile('SageePrime.zxsav');
