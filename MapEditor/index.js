@@ -560,6 +560,7 @@ function processSaveFile(fileName) {
 
 	// Extract entities
 	xmlData = editLevelEntities(dirMyWorking, xmlData);
+	//xmlData = editSpawnedZombies(dirMyWorking, xmlData);
 
 	// Attempt to merge layers
 	const mergedFileName = path.join(dirMyWorking, 'merged.png');
@@ -587,7 +588,7 @@ function processSaveFile(fileName) {
 
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerTerrain', 'terrain.png', colorTerrain);
 	xmlData = editLayer(dirMyWorking, xmlData, 'LayerObjects', 'object.png', colorObject);
-	xmlData = editLayer(dirMyWorking, xmlData, 'LayerZombies', 'zombies.png', colorZombies);
+	//xmlData = editLayer(dirMyWorking, xmlData, 'LayerZombies', 'zombies.png', colorZombies);
 
 	console.log('Layers successfully edited!');
 	console.log('Merging images...');
@@ -772,6 +773,126 @@ function replaceEntityProperty(entityXML, useReplace1, regexMatch1, regexMatch2,
 	return entityXML;
 }
 
+// Allows spawned zombies to be edited
+function editSpawnedZombies(workingDir, xmlData) {
+	console.log('Extracting spawned zombies...');
+
+	// Filename
+	var myFileName = path.join(workingDir, 'zombies.json');
+
+	return editSection(
+		xmlData,
+		'<Dictionary name="LevelFastSerializedEntities" keyType="System.UInt64, mscorlib" valueType="System.Collections.Generic.List`1[[DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision]], mscorlib">',
+		'</Dictionary>',
+		function(theData) {
+			var zombieStore = null;
+			if(fs.existsSync(myFileName)) {
+				try {
+					zombieStore = require(myFileName);
+				} catch(e) {
+					// do nothing
+				}
+
+				// Do we have a zombie store?
+				if(zombieStore != null) {
+					// Rebuild this from scratch
+					var theOutput = '';
+					theOutput += '<Dictionary name="LevelFastSerializedEntities" keyType="System.UInt64, mscorlib" valueType="System.Collections.Generic.List`1[[DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision]], mscorlib">\n';
+					theOutput += '<Items>\n';
+
+					for(var entityReferenceId in zombieStore) {
+						var thisStore = zombieStore[entityReferenceId];
+						var toStore = [];
+
+						for(var i=0; i<thisStore.length; ++i) {
+							var zombieInfo = thisStore[i];
+
+							// Should we trim it?
+							if(trimEntity(zombieInfo)) continue;
+
+							// Add it to the list of zombies to keep
+							toStore.push(zombieInfo);
+						}
+
+						if(toStore.length <= 0) continue;
+
+						// Built the item
+						theOutput += '<Item>\n';
+						theOutput += '<Simple value="' + entityReferenceId + '" />\n';
+						theOutput += '<Collection elementType="DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision">\n';
+						theOutput += '<Properties>\n';
+						theOutput += '<Simple name="Capacity" value="' + toStore.length + '" />\n';
+						theOutput += '</Properties>\n';
+						theOutput += '<Items>\n';
+
+						for(var i=0; i<toStore.length; ++i) {
+							var zombieInfo = toStore[i];
+
+							theOutput += '<Complex>\n';
+							theOutput += '<Properties>\n';
+							theOutput += '<Simple name="A" value="' + zombieInfo.ID + '" />\n';
+							theOutput += '<Simple name="B" value="' + zombieInfo.Position + '" />\n';
+							theOutput += '</Properties>\n';
+							theOutput += '</Complex>\n';
+						}
+
+						theOutput += '</Items>\n';
+						theOutput += '</Collection>\n';
+						theOutput += '</Item>\n';
+					}
+
+					theOutput += '</Items>\n';
+					theOutput += '</Dictionary>\n';
+
+					return theOutput;
+				}
+			}
+
+			zombieStore = {};
+
+			var toReturn = editSection(
+				theData,
+				'<Item>',
+				'</Item>',
+				function(itemZombieList) {
+					var zombieTypeFinder = /<Simple value="([^"]*)" \/>/;
+					var possibleZombieMatch = zombieTypeFinder.exec(itemZombieList);
+					if(possibleZombieMatch == null || possibleZombieMatch.length < 2) return;
+
+					var zombieType = possibleZombieMatch[1];
+
+					zombieStore[zombieType] = [];
+					var myStore = zombieStore[zombieType];
+
+					// Grab all the zombies
+					editSection(
+						itemZombieList,
+						'<Complex>',
+						'</Complex>',
+						function(spawnedZombie) {
+							var entityId = /<Simple name="A" value="([^"]*)" \/>/.exec(spawnedZombie)[1]
+							var entityPos = /<Simple name="B" value="([^"]*)" \/>/.exec(spawnedZombie)[1]
+
+							myStore.push({
+								ID: entityId,
+								Position: entityPos
+							});
+						},
+						true, true
+					)
+				},
+				true, true
+			);
+
+			// Store it
+			fs.writeFileSync(myFileName, JSON.stringify(zombieStore, null, 4));
+
+			return toReturn;
+		},
+		false, true
+	);
+}
+
 // Allows entities in the level to be edited
 function editLevelEntities(workingDir, xmlData) {
 	console.log('Loading entities...');
@@ -779,7 +900,7 @@ function editLevelEntities(workingDir, xmlData) {
 	return editSection(
 		xmlData,
 		'<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">',
-		/<\/Items>[\n\r ]*<\/Dictionary>/,
+		/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Item>[\n\r ]*<\/Items>[\n\r ]*<\/Dictionary>/,
 		function(theData) {
 			// We need to break this into individual entities
 
@@ -806,13 +927,23 @@ function editLevelEntities(workingDir, xmlData) {
 				var theOutput = '';
 				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
 				theOutput += '<Items>\n';
+
+				var totalEntities = 0;
 				
 				for(entityId in referneceData) {
 					var thisEntity = referneceData[entityId];
 					var thisXML = thisEntity.rawXML;
 
+					var newEntityId = entityId;//++totalEntities;
+
+					// Allow entities to be programatically removed
+					if(trimEntity(thisEntity)) continue;
+
 					// Normal properties
 					for(propertyName in thisEntity) {
+						// Ignore these properties
+						if(propertyName == 'Capacity') continue;
+
 						var theValue = thisEntity[propertyName];
 						if(theValue == null || theValue == "") {
 							theValue = '<Null name="' + propertyName + '" />';
@@ -820,20 +951,26 @@ function editLevelEntities(workingDir, xmlData) {
 							theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
 						}
 
+						var oldXML = thisXML;
+
 						// Replace the property
 						thisXML = thisXML.replace(
 							new RegExp('<Simple name="' + propertyName + '" value="[^"]*" \/>'),
 							theValue
 						);	
+
+						if(oldXML != thisXML) {
+							console.log(' + Change: ', entityId, propertyName, theValue, thisEntity[propertyName])
+						}
 					}
 
 					// EntityId
-					thisXML = replaceEntityProperty(
+					/*thisXML = replaceEntityProperty(
 						thisXML,
 						true,
 						/<Simple value="[^"]*" \/>/,
 						null,
-						'<Simple value="' + entityId + '" />'
+						'<Simple value="' + newEntityId + '" />'
 					);
 
 					// EntityId again
@@ -842,8 +979,8 @@ function editLevelEntities(workingDir, xmlData) {
 						true,
 						/<Simple name="ID" value="[^"]*" \/>/,
 						null,
-						'<Simple name="ID" value="' + entityId + '" />'
-					);
+						'<Simple name="ID" value="' + newEntityId + '" />'
+					);*/
 
 					// Add the XML
 					theOutput += thisXML;
@@ -905,4 +1042,46 @@ function editLevelEntities(workingDir, xmlData) {
 	)
 }
 
-processSaveFile('SageePrime.zxsav');
+function trimEntity(entityInfo) {
+	var theType = (entityInfo.Type || '').toLowerCase();
+
+	// Only culling zombies
+	if( theType != '' &&
+		theType.indexOf('doom') == -1 &&
+		theType.indexOf('zombie') == -1
+		) return;
+
+	// Only culling units in this area
+	var notInArea = [
+		{
+			c0: 301.5,
+			c1: 291.5
+		}
+	];
+
+	// Only culling units that are this close to the above locations
+	var maxDist = 30;
+
+	var realPos = entityInfo.Position;
+	if(realPos != null) {
+		var coords = realPos.split(';');
+
+		var c0 = parseInt(coords[0]);
+		var c1 = parseInt(coords[1]);
+
+		for(var i=0; i<notInArea.length; ++i) {
+			var searchPos = notInArea[i];
+
+			var l0 = Math.abs(searchPos.c0 - c0);
+			var l1 = Math.abs(searchPos.c1 - c1);
+
+			var dist = Math.sqrt(l0*l0 + l1*l1);
+
+			if(dist < maxDist) {
+				return true;
+			}
+		}
+	}
+}
+
+processSaveFile('512epic.zxsav');

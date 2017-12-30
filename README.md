@@ -61,6 +61,10 @@ They following options exist:
 
 # Personal Notes (You can probably ignore these)
 
+## Position to Image Position
+ - Measure from top right, diagonally down
+ - Height = first cord, Width = second cord
+
 ## Enabling Development / Private Beta Tools
  - ZX.Program
    - ZXGame.IsDevelopmentVersion = true;
