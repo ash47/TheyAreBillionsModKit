@@ -560,7 +560,7 @@ function processSaveFile(fileName) {
 
 	// Extract entities
 	xmlData = editLevelEntities(dirMyWorking, xmlData);
-	//xmlData = editSpawnedZombies(dirMyWorking, xmlData);
+	xmlData = editSpawnedZombies(dirMyWorking, xmlData);
 
 	// Attempt to merge layers
 	const mergedFileName = path.join(dirMyWorking, 'merged.png');
