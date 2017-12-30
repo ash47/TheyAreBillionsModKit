@@ -71,34 +71,25 @@ namespace MethodInjector
                     lineConfig[0] = lineConfig[0].Trim().ToLower();
                     lineConfig[1] = lineConfig[1].Trim().ToLower();
 
-                    switch(lineConfig[0])
+                    // Allow a lot of common variants
+                    bool isEnabled = lineConfig[1] == "true" || lineConfig[1] == "1" || lineConfig[1] == "enabled";
+
+                    switch (lineConfig[0])
                     {
-                        case "allowModifiedSaveGames":
-                            if (lineConfig[1] == "false")
-                            {
-                                allowModifiedSaveGames = false;
-                            }
+                        case "allowmodifiedsavegames":
+                            allowModifiedSaveGames = isEnabled;
                             break;
 
-                        case "enableDevTools":
-                            if (lineConfig[1] == "false")
-                            {
-                                enableDevTools = false;
-                            }
+                        case "enabledevtools":
+                            allowFreeBuildings = isEnabled;
                             break;
 
-                        case "enableInstantBuild":
-                            if (lineConfig[1] == "false")
-                            {
-                                enableInstantBuild = false;
-                            }
+                        case "enableinstantbuild":
+                            allowFreeBuildings = isEnabled;
                             break;
 
-                        case "allowFreeBuildings":
-                            if (lineConfig[1] == "false")
-                            {
-                                allowFreeBuildings = false;
-                            }
+                        case "allowfreebuildings":
+                            allowFreeBuildings = isEnabled;
                             break;
 
                         default:
