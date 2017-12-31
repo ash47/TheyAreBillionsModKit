@@ -13,16 +13,131 @@ $(document).ready(function() {
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var helperCanvas = document.getElementById('helperLayer');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
-	var pixelSize = 4;
-
+	window.pixelSize = 4;
 	var activeMap = null;
+	var isMouseDown = false;
+
+	var activeLayer = null;
+	var activeToolNumber = 0;
+
+	// Create a place to store layers
+	var layerStore = {
+		LayerTerrain: {
+			canvas: mapRenderTerrainCanvas,
+			colorMap: colorTerrain,
+			defaultColor: colorEarth,
+		},
+		LayerObjects: {
+			canvas: mapRenderObjectsCanvas,
+			colorMap: colorObject,
+			defaultColor: colorNone,
+		}
+	};
+
+	window.setTool = function(toolName) {
+		switch(toolName) {
+			case 'toolTerrainEarth':
+				activeLayer = layerStore.LayerTerrain;
+				activeToolNumber = 0;
+			break;
+
+			case 'toolTerrainWater':
+				activeLayer = layerStore.LayerTerrain;
+				activeToolNumber = 1;
+			break;
+
+			case 'toolTerrainGrass':
+				activeLayer = layerStore.LayerTerrain;
+				activeToolNumber = 2;
+			break;
+
+			case 'toolTerrainSky':
+				activeLayer = layerStore.LayerTerrain;
+				activeToolNumber = 3;
+			break;
+
+			case 'toolTerrainAbyse':
+				activeLayer = layerStore.LayerTerrain;
+				activeToolNumber = 4;
+			break;
+
+			case 'toolObjectNone':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 0;
+			break;
+
+			case 'toolObjectMountain':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 1;
+			break;
+
+			case 'toolObjectWood':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 2;
+			break;
+
+			case 'toolObjectGold':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 3;
+			break;
+
+			case 'toolObjectStone':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 4;
+			break;
+
+			case 'toolObjectIron':
+				activeLayer = layerStore.LayerObjects;
+				activeToolNumber = 5;
+			break;
+		}
+	}
+
+	$('#helperLayer').mousedown(function(e) {
+		// Grab offset
+		var offset = $(this).offset();
+
+		// Calculate mouseX
+		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+
+  		// Mouse is down
+  		isMouseDown = true;
+
+  		// Run the callback
+		clickPixel(mouseX, mouseY);
+	});
+
+	$('#helperLayer').mouseup(function(e) {
+		// Mouse is no longer down
+		isMouseDown = false;
+	});
+
+	$('#helperLayer').mousemove(function(e) {
+		if(!isMouseDown) return;
+
+		// Grab offset
+		var offset = $(this).offset();
+
+		// Calculate mouseX
+		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+
+  		// Run the cll
+  		clickPixel(mouseX, mouseY);
+	});
+
+	function clickPixel(x, y) {
+		updatePixel(activeLayer, x, y, activeToolNumber);
+	}
 
 	// Loads a map from data
 	function loadMap(data) {
-		// Create a place to store layers
-		var layerStore = {};
+		// Set the active layer to terrain
+		activeLayer = layerStore.LayerTerrain;
 
 		// Stores info about the map that is currently loaded
 		activeMap = {
@@ -45,22 +160,15 @@ $(document).ready(function() {
 		});
 
 		// Render Terrain
-		renderLayer({
-			canvas: mapRenderTerrainCanvas,
-			data: layerStore.LayerTerrain,
-			colorMap: colorTerrain,
-			defaultColor: colorEarth,
-			pixelSize: pixelSize
-		});
+		renderLayer(layerStore.LayerTerrain);
 
 		// Render Objects
-		renderLayer({
-			canvas: mapRenderObjectsCanvas,
-			data: layerStore.LayerObjects,
-			colorMap: colorObject,
-			defaultColor: colorNone,
-			pixelSize: pixelSize
-		});
+		renderLayer(layerStore.LayerObjects);
+
+		// Size
+		helperCanvas.width = window.pixelSize * layerStore.LayerTerrain.width;
+		helperCanvas.height = window.pixelSize * layerStore.LayerTerrain.height;
+
 	}
 
 	//ctx.fillStyle = 'green';

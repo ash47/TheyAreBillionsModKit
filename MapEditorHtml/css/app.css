@@ -10,10 +10,27 @@
 	position: absolute;
 	left: 0px;
 	top: 0px;
+
+	border: 1px solid #000;
 }
 
 #mapDisplayHolder {
 	position: absolute;
 	top: 40px;
-	left: 4px;
+	left: 160px;
+}
+
+#mapTools {
+	padding: 4px;
+}
+
+#mapTools ul {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+#mapTools button {
+	text-align: left;
+	width: 140px;
+	margin-bottom: 4px;
 }

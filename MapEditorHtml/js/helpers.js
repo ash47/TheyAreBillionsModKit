@@ -106,11 +106,12 @@ function loadLayerDirect(dataObject) {
 
 		// Ensure there is a layer store
 		dataObject.layers = dataObject.layers || {};
-		dataObject.layers[dataObject.layerName] = {
-			width: sizeWidth,
-			height: sizeHeight,
-			data: dataArray
-		};
+		dataObject.layers[dataObject.layerName] = dataObject.layers[dataObject.layerName] || {};
+
+		var myLayer = dataObject.layers[dataObject.layerName];
+		myLayer.width = sizeWidth;
+		myLayer.height = sizeHeight;
+		myLayer.data = dataArray;
 
 		/*var dataImage = mapArrayToImage(dataArray, sizeWidth, sizeHeight, objectMap);
 
@@ -148,39 +149,64 @@ function getRBG(oldColor) {
 }
 
 // Renders a terrain
-function renderLayer(dataObject) {
-	var canvas = dataObject.canvas;
-	var ctx = canvas.getContext('2d');
-
+function renderLayer(mapData) {
 	// Grab the data
-	var colorMap = dataObject.colorMap;
-	var colorDefault = dataObject.defaultColor;
-	var pixelSize = dataObject.pixelSize;
-
-	var mapData = dataObject.data;
 	var width = mapData.width;
 	var height = mapData.height;
-	var rawData = mapData.data;
+
+	// Grab the canvas
+	var canvas = mapData.canvas;
+	var ctx = canvas.getContext('2d');
 
 	// Change the canvas's size
-	canvas.width = width * pixelSize;
-	canvas.height = height * pixelSize;
-
-	var seen = {}
+	canvas.width = width * window.pixelSize;
+	canvas.height = height * window.pixelSize;
 
 	// Popular the image based on the numbers from the files
 	for(var y=0; y<height; ++y) {
 		for(var x=0; x<width; ++x) {
-			var mapPos = width * y + x;
-
-			var theNumber = rawData[mapPos];
-			var theColor = colorMap[theNumber] || colorDefault;
-
-			var theX = (width - x) * pixelSize;
-			var theY = (y) * pixelSize;
-
-			ctx.fillStyle = getRBG(theColor);
-			ctx.fillRect(theX, theY, pixelSize, pixelSize);
+			renderPixel(mapData, x, y);
 		}
 	}
+}
+
+// Renders a pixel
+function renderPixel(mapData, x, y) {
+	var canvas = mapData.canvas;
+	var ctx = canvas.getContext('2d');
+
+	var width = mapData.width;
+
+	var mapPos = width * y + x;
+
+	var theNumber = mapData.data[mapPos];
+	var theColor = mapData.colorMap[theNumber] || mapData.colorDefault;
+
+	var theX = (width - x - 1) * window.pixelSize;
+	var theY = (y) * window.pixelSize;
+
+	// Do we need to do a clear?
+	if(theColor.alpha < 255) {
+		ctx.clearRect(theX, theY, window.pixelSize, window.pixelSize);
+	}
+
+	ctx.fillStyle = getRBG(theColor);
+	ctx.fillRect(theX, theY, window.pixelSize, window.pixelSize);
+}
+
+// Updates a pixel
+function updatePixel(mapData, xReverse, y, theNumber) {
+	var width = mapData.width;
+
+	// We need to convert xReverse into x
+	var x = (width - xReverse - 1);
+
+	// We need to grab the datastore position
+	var mapPos = width * y + x;
+
+	// Store it
+	mapData.data[mapPos] = theNumber;
+
+	// Re-render the canvas for this pixel
+	renderPixel(mapData, x, y);
 }

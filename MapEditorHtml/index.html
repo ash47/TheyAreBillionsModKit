@@ -4,6 +4,7 @@
 	<title>They Are Billions | Map Editor</title>
 	<script src="js/jszip.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/alertify.min.js"></script>
 	<script src="js/colors.js"></script>
 	<script src="js/helpers.js"></script>
@@ -12,6 +13,7 @@
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
 	<link rel="stylesheet" href="css/alertify.bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
@@ -26,6 +28,26 @@
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
+		<canvas id="helperLayer" class="mapLayer"></canvas>
+	</div>
+
+	<div id="mapTools">
+		<ul>
+
+			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainEarth')">Earth</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainWater')">Water</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainGrass')">Grass</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainSky')">Sky</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainAbyse')">Abyse</button></li>
+
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectNone')">No Object</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectMountain')">Mountain</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectWood')">Wood</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectGold')">Gold</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectStone')">Stone</button></li>
+			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectIron')">Iron</button></li>
+
+		</ul>
 	</div>
 </div>
 
