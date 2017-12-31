@@ -37,11 +37,11 @@
 	display: inline-block;
 }
 
-.isLoading #instructions {
+.isLoading .instructions {
 	display: none;
 }
 
-.mapIsLoaded #instructions {
+.mapIsLoaded .instructions {
 	display: none;
 }
 

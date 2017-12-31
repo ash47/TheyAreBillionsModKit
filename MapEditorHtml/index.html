@@ -21,25 +21,37 @@
 
 <div id="mainContainer">
 	<div id="headingContainer">
-		<div id="instructions">
+		<div class="instructions">
 			<h1>They Are Billions Save Editor</h1>
 			<p>For more original mods, maps and gaming content, subscribe to <a href="https://www.youtube.com/user/AaronSchmid1/featured" target="_blank">AzzaFortysix on YouTube</a>.</p>
+			<b>What is this?</b>
+			<ul>
+				<li>This is a save file editor for "They Are Billions".</li>
+				<li>It allows you to edit save files relatively easily.</li>
+			</ul>
+
+			<b>How to use this:</b>
 			<ul>
 				<li>Press "control + F5" to ensure you have the latest version of the app.</li>
 				<li>Load a "They Are Billions" save file.</li>
 				<li>Save files can be found in "My Documents" --&gt; "My Games" --&gt; "They Are Billions" --&gt; "Saves".</li>
 				<li>Select one of the ".zxsav" files to begin the editing process.</li>
 			</ul>
-			<p>Recent Changes:</p>
+		</div>
+
+		<input type="file" id="file" name="file" />
+		<button class="btn btn-primary" onclick="$('#file').click();">Load Save File</button>
+		<div class="loadingDisplay">Loading...</div>
+
+		<div class="instructions">
+			<br>
+			<b>Recent Changes:</b>
 			<ul>
 				<li>Added the ability to export the map.</li>
 				<li>Added the ability to edit the terrain and resources on a map.</li>
 				<li>Added the ability to load save files.</li>
 			</ul>
 		</div>
-		<input type="file" id="file" name="file" />
-		<button class="btn btn-primary" onclick="$('#file').click();">Load Save File</button>
-		<div class="loadingDisplay">Loading...</div>
 
 		<div id="saveButtons">
 			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">Save Changes</button><span id="isSaving">Saving...</span>
