@@ -92,6 +92,6 @@
 	position: absolute;
 }
 
-#brushSize {
+#brushSize, #mapZoom {
 	width: 140px;
 }

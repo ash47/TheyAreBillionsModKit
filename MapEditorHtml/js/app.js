@@ -226,6 +226,22 @@ $(document).ready(function() {
 			cObjects.hide();
 	};
 
+	// Updates the map zoom
+	window.updateMapZoom = function() {
+		var conMapZoom = $('#mapZoom');
+		var possibleNewZoomSize = parseInt(conMapZoom.val());
+		possibleNewZoomSize = Math.floor(Math.max(possibleNewZoomSize, 1));
+
+		// Store the new pixel size
+		window.pixelSize = possibleNewZoomSize;
+
+		// Update brush size
+		window.updateBrushSize(true);
+
+		// Perform a full re-render
+		mapFullRender();
+	};
+
 	// Update brush sizes
 	window.updateBrushSize = function() {
 		var conBrushSize = $('#brushSize');
@@ -345,15 +361,8 @@ $(document).ready(function() {
 		// Load Objects
 		loadLayer('LayerObjects');
 
-		// Render Terrain
-		renderLayer('LayerTerrain');
-
-		// Render Objects
-		renderLayer('LayerObjects');
-
-		// Size
-		helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
-		helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
+		// Perform a full re-render of the map
+		mapFullRender();
 
 		// Allow export
 		$('#btnSaveChanges').removeAttr('disabled');
@@ -369,6 +378,26 @@ $(document).ready(function() {
 
 		// Map is loaded
 		$('#mainContainer').addClass('mapIsLoaded	');
+	}
+
+	function mapFullRender() {
+		// We are loading
+		setIsLoading(true);
+
+		setTimeout(function() {
+			// Update the helper's canvas size
+			helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
+			helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
+
+			// Render Terrain
+			renderLayer('LayerTerrain');
+
+			// Render Objects
+			renderLayer('LayerObjects');
+
+			// We are no longer loading
+			setIsLoading(false);
+		}, 1)
 	}
 
 	//ctx.fillStyle = 'green';
