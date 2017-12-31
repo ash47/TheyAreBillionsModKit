@@ -56,8 +56,8 @@ They following options exist:
 
 ## Map Editor
  - The map editor allows you to edit save files
- - It will export the layers from the map file into PNG files which can be edited
- - The process is currently still very hacky
+ - You can use the map editor in your browser (here)[https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/]
+ - Simply load in a save file, and the editor will let you edit it
 
 # Personal Notes (You can probably ignore these)
 
