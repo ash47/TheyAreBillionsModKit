@@ -53,6 +53,9 @@ $(document).ready(function() {
 		loadLayer('LayerTerrain', true);
 		loadLayer('LayerObjects', true);
 
+		// Update our local storage
+		updateLocalStorage();
+
 		// Generate the save file
 		var zip = new JSZip();
 
@@ -68,9 +71,6 @@ $(document).ready(function() {
 			blobToBuffer(content, function(err, buff) {
 				// Store the checksum
 				window.activeMap.checksum = generateChecksum(buff);
-
-				// Update our local storage
-				//updateLocalStorage();
 
 				// Set up to date
 				window.setMapExportUpToDate(true, true);
@@ -541,8 +541,14 @@ $(document).ready(function() {
 				Info: window.activeMap.Info
 			};
 
-			// Store into local storage
-			ldb.set('maps', JSON.stringify(storedMaps));
+			try {
+				// Store into local storage
+				ldb.set('maps', JSON.stringify(storedMaps));
+			} catch(e) {
+				alertify.error('FAILED TO SAVE MAP LOCALLY!');
+				alertify.error(e.message);
+			}
+			
 		});
 	}
 
