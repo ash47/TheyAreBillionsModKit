@@ -7,6 +7,11 @@ Tools &amp; Research notes for modding "They Are Billions"
 
 # Tools
 
+## Map Editor
+ - The map editor allows you to edit save files
+ - You can use the map editor in your browser [here](https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/)
+ - Simply load in a save file, and the editor will let you edit it
+
 ## MethodInjector
 
  - This tool is used to inject custom code into the memory of the game without modifying the actual executable itself.
@@ -53,11 +58,6 @@ They following options exist:
  - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
  - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
  - Copy the file from `output` into your game's directory
-
-## Map Editor
- - The map editor allows you to edit save files
- - You can use the map editor in your browser [here](https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/)
- - Simply load in a save file, and the editor will let you edit it
 
 # Personal Notes (You can probably ignore these)
 
