@@ -56,7 +56,7 @@ They following options exist:
 
 ## Map Editor
  - The map editor allows you to edit save files
- - You can use the map editor in your browser (here)[https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/]
+ - You can use the map editor in your browser [here](https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/)
  - Simply load in a save file, and the editor will let you edit it
 
 # Personal Notes (You can probably ignore these)
