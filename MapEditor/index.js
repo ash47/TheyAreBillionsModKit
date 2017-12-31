@@ -965,7 +965,7 @@ function editLevelEntities(workingDir, xmlData) {
 					}
 
 					// EntityId
-					/*thisXML = replaceEntityProperty(
+					thisXML = replaceEntityProperty(
 						thisXML,
 						true,
 						/<Simple value="[^"]*" \/>/,
@@ -980,7 +980,7 @@ function editLevelEntities(workingDir, xmlData) {
 						/<Simple name="ID" value="[^"]*" \/>/,
 						null,
 						'<Simple name="ID" value="' + newEntityId + '" />'
-					);*/
+					);
 
 					// Add the XML
 					theOutput += thisXML;
@@ -1054,8 +1054,12 @@ function trimEntity(entityInfo) {
 	// Only culling units in this area
 	var notInArea = [
 		{
-			c0: 301.5,
-			c1: 291.5
+			c0: 126.5,
+			c1: 126.5
+		},
+		{
+			c0: 141.5,
+			c1: 97.5
 		}
 	];
 
@@ -1084,4 +1088,4 @@ function trimEntity(entityInfo) {
 	}
 }
 
-processSaveFile('512epic.zxsav');
+processSaveFile('DoubleBase.zxsav');

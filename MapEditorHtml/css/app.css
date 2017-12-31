@@ -1,0 +1,19 @@
+.loadingDisplay {
+	display: none;
+}
+
+.isLoading .loadingDisplay {
+	display: block;
+}
+
+.mapLayer {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+#mapDisplayHolder {
+	position: absolute;
+	top: 40px;
+	left: 4px;
+}
