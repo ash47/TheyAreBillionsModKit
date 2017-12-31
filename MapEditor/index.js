@@ -626,15 +626,18 @@ function processSaveFile(fileName) {
 
 // Generates a checksum for a string
 function generateChecksum(str) {
-	var buff = new Buffer(str);
+	var buff = new buffer.Buffer(str);
 
 	var num = 0;
 
 	for(var i = 0; i < buff.length; i++) {
 		num += buff.readUInt8(i);
+
+		// Handle overflow
+		num = num % 4294967296;
 	}
 	
-	return num * 157 + num;
+	return (num * 157 + num) % 4294967296;
 }
 
 function editLayer(workingDir, xmlData, layerText, layerFileName, objectMap) {
