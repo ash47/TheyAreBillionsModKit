@@ -23,6 +23,10 @@
 	position: absolute;
 	top: 54px;
 	left: 160px;
+
+	width: calc(75% - 160px);
+	height: calc(100% - 60px);
+	overflow: auto;
 }
 
 .mapIsLoaded #mapDisplayHolder {
