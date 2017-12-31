@@ -262,6 +262,9 @@ $(document).ready(function() {
 
 		// We are no longer loading
 		setIsLoading(false);
+
+		// Map is loaded
+		$('#mainContainer').addClass('mapIsLoaded	');
 	}
 
 	//ctx.fillStyle = 'green';
@@ -326,6 +329,7 @@ $(document).ready(function() {
 				})
 	        }, function (e) {
 	        	alertify.error('Error loading zip file! ' + f.name + ' - ' + e.message);
+	        	setIsLoading(false);
 	            /*$result.append($("<div>", {
 	                "class" : "alert alert-danger",
 	                text : "Error reading " + f.name + ": " + e.message

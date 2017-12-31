@@ -21,13 +21,18 @@
 
 <div id="mainContainer">
 	<div id="headingContainer">
+		<div id="instructions">Start by loading a "They Are Billions" save file.</div>
 		<input type="file" id="file" name="file" />
-
-		<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">Save Changes</button><span id="isSaving">Saving...</span>
-		<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">Export zxsav</button>
-		<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">Export zxcheck</button>
-
+		<button class="btn btn-primary" onclick="$('#file').click();">Load Save File</button>
 		<div class="loadingDisplay">Loading...</div>
+
+		<div id="saveButtons">
+			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">Save Changes</button><span id="isSaving">Saving...</span>
+			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">Export .zxsav</button>
+			<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">Export .zxcheck</button>
+		</div>
+
+		
 	</div>
 
 	<div id="mapDisplayHolder">

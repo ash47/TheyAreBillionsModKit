@@ -7,7 +7,7 @@
 }
 
 .isLoading .loadingDisplay {
-	display: block;
+	display: inline-block;
 }
 
 .mapLayer {
@@ -19,13 +19,39 @@
 }
 
 #mapDisplayHolder {
+	display: none;
 	position: absolute;
 	top: 54px;
 	left: 160px;
 }
 
+.mapIsLoaded #mapDisplayHolder {
+	display: block;
+}
+
+#saveButtons {
+	display: none;
+}
+
+.mapIsLoaded #saveButtons {
+	display: inline-block;
+}
+
+.isLoading #instructions {
+	display: none;
+}
+
+.mapIsLoaded #instructions {
+	display: none;
+}
+
 #mapTools {
 	padding: 4px;
+	display: none;
+}
+
+.mapIsLoaded #mapTools {
+	display: block;
 }
 
 #mapTools ul {
@@ -45,4 +71,8 @@
 
 .isSaving #isSaving {
 	display: inline-block;
+}
+
+#file {
+	display: none;
 }
