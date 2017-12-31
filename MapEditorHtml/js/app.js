@@ -59,6 +59,15 @@ $(document).ready(function() {
 		}).then(function(content) {
 			window.activeMap.downloadableZip = content;
 
+			// Get the checksum
+			blobToBuffer(content, function(err, buff) {
+				// Store the checksum
+				window.activeMap.checksum = generateChecksum(buff);
+
+				// Set up to date
+				window.setMapExportUpToDate(true, true);
+			});
+
 			// You can now export the map
 			window.setMapExportUpToDate(true);
 
@@ -78,19 +87,34 @@ $(document).ready(function() {
 	}
 
 	var _isUpToDate = null;
-	window.setMapExportUpToDate = function(upToDate) {
-		if(_isUpToDate == upToDate) return;
-		_isUpToDate = upToDate;
+	var _isChecksumUpToDate = null;
+	window.setMapExportUpToDate = function(upToDate, isChecksum) {
+		if(!isChecksum && _isUpToDate == upToDate) return;
+		if(isChecksum && _isChecksumUpToDate == upToDate) return;
+		if(!isChecksum) _isUpToDate = upToDate;
+		if(isChecksum) _isChecksumUpToDate = upToDate;
 
 		var exportBtnZip = $('#btnExportSave');
+		var exportBtnChecksum = $('#btnExportChecksum');
 
 		if(upToDate) {
-			exportBtnZip.removeAttr('disabled');
-			exportBtnZip.removeClass('btn-danger');
-			exportBtnZip.addClass('btn-primary');
+			if(isChecksum) {
+				// The checksum
+				exportBtnChecksum.removeAttr('disabled');
+				exportBtnChecksum.removeClass('btn-danger');
+				exportBtnChecksum.addClass('btn-primary');
+			} else {
+				// The Download
+				exportBtnZip.removeAttr('disabled');
+				exportBtnZip.removeClass('btn-danger');
+				exportBtnZip.addClass('btn-primary');
+			}
 		} else {
 			exportBtnZip.removeClass('btn-primary');
 			exportBtnZip.addClass('btn-danger');
+
+			exportBtnChecksum.removeClass('btn-primary');
+			exportBtnChecksum.addClass('btn-danger');
 		}
 	}
 
@@ -98,6 +122,15 @@ $(document).ready(function() {
 	window.downloadZXSave = function() {
 		// Do the save
 		saveAs(window.activeMap.downloadableZip, window.activeMap.name);
+	};
+
+	// Download the checksum
+	window.downloadZXChecksum = function() {
+		// Do the saveas
+		saveAs(
+			new Blob([window.activeMap.checksum], {type : 'text/plain'}),
+			window.activeMap.name.replace('.zxsav', '.zxcheck')
+		);
 	};
 
 	window.setTool = function(toolName) {

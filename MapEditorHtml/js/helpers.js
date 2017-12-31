@@ -213,3 +213,43 @@ function updatePixel(mapData, xReverse, y, theNumber) {
 	// We are no longer up to date
 	window.setMapExportUpToDate(false);
 }
+
+// Generates a checksum for a string
+function generateChecksum(str) {
+	var buff = new buffer.Buffer(str);
+
+	var num = 0;
+
+	for(var i = 0; i < buff.length; i++) {
+		num += buff.readUInt8(i);
+
+		// Handle overflow
+		num = num % 4294967296;
+	}
+	
+	return (num * 157 + num) % 4294967296;
+}
+
+function blobToBuffer(blob, callback) {
+	if (typeof Blob === 'undefined' || !(blob instanceof Blob)) {
+		throw new Error('first argument must be a Blob');
+	}
+
+	if (typeof callback !== 'function') {
+		throw new Error('second argument must be a function');
+	}
+
+	var reader = new FileReader();
+
+	function onLoadEnd (e) {
+		reader.removeEventListener('loadend', onLoadEnd, false);
+		if(e.error) {
+			callback(e.error);
+		} else {
+			callback(null, buffer.Buffer.from(reader.result));
+		}
+	}
+
+	reader.addEventListener('loadend', onLoadEnd, false);
+	reader.readAsArrayBuffer(blob);
+}
