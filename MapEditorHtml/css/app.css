@@ -85,3 +85,13 @@
 .layerToggle label {
 	margin-bottom: 0px;
 }
+
+#mousePreview {
+	border: 1px solid #000;
+	border-radius: 1px;
+	position: absolute;
+}
+
+#brushSize {
+	width: 140px;
+}

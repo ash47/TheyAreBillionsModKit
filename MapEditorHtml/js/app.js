@@ -23,6 +23,8 @@ $(document).ready(function() {
 	var activeLayer = null;
 	var activeToolNumber = 0;
 
+	window.brushSize = 1;
+
 	// Create a place to store layers
 	window.layerStore = {
 		LayerTerrain: {
@@ -200,6 +202,9 @@ $(document).ready(function() {
 				activeToolNumber = 5;
 			break;
 		}
+
+		// Update the preview
+		updateMousePreview(true);
 	};
 
 	// Updates which layers are visible
@@ -219,6 +224,38 @@ $(document).ready(function() {
 		objectsVisible ?
 			cObjects.show() : 
 			cObjects.hide();
+	};
+
+	// Update brush sizes
+	window.updateBrushSize = function() {
+		var conBrushSize = $('#brushSize');
+		var possibleNewBrushSize = parseInt(conBrushSize.val());
+		possibleNewBrushSize = Math.floor(Math.max(possibleNewBrushSize, 1));
+
+		// Push the value back
+		conBrushSize.val(possibleNewBrushSize);
+
+		// Update the brushSize
+		window.brushSize = possibleNewBrushSize;
+
+		// Update preview
+		window.updateMousePreview(true);
+	};
+
+	window.updateMousePreview = function(updateSize) {
+		var previewCon = $('#mousePreview');
+
+		if(updateSize) {
+			var theSize = window.brushSize * window.pixelSize;
+
+			previewCon.width(theSize);
+			previewCon.height(theSize);
+		}
+
+		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+		
+		previewCon.css('left', (prevX - theOffset) * window.pixelSize);
+		previewCon.css('top', (prevY - theOffset) * window.pixelSize);
 	};
 
 	var prevX = null;
@@ -241,16 +278,10 @@ $(document).ready(function() {
 
   		// Run the callback
 		clickPixel(mouseX, mouseY);
-	});
-
-	$('#helperLayer').mouseup(function(e) {
+	}).mouseup(function(e) {
 		// Mouse is no longer down
 		isMouseDown = false;
-	});
-
-	$('#helperLayer').mousemove(function(e) {
-		if(!isMouseDown) return;
-
+	}).mousemove(function(e) {
 		// Grab offset
 		var offset = $(this).offset();
 
@@ -258,29 +289,46 @@ $(document).ready(function() {
 		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
   		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
 
-  		// Run the cll
-  		clickPixel(mouseX, mouseY);
+		if(isMouseDown) {
+			// Run the cll
+	  		clickPixel(mouseX, mouseY);
 
-  		// Calculate the max number of pixels the mouse travelled
-  		var xDist = mouseX - prevX;
-  		var yDist = mouseY - prevY;
+	  		// Calculate the max number of pixels the mouse travelled
+	  		var xDist = mouseX - prevX;
+	  		var yDist = mouseY - prevY;
 
-  		var dist = Math.max(
-  			Math.abs(xDist),
-  			Math.abs(yDist)
-  		);
+	  		var dist = Math.max(
+	  			Math.abs(xDist),
+	  			Math.abs(yDist)
+	  		);
 
-  		for(var i=1; i<dist; ++i) {
-  			clickPixel(Math.floor(mouseX - i/dist * xDist), Math.floor(mouseY - i/dist * yDist));
-  		}
+	  		for(var i=1; i<dist; ++i) {
+	  			clickPixel(Math.floor(mouseX - i/dist * xDist), Math.floor(mouseY - i/dist * yDist));
+	  		}
+		}
 
   		// Update Previous mouse positions
   		prevX = mouseX;
   		prevY = mouseY;
+
+  		// Update preview
+		updateMousePreview();
+	});
+
+	// Mouse no longer down
+	$('body').mouseup(function() {
+		isMouseDown = false;
 	});
 
 	function clickPixel(x, y) {
-		updatePixel(activeLayer, x, y, activeToolNumber);
+		// Calculate the top left pixel
+		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+
+		for(var xx=0; xx<window.brushSize; ++xx) {
+			for(var yy=0; yy<window.brushSize; ++yy) {
+				updatePixel(activeLayer, x + xx - theOffset, y + yy - theOffset, activeToolNumber);
+			}
+		}
 	}
 
 	// Loads a map from data

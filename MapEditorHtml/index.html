@@ -65,6 +65,7 @@
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
+		<canvas id="mousePreview"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -101,6 +102,11 @@
 						</label>
 					</li>
 				</ul>
+			</li>
+
+			<li><b>Brush Size</b></li>
+			<li>
+				<input class="form-control" type="number" value="1" min="1" step="1" id="brushSize" onchange="window.updateBrushSize()">
 			</li>
 		</ul>
 	</div>
