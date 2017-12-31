@@ -133,7 +133,17 @@ $(document).ready(function() {
 		);
 	};
 
+	// Updates which tool is selected
 	window.setTool = function(toolName) {
+		// Deactivate all old tools buttons
+		$('.btnSelectTool')
+			.removeClass('btn-success')
+			.addClass('btn-primary');
+
+		$('#btn_' + toolName)
+			.removeClass('btn-primary')
+			.addClass('btn-success');
+
 		switch(toolName) {
 			case 'toolTerrainEarth':
 				activeLayer = window.layerStore.LayerTerrain;
@@ -190,7 +200,29 @@ $(document).ready(function() {
 				activeToolNumber = 5;
 			break;
 		}
-	}
+	};
+
+	// Updates which layers are visible
+	window.updateLayerToggles = function() {
+		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
+		var objectsVisible = $('#toggleLayerObjects').is(':checked');
+
+		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
+		var cObjects = $(window.layerStore.LayerObjects.canvas);
+
+		// Toggle terrain layer
+		terrainVisible ?
+			cTerrain.show() : 
+			cTerrain.hide();
+
+		// Toggle objects later
+		objectsVisible ?
+			cObjects.show() : 
+			cObjects.hide();
+	};
+
+	var prevX = null;
+	var prevY = null;
 
 	$('#helperLayer').mousedown(function(e) {
 		// Grab offset
@@ -202,6 +234,10 @@ $(document).ready(function() {
 
   		// Mouse is down
   		isMouseDown = true;
+
+  		// Update the previous mouse positions
+  		prevX = mouseX;
+  		prevY = mouseY;
 
   		// Run the callback
 		clickPixel(mouseX, mouseY);
@@ -224,6 +260,23 @@ $(document).ready(function() {
 
   		// Run the cll
   		clickPixel(mouseX, mouseY);
+
+  		// Calculate the max number of pixels the mouse travelled
+  		var xDist = mouseX - prevX;
+  		var yDist = mouseY - prevY;
+
+  		var dist = Math.max(
+  			Math.abs(xDist),
+  			Math.abs(yDist)
+  		);
+
+  		for(var i=1; i<dist; ++i) {
+  			clickPixel(Math.floor(mouseX - i/dist * xDist), Math.floor(mouseY - i/dist * yDist));
+  		}
+
+  		// Update Previous mouse positions
+  		prevX = mouseX;
+  		prevY = mouseY;
 	});
 
 	function clickPixel(x, y) {
@@ -259,6 +312,9 @@ $(document).ready(function() {
 
 		// But we aren't up to date
 		window.setMapExportUpToDate(false);
+
+		// Update which tool is selected
+		window.setTool('toolTerrainEarth');
 
 		// We are no longer loading
 		setIsLoading(false);

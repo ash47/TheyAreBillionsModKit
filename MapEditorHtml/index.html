@@ -69,21 +69,39 @@
 	</div>
 
 	<div id="mapTools">
-		<ul>
+		<ul class="mapToolsList">
+			<li><b>Terrain Layer</b></li>
+			<li><button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainEarth')">Earth</button></li>
+			<li><button id="btn_toolTerrainWater" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainWater')">Water</button></li>
+			<li><button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainGrass')">Grass</button></li>
+			<li><button id="btn_toolTerrainSky" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainSky')">Sky</button></li>
+			<li><button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainAbyse')">Abyse</button></li>
 
-			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainEarth')">Earth</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainWater')">Water</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainGrass')">Grass</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainSky')">Sky</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolTerrainAbyse')">Abyse</button></li>
+			<li><b>Object Layer</b></li>
+			<li><button id="btn_toolObjectNone" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectNone')">No Object</button></li>
+			<li><button id="btn_toolObjectMountain" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectMountain')">Mountain</button></li>
+			<li><button id="btn_toolObjectWood" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectWood')">Wood</button></li>
+			<li><button id="btn_toolObjectGold" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectGold')">Gold</button></li>
+			<li><button id="btn_toolObjectStone" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectStone')">Stone</button></li>
+			<li><button id="btn_toolObjectIron" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectIron')">Iron</button></li>
 
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectNone')">No Object</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectMountain')">Mountain</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectWood')">Wood</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectGold')">Gold</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectStone')">Stone</button></li>
-			<li><button class="btn btn-primary" onclick="window.setTool('toolObjectIron')">Iron</button></li>
-
+			<li><b>Toggle Layers</b></li>
+			<li>
+				<ul class="layerToggle">
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerTerrain" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerTerrain">
+							Terrain
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerObjects" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerObjects">
+							Objects
+						</label>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </div>

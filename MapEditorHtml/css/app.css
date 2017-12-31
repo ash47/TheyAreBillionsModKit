@@ -54,7 +54,7 @@
 	display: block;
 }
 
-#mapTools ul {
+.mapToolsList {
 	list-style-type: none;
 	padding-left: 0px;
 }
@@ -75,4 +75,13 @@
 
 #file {
 	display: none;
+}
+
+.layerToggle {
+	padding-left: 16px;
+	list-style-type: none;
+}
+
+.layerToggle label {
+	margin-bottom: 0px;
 }
