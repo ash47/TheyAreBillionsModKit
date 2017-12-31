@@ -198,6 +198,9 @@ function renderPixel(mapData, x, y) {
 function updatePixel(mapData, xReverse, y, theNumber) {
 	var width = mapData.width;
 
+	// do not allow invalid pixels to be updated
+	if(x < 0 || x >= width || y < 0 || y >= mapData.height) return;
+
 	// We need to convert xReverse into x
 	var x = (width - xReverse - 1);
 
