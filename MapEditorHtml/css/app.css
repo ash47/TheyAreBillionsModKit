@@ -10,6 +10,10 @@
 	display: inline-block;
 }
 
+#previousMapStore button {
+	margin-left: 4px;
+}
+
 .mapLayer {
 	position: absolute;
 	left: 0px;

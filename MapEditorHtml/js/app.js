@@ -11,6 +11,9 @@ $(document).ready(function() {
 		}
 	}
 
+	// update our previous maps
+	updatePastMapsList();
+
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
 	var helperCanvas = document.getElementById('helperLayer');
@@ -66,15 +69,18 @@ $(document).ready(function() {
 				// Store the checksum
 				window.activeMap.checksum = generateChecksum(buff);
 
+				// Update our local storage
+				//updateLocalStorage();
+
 				// Set up to date
 				window.setMapExportUpToDate(true, true);
+
+				// Set that we are no longer saving
+				setIsSaving(false);
 			});
 
 			// You can now export the map
 			window.setMapExportUpToDate(true);
-
-			// Set that we are no longer saving
-			setIsSaving(false);
 		});
 	};
 
@@ -352,6 +358,9 @@ $(document).ready(function() {
 		// Ensure we have data loaded
 		if(window.activeMap.Data == null || window.activeMap.Info == null) return;
 
+		// Update the local storage of maps
+		updateLocalStorage();
+
 		// Set the active layer to terrain
 		activeLayer = window.layerStore.LayerTerrain;
 
@@ -398,6 +407,143 @@ $(document).ready(function() {
 			// We are no longer loading
 			setIsLoading(false);
 		}, 1)
+	}
+
+	function loadPastMap(mapName) {
+		// Ensure they have local storage
+		if(typeof(localStorage) == 'undefined') return;
+
+		ldb.get('maps', function(pastMaps) {
+			if(pastMaps == null) return;
+
+			try {
+				pastMaps = JSON.parse(pastMaps);
+			} catch(e) {
+				return;
+			}
+
+			var ourPastMap = pastMaps[mapName];
+			if(ourPastMap == null) return;
+
+			// Set this as our active map
+			window.activeMap = {
+				Data: ourPastMap.Data,
+				Info: ourPastMap.Info,
+				name: mapName
+			};
+
+			// Load it
+			loadMap();
+		});
+	}
+
+	function deletePastMap(mapName) {
+		// Ensure they have local storage
+		if(typeof(localStorage) == 'undefined') return;
+
+		ldb.get('maps', function(pastMaps) {
+			if(pastMaps == null) return;
+
+			try {
+				pastMaps = JSON.parse(pastMaps);
+			} catch(e) {
+				return;
+			}
+
+			// Delete it
+			delete pastMaps[mapName];
+
+			// Store the change
+			ldb.set('maps', JSON.stringify(pastMaps));
+
+			// Update the list
+			updatePastMapsList();
+		});
+	}
+
+	function updatePastMapsList() {
+		// Ensure they have local storage
+		if(typeof(localStorage) == 'undefined') return;
+
+		// Do we have any past maps?
+		ldb.get('maps', function(pastMaps) {
+			if(pastMaps == null) return;
+
+			try {
+				pastMaps = JSON.parse(pastMaps);
+			} catch(e) {
+				// do nothing
+				return;
+			}
+
+			var pastMapsCon = $('#previousMapStore');
+			pastMapsCon.empty();
+
+			for(var _mapName in pastMaps) {
+				if(pastMaps[_mapName].Data == null || pastMaps[_mapName].Info == null) continue;
+
+				(function(mapName) {
+					$('<li>')
+						.appendTo(pastMapsCon)
+						.append(
+							$('<p>', {
+								text: mapName
+							}).append(
+								$('<button>', {
+									class: 'btn btn-primary',
+									text: 'Load',
+									click: function() {
+										loadPastMap(mapName);
+									}
+								})
+							).append(
+								$('<button>', {
+									class: 'btn btn-danger',
+									text: 'Delete',
+									click: function() {
+										alertify.confirm('Are you sure you want to delete ' + mapName + '?',
+											function(){
+												// Delete it
+												deletePastMap(mapName);
+											},
+											function(){
+												// Do nothing
+											});
+									}
+								})
+							)
+						);
+				})(_mapName);
+			}
+		});
+	}
+
+	// Updates our current map into local storage
+	function updateLocalStorage() {
+		// Ensure they have local storage
+		if(typeof(localStorage) == 'undefined') return;
+
+		// Grab the stored maps
+		ldb.get('maps', function(storedMaps) {
+			if(storedMaps == null) {
+				storedMaps = {};
+			} else {
+				try {
+					storedMaps = JSON.parse(storedMaps);
+				} catch(e) {
+					storedMaps = {};
+				}
+			}
+
+			// Store our map
+			storedMaps[window.activeMap.name] = {
+				Data: window.activeMap.Data,
+				Info: window.activeMap.Info
+			};
+
+			// Store into local storage
+			ldb.set('maps', JSON.stringify(storedMaps));
+		});
 	}
 
 	//ctx.fillStyle = 'green';
