@@ -24,73 +24,136 @@ $(document).ready(function() {
 	var activeToolNumber = 0;
 
 	// Create a place to store layers
-	var layerStore = {
+	window.layerStore = {
 		LayerTerrain: {
+			name: 'LayerTerrain',
 			canvas: mapRenderTerrainCanvas,
 			colorMap: colorTerrain,
 			defaultColor: colorEarth,
 		},
 		LayerObjects: {
+			name: 'LayerObjects',
 			canvas: mapRenderObjectsCanvas,
 			colorMap: colorObject,
 			defaultColor: colorNone,
 		}
 	};
 
+	// Saving the map
+	window.saveMap = function() {
+		// Set that we are saving
+		setIsSaving(true);
+
+		// Commit the update
+		loadLayer('LayerTerrain', true);
+		loadLayer('LayerObjects', true);
+
+		// Generate the save file
+		var zip = new JSZip();
+
+		zip.file('Data', window.activeMap.Data);
+		zip.file('Info', window.activeMap.Info);
+
+		zip.generateAsync({
+			type: 'blob'
+		}).then(function(content) {
+			window.activeMap.downloadableZip = content;
+
+			// You can now export the map
+			window.setMapExportUpToDate(true);
+
+			// Set that we are no longer saving
+			setIsSaving(false);
+		});
+	};
+
+	function setIsSaving(isSaving) {
+		var theCon = $('#mainContainer');
+
+		if(isSaving) {
+			theCon.addClass('isSaving');
+		} else {
+			theCon.removeClass('isSaving');
+		}
+	}
+
+	var _isUpToDate = null;
+	window.setMapExportUpToDate = function(upToDate) {
+		if(_isUpToDate == upToDate) return;
+		_isUpToDate = upToDate;
+
+		var exportBtnZip = $('#btnExportSave');
+
+		if(upToDate) {
+			exportBtnZip.removeAttr('disabled');
+			exportBtnZip.removeClass('btn-danger');
+			exportBtnZip.addClass('btn-primary');
+		} else {
+			exportBtnZip.removeClass('btn-primary');
+			exportBtnZip.addClass('btn-danger');
+		}
+	}
+
+	// Downloading the zxsav
+	window.downloadZXSave = function() {
+		// Do the save
+		saveAs(window.activeMap.downloadableZip, window.activeMap.name);
+	};
+
 	window.setTool = function(toolName) {
 		switch(toolName) {
 			case 'toolTerrainEarth':
-				activeLayer = layerStore.LayerTerrain;
+				activeLayer = window.layerStore.LayerTerrain;
 				activeToolNumber = 0;
 			break;
 
 			case 'toolTerrainWater':
-				activeLayer = layerStore.LayerTerrain;
+				activeLayer = window.layerStore.LayerTerrain;
 				activeToolNumber = 1;
 			break;
 
 			case 'toolTerrainGrass':
-				activeLayer = layerStore.LayerTerrain;
+				activeLayer = window.layerStore.LayerTerrain;
 				activeToolNumber = 2;
 			break;
 
 			case 'toolTerrainSky':
-				activeLayer = layerStore.LayerTerrain;
+				activeLayer = window.layerStore.LayerTerrain;
 				activeToolNumber = 3;
 			break;
 
 			case 'toolTerrainAbyse':
-				activeLayer = layerStore.LayerTerrain;
+				activeLayer = window.layerStore.LayerTerrain;
 				activeToolNumber = 4;
 			break;
 
 			case 'toolObjectNone':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 0;
 			break;
 
 			case 'toolObjectMountain':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 1;
 			break;
 
 			case 'toolObjectWood':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 2;
 			break;
 
 			case 'toolObjectGold':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 3;
 			break;
 
 			case 'toolObjectStone':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 4;
 			break;
 
 			case 'toolObjectIron':
-				activeLayer = layerStore.LayerObjects;
+				activeLayer = window.layerStore.LayerObjects;
 				activeToolNumber = 5;
 			break;
 		}
@@ -135,40 +198,37 @@ $(document).ready(function() {
 	}
 
 	// Loads a map from data
-	function loadMap(data) {
-		// Set the active layer to terrain
-		activeLayer = layerStore.LayerTerrain;
+	function loadMap() {
+		// Ensure we have data loaded
+		if(window.activeMap.Data == null || window.activeMap.Info == null) return;
 
-		// Stores info about the map that is currently loaded
-		activeMap = {
-			rawData: data,
-			layerStore: layerStore
-		}
+		// Set the active layer to terrain
+		activeLayer = window.layerStore.LayerTerrain;
 
 		// Load terrain
-		loadLayer({
-			data: data,
-			layerName: 'LayerTerrain',
-			layers: layerStore
-		});
+		loadLayer('LayerTerrain');
 
 		// Load Objects
-		loadLayer({
-			data: data,
-			layerName: 'LayerObjects',
-			layers: layerStore
-		});
+		loadLayer('LayerObjects');
 
 		// Render Terrain
-		renderLayer(layerStore.LayerTerrain);
+		renderLayer('LayerTerrain');
 
 		// Render Objects
-		renderLayer(layerStore.LayerObjects);
+		renderLayer('LayerObjects');
 
 		// Size
-		helperCanvas.width = window.pixelSize * layerStore.LayerTerrain.width;
-		helperCanvas.height = window.pixelSize * layerStore.LayerTerrain.height;
+		helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
+		helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
 
+		// Allow export
+		$('#btnSaveChanges').removeAttr('disabled');
+
+		// But we aren't up to date
+		window.setMapExportUpToDate(false);
+
+		// We are no longer loading
+		setIsLoading(false);
 	}
 
 	//ctx.fillStyle = 'green';
@@ -211,13 +271,26 @@ $(document).ready(function() {
 	            	return;
 	            }
 
-	            fileData.async('string').then(function (data) {
-	            	// We are no longer loading
-					setIsLoading(false);
+	            // Stores info about the map that is currently loaded
+				window.activeMap = {
+					name: f.name
+				};
+
+	            fileData.async('string').then(function(data) {
+	            	// Store the Data
+					window.activeMap.Data = data;
 
 					// Load the map
-					loadMap(data);
+					loadMap();
 				});
+
+				fileInfo.async('string').then(function(data) {
+					// Store the Data
+					window.activeMap.Info = data;
+
+					// Load the map
+					loadMap();
+				})
 	        }, function (e) {
 	        	alertify.error('Error loading zip file! ' + f.name + ' - ' + e.message);
 	            /*$result.append($("<div>", {

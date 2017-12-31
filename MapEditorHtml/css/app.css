@@ -1,3 +1,7 @@
+#headingContainer {
+	padding: 4px;
+}
+
 .loadingDisplay {
 	display: none;
 }
@@ -16,7 +20,7 @@
 
 #mapDisplayHolder {
 	position: absolute;
-	top: 40px;
+	top: 54px;
 	left: 160px;
 }
 
@@ -33,4 +37,12 @@
 	text-align: left;
 	width: 140px;
 	margin-bottom: 4px;
+}
+
+#isSaving {
+	display: none;
+}
+
+.isSaving #isSaving {
+	display: inline-block;
 }

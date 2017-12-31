@@ -56,11 +56,11 @@ function loadSection(xmlData, startPoint, endPoint, editFunction, loopMatches, i
 	}
 }
 
-function loadLayer(dataObject) {
+function loadLayer(layerName, commitUpdate) {
 	// Edit layer
-	return loadSection(
-		dataObject.data,
-		'<Complex name="' + dataObject.layerName + '">',
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Complex name="' + layerName + '">',
 		'</Complex>',
 		function(theData) {
 			return loadSection(
@@ -68,58 +68,43 @@ function loadLayer(dataObject) {
 				'<Simple name="Cells" value="',
 				'" />',
 				function(theData2) {
-					// Store the raw data
-					dataObject.rawData = theData2;
-
 					// Load it
-					return loadLayerDirect(dataObject);
+					return loadLayerDirect(layerName, theData2, commitUpdate);
 				}
 			)
 		}
 	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
 }
 
-function loadLayerDirect(dataObject) {
-	var dataParts = dataObject.rawData.split('|');
+function loadLayerDirect(layerName, layerData, commitUpdate) {
+	var dataParts = layerData.split('|');
 	if(dataParts.length != 3) {
 		alertify.error('Unknown length for terrain layer -- ' + dataParts.length);
 		return;
 	}
 
-	/*var myFileName = path.join(workingDir, layerFileName);
+	// Ensure there is a layer store
+	window.layerStore[layerName] = window.layerStore[layerName] || {};
+	var myLayer = window.layerStore[layerName];
 
-	if(fs.existsSync(myFileName)) {
-		// File exists, read in the array
-		var dataImage = readImageSync(myFileName);
-		var theWidth = dataImage.getWidth();
-		var theHeight = dataImage.getHeight();
+	// Are we doing an update?
+	if(commitUpdate) {
+		// We are doing an update
+		var base64Data = mapArrayToBase64(myLayer.data);
+		return myLayer.width + '|' + myLayer.height + '|' + base64Data;
+	} else {
+		// Store the data
+		myLayer.width = parseInt(dataParts[0]);
+		myLayer.height = parseInt(dataParts[1]);
+		myLayer.data = base64MapToArray(dataParts[2]);
 
-		var base64Data = mapImageToBase64(dataImage, objectMap);
-		return theWidth + '|' + theHeight + '|' + base64Data;
-	} else {*/
-		// File does not exist
-		var sizeWidth = parseInt(dataParts[0]);
-		var sizeHeight = parseInt(dataParts[1]);
-
-		// Load in the data array
-		var dataArray = base64MapToArray(dataParts[2]);
-
-		// Ensure there is a layer store
-		dataObject.layers = dataObject.layers || {};
-		dataObject.layers[dataObject.layerName] = dataObject.layers[dataObject.layerName] || {};
-
-		var myLayer = dataObject.layers[dataObject.layerName];
-		myLayer.width = sizeWidth;
-		myLayer.height = sizeHeight;
-		myLayer.data = dataArray;
-
-		/*var dataImage = mapArrayToImage(dataArray, sizeWidth, sizeHeight, objectMap);
-
-		dataImage.writeImage(myFileName, function (err) {
-		    if (err) throw err;
-		    console.log('Written to the file');
-		});*/
-	//}
+		var toTest = mapArrayToBase64(myLayer.data);
+	}
 }
 
 // Converts a base64 string into a 1d array that can be used in other functions
@@ -128,7 +113,7 @@ function base64MapToArray(data) {
 
 	// Map size info
 	var intSize = 4;
-	var totalData = buf.length / intSize;
+	var totalData = Math.floor(buf.length / intSize);
 	var outputArray = [];
 
 	// Read in map
@@ -137,6 +122,19 @@ function base64MapToArray(data) {
 	}
 
 	return outputArray;
+}
+
+// Converts an array of image data to a base64 string
+function mapArrayToBase64(someArray) {
+	var intSize = 4;
+
+	var buff = new buffer.Buffer(someArray.length * intSize);
+
+	for(var i=0; i<someArray.length; ++i) {
+		buff.writeUInt32LE(someArray[i], i * intSize);
+	}
+
+	return buff.toString('base64');
 }
 
 function getRBG(oldColor) {
@@ -149,7 +147,9 @@ function getRBG(oldColor) {
 }
 
 // Renders a terrain
-function renderLayer(mapData) {
+function renderLayer(layerName) {
+	var mapData = window.layerStore[layerName];
+
 	// Grab the data
 	var width = mapData.width;
 	var height = mapData.height;
@@ -180,7 +180,7 @@ function renderPixel(mapData, x, y) {
 	var mapPos = width * y + x;
 
 	var theNumber = mapData.data[mapPos];
-	var theColor = mapData.colorMap[theNumber] || mapData.colorDefault;
+	var theColor = mapData.colorMap[theNumber] || mapData.defaultColor;
 
 	var theX = (width - x - 1) * window.pixelSize;
 	var theY = (y) * window.pixelSize;
@@ -209,4 +209,7 @@ function updatePixel(mapData, xReverse, y, theNumber) {
 
 	// Re-render the canvas for this pixel
 	renderPixel(mapData, x, y);
+
+	// We are no longer up to date
+	window.setMapExportUpToDate(false);
 }
