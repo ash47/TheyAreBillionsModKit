@@ -68,7 +68,11 @@ $(document).ready(function() {
 			zip.file('Info', window.activeMap.Info);
 
 			zip.generateAsync({
-				type: 'blob'
+				type: 'blob',
+				compression: 'DEFLATE',
+			    compressionOptions: {
+			        level: 9
+			    }
 			}).then(function(content) {
 				window.activeMap.downloadableZip = content;
 
