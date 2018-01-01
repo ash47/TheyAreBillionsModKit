@@ -286,8 +286,10 @@ $(document).ready(function() {
 		previewCon.css('top', (prevY - theOffset) * window.pixelSize);
 
 		// Update the position text
-		var x = (activeLayer.width - prevX - 1);
-  		$('#cursorPos').text(prevY + ';' + x);
+		if(prevX != null && prevY != null) {
+			var x = (activeLayer.width - prevX - 1);
+  			$('#cursorPos').text(prevY + ';' + x);
+		}
 	};
 
 	var prevX = null;
@@ -528,6 +530,7 @@ $(document).ready(function() {
 			if(key == 'rawXML') continue;
 			if(key == 'ID') continue;
 			if(key == 'Capacity') continue;
+			if(key == 'IDEntity') continue;
 
 			toAdd.push(key);
 		}

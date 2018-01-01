@@ -305,6 +305,7 @@ function loadLevelEntities(commitUpdate) {
 							if(propertyName == 'Capacity') continue;
 							if(propertyName == 'rawXML') continue;
 							if(propertyName == 'ID') continue;
+							if(propertyName == 'IDEntity') continue;
 
 							var theValue = thisEntity[propertyName];
 							if(theValue == null || theValue == "") {
@@ -337,7 +338,7 @@ function loadLevelEntities(commitUpdate) {
 							null,
 							'<Simple name="ID" value="' + newEntityId + '" />'
 						);
-						
+
 						// Add the XML
 						theOutput += thisXML;
 					}
@@ -371,6 +372,8 @@ function loadLevelEntities(commitUpdate) {
 					var thisEntityStore = {};
 					allEntities[entityType].push(thisEntityStore);
 
+					var blackListedProps = {};
+
 					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
 					var theMatch;
 					while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
@@ -379,6 +382,17 @@ function loadLevelEntities(commitUpdate) {
 						// Grab stuff
 						var propertyName = theMatch[1];
 						var propertyValue = theMatch[2];
+
+						// Is this blacklisted?
+						if(blackListedProps[propertyName]) continue;
+
+						// Have we already collected this prop?
+						if(thisEntityStore[propertyName] != null) {
+							// We are not touching this prop
+							delete thisEntityStore[propertyName];
+							blackListedProps[propertyName] = true;
+							continue;
+						}
 
 						// Store it
 						thisEntityStore[propertyName] = propertyValue;
