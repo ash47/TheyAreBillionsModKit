@@ -49,39 +49,45 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		// Commit the update
-		loadLayer('LayerTerrain', true);
-		loadLayer('LayerObjects', true);
+		// Allow async
+		setTimeout(function() {
+			// Commit the updates to layers
+			loadLayer('LayerTerrain', true);
+			loadLayer('LayerObjects', true);
 
-		// Update our local storage
-		updateLocalStorage();
+			// Commit updates to entities
+			loadLevelEntities(true);
 
-		// Generate the save file
-		var zip = new JSZip();
+			// Update our local storage
+			updateLocalStorage();
 
-		zip.file('Data', window.activeMap.Data);
-		zip.file('Info', window.activeMap.Info);
+			// Generate the save file
+			var zip = new JSZip();
 
-		zip.generateAsync({
-			type: 'blob'
-		}).then(function(content) {
-			window.activeMap.downloadableZip = content;
+			zip.file('Data', window.activeMap.Data);
+			zip.file('Info', window.activeMap.Info);
 
-			// Get the checksum
-			blobToBuffer(content, function(err, buff) {
-				// Store the checksum
-				window.activeMap.checksum = generateChecksum(buff);
+			zip.generateAsync({
+				type: 'blob'
+			}).then(function(content) {
+				window.activeMap.downloadableZip = content;
 
-				// Set up to date
-				window.setMapExportUpToDate(true, true);
+				// Get the checksum
+				blobToBuffer(content, function(err, buff) {
+					// Store the checksum
+					window.activeMap.checksum = generateChecksum(buff);
 
-				// Set that we are no longer saving
-				setIsSaving(false);
+					// Set up to date
+					window.setMapExportUpToDate(true, true);
+
+					// Set that we are no longer saving
+					setIsSaving(false);
+				});
+
+				// You can now export the map
+				window.setMapExportUpToDate(true);
 			});
-
-			// You can now export the map
-			window.setMapExportUpToDate(true);
-		});
+		}, 1);
 	};
 
 	function setIsSaving(isSaving) {
@@ -370,6 +376,12 @@ $(document).ready(function() {
 		// Load Objects
 		loadLayer('LayerObjects');
 
+		// Read main entities chunk
+		loadLevelEntities();
+
+		// Update the entity display
+		updateEntityMenu();
+
 		// Perform a full re-render of the map
 		mapFullRender();
 
@@ -387,6 +399,86 @@ $(document).ready(function() {
 
 		// Map is loaded
 		$('#mainContainer').addClass('mapIsLoaded	');
+	}
+
+	function updateEntityMenu() {
+		var entities = window.layerStore.entities;
+		if(entities == null) return;
+
+		var entityData = [];
+		for(var entityName in entities) {
+			var myEntities = entities[entityName];
+			var thisEntityList = [];
+
+			// Add all the subnodes
+			for(var i=0; i<myEntities.length; ++i) {
+				var myEntity = myEntities[i];
+
+				thisEntityList.push({
+					text: myEntity.ID + ' (' + myEntity.Position + ')',
+					state: {
+						checked: true
+					},
+					entityReference: {
+						entityName: entityName,
+						entryNumber: i
+					}
+				});
+			}
+
+			// Sort lowest to highest
+			thisEntityList.sort(function(a, b) {
+				if(a.text < b.text) {
+					return -1;
+				} else if(a.text > b.text) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			// Store it
+			entityData.push({
+				text: entityName,
+				selectable: false,
+				nodes: thisEntityList,
+				state: {
+					checked: true
+				}
+			});
+		}
+
+		// Sort it alphabetically
+		entityData.sort(function(a, b) {
+			if(a.text < b.text) {
+				return -1;
+			} else if(a.text > b.text) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+
+		$('#entityTree').treeview({
+			showCheckbox: true,
+			levels: 2,
+			onNodeSelected: function(event, node) {
+				if(node.entityReference != null) {
+					var ref = node.entityReference;
+					viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
+				}
+			},
+			data: [
+				{
+					text: 'Entities',
+					selectable: false,
+					nodes: entityData,
+					state: {
+						checked: true
+					}
+				}
+			]
+		});
 	}
 
 	function mapFullRender() {
@@ -407,6 +499,69 @@ $(document).ready(function() {
 			// We are no longer loading
 			setIsLoading(false);
 		}, 1)
+	}
+
+	function viewEntityProps(props) {
+		var entityProps = $('#entityProps');
+		entityProps.empty();
+
+		var theTable = $('<table>', {
+			class: 'table table-striped'
+		}).appendTo(entityProps)
+			.append(
+				$('<tr>')
+					.append($('<th>', {
+						text: 'Key'
+					}))
+					.append($('<th>', {
+						text: 'Value'
+					}))
+			);
+
+		var toAdd = [];
+
+		for(var key in props) {
+			if(key == 'rawXML') continue;
+			if(key == 'ID') continue;
+			if(key == 'Capacity') continue;
+
+			toAdd.push(key);
+		}
+
+		// Sort a-z
+		toAdd.sort();
+
+		// Add tables
+		for(var i=0; i<toAdd.length; ++i) {
+			var key = toAdd[i];
+
+			theTable.append(
+				$('<tr>')
+					.append($('<td>', {
+						text: key
+					}))
+					.append($('<td>', {
+						text: props[key],
+						propertyName: key
+					}))
+			)
+		}
+
+		// Allow editing
+		theTable
+			.editableTableWidget()
+			.on('change', function(e, newValue) {
+				var propertyName = $(e.target).attr('propertyName');
+
+				// Update the value
+				props[propertyName] = '' + newValue;
+
+				// Notify
+				alertify.success('Changed "' + propertyName + '" to "' + newValue + '"');
+
+				// Mark dirty
+				window.setMapExportUpToDate(false);
+			});
 	}
 
 	function loadPastMap(mapName) {

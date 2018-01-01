@@ -256,3 +256,145 @@ function blobToBuffer(blob, callback) {
 	reader.addEventListener('loadend', onLoadEnd, false);
 	reader.readAsArrayBuffer(blob);
 }
+
+function replaceEntityProperty(entityXML, useReplace1, regexMatch1, regexMatch2, replace1, replace2) {
+	var theRes = null;
+	if(useReplace1) {
+		theRes = replace1;
+	} else {
+		theRes = replace2;
+	}
+
+	if(regexMatch1 != null) entityXML = entityXML.replace(regexMatch1, theRes);
+	if(regexMatch2 != null) entityXML = entityXML.replace(regexMatch2, theRes);
+
+	return entityXML;
+}
+
+// Allows entities in the level to be edited
+function loadLevelEntities(commitUpdate) {
+	// Find the part we need to edit
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">',
+		/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Item>[\n\r ]*<\/Items>[\n\r ]*<\/Dictionary>/,
+		function(theData) {
+			// We need to break this into individual entities
+
+			// Can we make changes?
+			if(commitUpdate) {
+				// We will use referenceData to build a new xmlData output
+
+				var theOutput = '';
+				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
+				theOutput += '<Items>\n';
+
+				var totalEntities = 0;
+				
+				for(var entityType in window.layerStore.entities) {
+					var allEntitiesOfThisType = window.layerStore.entities[entityType];
+					for(var i=0; i<allEntitiesOfThisType.length; ++i) {
+						var thisEntity = allEntitiesOfThisType[i];
+						var thisXML = thisEntity.rawXML;
+
+						var newEntityId = ++totalEntities;
+
+						// Normal properties
+						for(propertyName in thisEntity) {
+							// Ignore these properties
+							if(propertyName == 'Capacity') continue;
+							if(propertyName == 'rawXML') continue;
+							if(propertyName == 'ID') continue;
+
+							var theValue = thisEntity[propertyName];
+							if(theValue == null || theValue == "") {
+								theValue = '<Null name="' + propertyName + '" />';
+							} else {
+								theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+							}
+
+							// Replace the property
+							thisXML = thisXML.replace(
+								new RegExp('<Simple name="' + propertyName + '" value="[^"]*" \/>'),
+								theValue
+							);
+						}
+
+						// EntityId
+						thisXML = replaceEntityProperty(
+							thisXML,
+							true,
+							/<Simple value="[^"]*" \/>/,
+							null,
+							'<Simple value="' + newEntityId + '" />'
+						);
+
+						// EntityId again
+						thisXML = replaceEntityProperty(
+							thisXML,
+							true,
+							/<Simple name="ID" value="[^"]*" \/>/,
+							null,
+							'<Simple name="ID" value="' + newEntityId + '" />'
+						);
+						
+						// Add the XML
+						theOutput += thisXML;
+					}
+				}
+
+				theOutput += '</Items>\n';
+				theOutput += '</Dictionary>';
+
+				return theOutput;
+			}
+
+			var allEntities = {};
+			
+			// This will edit every individual item in the map
+			loadSection(
+				theData,
+				'<Item>',
+				/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Item>/,
+				function(thisItemData) {
+					// Return an empty string from here to delete the entity!
+
+					var entityType = (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1] || 'Unknown';
+
+					allEntities[entityType] = allEntities[entityType] || [];
+
+					/*var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
+					var possibleEntityId = findEntityId.exec(thisItemData);
+					if(possibleEntityId == null || possibleEntityId.length != 2) return;
+					var entityId = possibleEntityId[1];*/
+
+					var thisEntityStore = {};
+					allEntities[entityType].push(thisEntityStore);
+
+					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+					var theMatch;
+					while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
+						if(theMatch.length < 3) continue;
+
+						// Grab stuff
+						var propertyName = theMatch[1];
+						var propertyValue = theMatch[2];
+
+						// Store it
+						thisEntityStore[propertyName] = propertyValue;
+					}
+
+					// Add raw xml
+					thisEntityStore.rawXML = thisItemData;
+				}, true, true);
+
+			// Store all the entities
+			window.layerStore.entities = allEntities;
+		}, false, true
+	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
+}
