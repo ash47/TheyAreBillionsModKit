@@ -626,7 +626,7 @@ function processSaveFile(fileName) {
 
 // Generates a checksum for a string
 function generateChecksum(str) {
-	var buff = new buffer.Buffer(str);
+	var buff = new Buffer(str);
 
 	var num = 0;
 
