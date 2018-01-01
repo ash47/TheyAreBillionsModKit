@@ -284,6 +284,10 @@ $(document).ready(function() {
 		
 		previewCon.css('left', (prevX - theOffset) * window.pixelSize);
 		previewCon.css('top', (prevY - theOffset) * window.pixelSize);
+
+		// Update the position text
+		var x = (activeLayer.width - prevX - 1);
+  		$('#cursorPos').text(prevY + ';' + x);
 	};
 
 	var prevX = null;
