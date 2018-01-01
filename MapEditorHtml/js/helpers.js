@@ -271,6 +271,42 @@ function replaceEntityProperty(entityXML, useReplace1, regexMatch1, regexMatch2,
 	return entityXML;
 }
 
+function updateLayerSer() {
+	// Edit layer
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Simple name="SerTerrainResourceCells" value="',
+		'" />',
+		function(theData) {
+			var layerTerrain = window.layerStore.LayerTerrain;
+			var layerObjects = window.layerStore.LayerObjects;
+
+			var mergedBuff = [];
+
+			for(var i=0; i<layerObjects.data.length; ++i) {
+				// Get the number from objects
+				var theNumber = layerObjects.data[i];
+
+				var mapFile = mapSerTerrain.objects;
+
+				// Was there nothing here?
+				if(theNumber == 0) {
+					// Get the number from terrain instead
+					mapFile = mapSerTerrain.terrain;
+				}
+
+				mergedBuff[i] = mapFile[theNumber] || 0;
+			}
+
+			return layerTerrain.width + '|' + layerTerrain.height + '|' + mapArrayToBase64(mergedBuff);
+		}
+	);
+
+	if(res != null) {
+		window.activeMap.Data = res;
+	}
+}
+
 // Allows entities in the level to be edited
 function loadLevelEntities(commitUpdate) {
 	// Find the part we need to edit

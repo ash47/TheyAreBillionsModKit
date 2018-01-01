@@ -113,6 +113,23 @@ var colorTerrain = {
 	4: colorAbyse
 };
 
+var mapSerTerrain = {
+	terrain: {
+		0: 20,
+		1: 10,
+		2: 30,
+		3: 0,
+		4: 10
+	},
+	objects: {
+		1: 100,
+		2: 90,
+		3: 70,
+		4: 40,
+		5: 50
+	}
+};
+
 var colorSerTerrain = {
 	0: colorNone,
 	10: colorWater,

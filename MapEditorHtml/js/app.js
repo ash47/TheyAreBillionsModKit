@@ -55,6 +55,9 @@ $(document).ready(function() {
 			loadLayer('LayerTerrain', true);
 			loadLayer('LayerObjects', true);
 
+			// Commit the new ser layer
+			updateLayerSer();
+
 			// Commit updates to entities
 			loadLevelEntities(true);
 
