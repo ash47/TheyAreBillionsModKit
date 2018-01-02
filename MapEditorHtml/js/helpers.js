@@ -274,7 +274,7 @@ function renderEntities() {
 				}
 
 				// Are we active?
-				if(ent.entityIsSelected) {
+				if(ent.isActive) {
 					ent.addClass('entityIsSelected');
 				}
 
