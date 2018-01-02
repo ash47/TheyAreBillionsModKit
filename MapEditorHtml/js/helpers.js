@@ -275,7 +275,7 @@ function renderEntities() {
 
 				// Are we active?
 				if(ent.isActive) {
-					ent.addClass('entityIsSelected');
+					ent.lastContainer.addClass('entityIsSelected');
 				}
 
 				// Make it dragable
