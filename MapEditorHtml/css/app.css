@@ -155,6 +155,12 @@
 	user-select: none;
 }
 
+.mapEntity.entityIsSelected span {
+	background-color: #111;
+	color: #FFF;
+	border: 1px solid #FFF;
+}
+
 .mapEntityText {
 	color: #000;
 	background-color: #FFF;

@@ -266,7 +266,17 @@ function renderEntities() {
 					.append($('<span>', {
 						class: 'mapEntityText',
 						text: entityType.split(',')[0]
-					}))
+					}));
+
+				// Should we hide it?
+				if(ent.shouldHide) {
+					ent.lastContainer.hide();
+				}
+
+				// Are we active?
+				if(ent.entityIsSelected) {
+					ent.addClass('entityIsSelected');
+				}
 
 				// Make it dragable
 				ent.lastContainer.draggable({
@@ -414,10 +424,7 @@ function loadLevelEntities(commitUpdate) {
 						// Normal properties
 						for(propertyName in thisEntity) {
 							// Ignore these properties
-							if(propertyName == 'Capacity') continue;
-							if(propertyName == 'rawXML') continue;
-							if(propertyName == 'ID') continue;
-							if(propertyName == 'IDEntity') continue;
+							if(hiddenFields[propertyName]) continue;
 
 							var theValue = thisEntity[propertyName];
 							if(theValue == null || theValue == "") {

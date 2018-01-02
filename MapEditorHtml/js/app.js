@@ -503,6 +503,9 @@ $(document).ready(function() {
 					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
 					var mapEnt = ent.lastContainer;
 
+					// Change the default view
+					ent.shouldHide = false;
+
 					// Hide the entity
 					mapEnt.show();
 				}
@@ -524,6 +527,9 @@ $(document).ready(function() {
 					var ref = node.entityReference;
 					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
 					var mapEnt = ent.lastContainer;
+
+					// Shouldn't show
+					ent.shouldHide = true;
 
 					// Hide the entity
 					mapEnt.hide();
@@ -596,7 +602,19 @@ $(document).ready(function() {
 	}
 
 	window.viewEntityProps = function(props) {
+		// Remove that the old entity is active
+		if(window.viewEntityActive != null) {
+			window.viewEntityActive.isActive = false;
+		}
+		$('.entityIsSelected').removeClass('entityIsSelected')
+
 		window.viewEntityActive = props;
+
+		// Add that our one is active
+		if(props.lastContainer != null) {
+			props.isActive = true;
+			props.lastContainer.addClass('entityIsSelected');
+		}
 
 		var entityProps = $('#entityProps');
 		entityProps.empty();
@@ -617,11 +635,7 @@ $(document).ready(function() {
 		var toAdd = [];
 
 		for(var key in props) {
-			if(key == 'rawXML') continue;
-			if(key == 'ID') continue;
-			if(key == 'Capacity') continue;
-			if(key == 'IDEntity') continue;
-			if(key == 'lastContainer') continue;
+			if(hiddenFields[key]) continue;
 
 			toAdd.push(key);
 		}

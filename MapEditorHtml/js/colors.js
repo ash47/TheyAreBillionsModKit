@@ -250,3 +250,11 @@ var colorZombies = {
 	11: colorZombiePowerful2,
 	12: colorZombieUltra1
 };
+
+var hiddenFields = {
+	rawXML: true,
+	ID: true,
+	Capacity: true,
+	IDEntity: true,
+	lastContainer: true
+};
