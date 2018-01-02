@@ -230,9 +230,11 @@ $(document).ready(function() {
 	window.updateLayerToggles = function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
 		var objectsVisible = $('#toggleLayerObjects').is(':checked');
+		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
+		var mainWindow = $('#mainContainer');
 
 		// Toggle terrain layer
 		terrainVisible ?
@@ -243,6 +245,8 @@ $(document).ready(function() {
 		objectsVisible ?
 			cObjects.show() : 
 			cObjects.hide();
+
+		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
 	};
 
 	// Updates the map zoom
@@ -472,15 +476,81 @@ $(document).ready(function() {
 			}
 		});
 
-		$('#entityTree').treeview({
+		var theTree = $('#entityTree').treeview({
 			showCheckbox: true,
 			levels: 2,
 			onNodeSelected: function(event, node) {
 				if(node.entityReference != null) {
 					var ref = node.entityReference;
-					viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
+					window.viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
 				}
 			},
+			onNodeChecked: function(event, node) {
+				// Are there subnodes?
+				if(node.nodes != null) {
+					// Loop over all sub nodes
+					for(var i=0; i<node.nodes.length; ++i) {
+						// Mark as checked
+						var subNode = node.nodes[i];
+
+						theTree.treeview('checkNode', [subNode.nodeId]);
+					}
+				}
+
+				// Is there an entity we are referencing
+				if(node.entityReference != null) {
+					var ref = node.entityReference;
+					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
+					var mapEnt = ent.lastContainer;
+
+					// Hide the entity
+					mapEnt.show();
+				}
+			},
+			onNodeUnchecked: function(event, node) {
+				// Are there subnodes?
+				if(node.nodes != null) {
+					// Loop over all sub nodes
+					for(var i=0; i<node.nodes.length; ++i) {
+						// Mark as checked
+						var subNode = node.nodes[i];
+
+						theTree.treeview('uncheckNode', [subNode.nodeId]);
+					}
+				}
+
+				// Is there an entity we are referencing
+				if(node.entityReference != null) {
+					var ref = node.entityReference;
+					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
+					var mapEnt = ent.lastContainer;
+
+					// Hide the entity
+					mapEnt.hide();
+				}
+			},
+			/*onNodeChecked: function(event, node) {
+				console.log('asd');
+
+				var sibs = theTree.treeview('getSiblings', node);
+				for(var i=0; i<sibs.length; ++i) {
+					var sib = sibs[i];
+
+					console.log('sib');
+
+					theTree.treeview('uncheckNode', sib);
+				}
+
+				if(node.entityReference != null) {
+					var ref = node.entityReference;
+					
+					var thisEnt = window.layerStore.entities[ref.entityName][ref.entryNumber];
+
+
+
+					alert(1)
+				}
+			},*/
 			data: [
 				{
 					text: 'Entities',
@@ -509,12 +579,25 @@ $(document).ready(function() {
 			// Render Objects
 			renderLayer('LayerObjects');
 
+			// Render entities (oh god)
+			renderEntities();
+
 			// We are no longer loading
 			setIsLoading(false);
 		}, 1)
 	}
 
-	function viewEntityProps(props) {
+	window.onPropsChanged = function(props) {
+		// Were we looking at this?
+		if(props == window.viewEntityActive) {
+			// Redo
+			window.viewEntityProps(window.viewEntityActive);
+		}
+	}
+
+	window.viewEntityProps = function(props) {
+		window.viewEntityActive = props;
+
 		var entityProps = $('#entityProps');
 		entityProps.empty();
 
@@ -538,6 +621,7 @@ $(document).ready(function() {
 			if(key == 'ID') continue;
 			if(key == 'Capacity') continue;
 			if(key == 'IDEntity') continue;
+			if(key == 'lastContainer') continue;
 
 			toAdd.push(key);
 		}

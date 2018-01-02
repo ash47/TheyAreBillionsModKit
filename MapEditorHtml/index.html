@@ -4,6 +4,7 @@
 	<title>They Are Billions | Map Editor</title>
 	<script src="js/jszip.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
 	<script src="js/alertify.min.js"></script>
@@ -17,6 +18,7 @@
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
 	<link rel="stylesheet" href="css/alertify.bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/jquery-ui.min.css"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/app.css"/>
 </head>
@@ -56,10 +58,18 @@
 		</div>
 
 		<div class="instructions">
+			<b>Tutorials / Dev VLogs:</b>
+			<ul>
+				<li><a href="https://www.youtube.com/watch?v=XlppfGtDcNs" target="_blank">(v1.1) Entity Editor Dev VLog</a></li>
+				<li><a href="https://www.youtube.com/watch?v=IsBZlsk7k_E" target="_blank">(v1.0) Intro Dev VLog</a></li>
+			</ul>
+		</div>
+
+		<div class="instructions">
 			<b>Recent Changes:</b>
 			<ul>
-				<li>Added entity editor.</li>
-				<li>Added previous maps list.</li>
+				<li>(v1.1) Added entity editor.</li>
+				<li>(v1.0) Added previous maps list.</li>
 				<li>Updated editor to be more useable (zooming, brush size, scrolling).</li>
 				<li>Added the ability to export the map.</li>
 				<li>Added the ability to edit the terrain and resources on a map.</li>
@@ -118,6 +128,12 @@
 						<input type="checkbox" checked="checked" id="toggleLayerObjects" onchange="window.updateLayerToggles()">
 						<label for="toggleLayerObjects">
 							Objects
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerEntities" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerEntities">
+							Entities
 						</label>
 					</li>
 				</ul>

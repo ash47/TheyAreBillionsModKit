@@ -142,3 +142,31 @@
 #brushSize, #mapZoom {
 	width: 140px;
 }
+
+.mapEntity {
+	cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+    -webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.mapEntityText {
+	color: #000;
+	background-color: #FFF;
+	border-radius: 4px;
+}
+
+.mapEntity:active {
+	cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.hideEntities .mapEntity {
+	display: none;
+}

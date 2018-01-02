@@ -217,6 +217,82 @@ function updatePixel(mapData, xReverse, y, theNumber) {
 	window.setMapExportUpToDate(false);
 }
 
+function renderEntities() {
+	// Remove past entities
+	$('.mapEntity').remove();
+
+	var entities = window.layerStore.entities;
+	if(entities == null) return;
+
+	var layerTerrain = window.layerStore.LayerTerrain;
+	var width = layerTerrain.width;
+
+	for(var entityType in entities) {
+		var entList = entities[entityType];
+
+		var red = Math.floor(Math.random() * 255);
+		var green = Math.floor(Math.random() * 255);
+		var blue = Math.floor(Math.random() * 255);
+
+		var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
+		var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
+
+		for(var i=0; i<entList.length; ++i) {
+			(function(ent) {
+				var pos = ent.Position;
+				if(pos == null) return;
+
+				var posParts = pos.split(';');
+				var posX = (width - parseInt(posParts[1]) - 1);
+				var posY = parseInt(posParts[0]);
+
+				posX = posX * window.pixelSize;
+				posY = posY * window.pixelSize;
+
+				ent.lastContainer = $('<div>', {
+					class: 'mapEntity',
+					click: function() {
+						window.viewEntityProps(ent);
+					}
+				})
+					.css('width', window.pixelSize + 'px')
+					.css('height', window.pixelSize + 'px')
+					.css('background-color', cssColor)
+					.css('border', '1px solid ' + cssColor2)
+					.css('position', 'absolute')
+					.css('top', posY + 'px')
+					.css('left', posX + 'px')
+					.appendTo($('#mapDisplayHolder'))
+					.append($('<span>', {
+						class: 'mapEntityText',
+						text: entityType.split(',')[0]
+					}))
+
+				// Make it dragable
+				ent.lastContainer.draggable({
+					// Not allowed out of terrain area
+					containment: $('#mapRenderTerrain'),
+					stack: '.mapEntity',
+					stop: function(event, ui) {
+						var xNice = ui.position.left / window.pixelSize;
+						var yNice = ui.position.top / window.pixelSize;
+
+						var x = (width - xNice - 1).toFixed(2);
+						var y = yNice.toFixed(2);
+
+						var mapCoords = y + ';' + x;
+
+						ent.Position = mapCoords;
+
+						// When props are changed
+						window.onPropsChanged(ent);
+					}
+				});
+			})(entList[i]);
+		}
+	}
+}
+
 // Generates a checksum for a string
 function generateChecksum(str) {
 	var buff = new buffer.Buffer(str);
