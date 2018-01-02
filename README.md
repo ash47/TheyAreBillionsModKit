@@ -37,6 +37,8 @@ They following options exist:
  - Instant Build -- Makes buildings build almost instantly
 
 ### Cheats
+ - Set your computer's hostname to `JESUSMAC`, or use the MethodInjector to enable dev mode.
+ - You can set your hostname by right clicking on "This PC" (or "My Computer"), Selecting "Advanced System Settings", select the "Computer Name" tab, select the "Change..." option, and change the "Computer Name" field.
  - Enable cheats by pressing `control` + `shift` + `H`
 
 |  Hotkey	| Result                            	|
@@ -51,6 +53,7 @@ They following options exist:
 | F9		| Activate Cinematic Mode				|
 | ALT + F12	| Instant Victory						|
 | CTR + P	| ???									|
+| CTR + W	| Spawn Wall							|
 
 ## Data Editors
  - Currently only `ZXRules.dat` can be edited.
