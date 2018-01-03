@@ -406,7 +406,7 @@ $(document).ready(function() {
 		loadLevelEvents();
 
 		// Update the entity display
-		updateEntityMenu();
+		window.updateEntityMenu();
 
 		// Perform a full re-render of the map
 		mapFullRender();
@@ -432,6 +432,8 @@ $(document).ready(function() {
 
 		var outerChildrenAreChecked = true;
 
+		var shouldExpand0 = false;
+
 		var entityData = [];
 		for(var entityName in entities) {
 			var myEntities = entities[entityName];
@@ -440,9 +442,19 @@ $(document).ready(function() {
 			// Used for if we should check this node
 			var childrenAreChecked = true;
 
+			// should we expand the node?
+			var shouldExpand1 = false;
+
 			// Add all the subnodes
 			for(var i=0; i<myEntities.length; ++i) {
 				var myEntity = myEntities[i];
+
+				var shouldExpand2 = false;
+				if(myEntity.isActive) {
+					shouldExpand0 = true;
+					shouldExpand1 = true;
+					shouldExpand2 = true;
+				}
 
 				if(myEntity.shouldHide) {
 					childrenAreChecked = false;
@@ -454,7 +466,8 @@ $(document).ready(function() {
 				thisEntityList.push({
 					text: displayText,
 					state: {
-						checked: (myEntity.shouldHide) ? false : true
+						checked: (myEntity.shouldHide) ? false : true,
+						selected: shouldExpand2
 					},
 					entityReference: {
 						entityName: entityName,
@@ -487,7 +500,8 @@ $(document).ready(function() {
 					selectable: false,
 					nodes: thisEntityList,
 					state: {
-						checked: childrenAreChecked
+						checked: childrenAreChecked,
+						expanded: shouldExpand1
 					}
 				});
 			}
@@ -512,12 +526,13 @@ $(document).ready(function() {
 			selectable: false,
 			nodes: entityData,
 			state: {
-				checked: outerChildrenAreChecked
+				checked: outerChildrenAreChecked,
+				expanded: shouldExpand0
 			}
 		};
 	}
 
-	function updateEntityMenu() {
+	window.updateEntityMenu = function() {
 		var theNodeTree = [];
 
 		// Generate the entities subMenu
@@ -649,8 +664,10 @@ $(document).ready(function() {
 						// Shouldn't show
 						ent.shouldHide = true;
 
-						// Hide the entity
-						mapEnt.hide();
+						if(mapEnt != null) {
+							// Hide the entity
+							mapEnt.hide();
+						}
 					}
 
 					// Check the sort
@@ -704,24 +721,90 @@ $(document).ready(function() {
 
 	// Clones an entity
 	window.cloneEntity = function() {
-		if(window.viewEntityActive == null) {
-			alertify.error('Please select an entity to clone');
+		var toClone = window.viewEntityActive;
+
+		if(toClone == null) {
+			alertify.error('Please select an entity to clone.');
 			return;
 		}
 
 		var newEnt = {};
-		for(var key in window.viewEntityActive) {
-			if(hiddenFields[key]) continue;
+		for(var key in toClone) {
+			if(hiddenFields[key] != null) continue;
 
 			// Copy keys
-			newEnt[key] = window.viewEntityActive[key];
+			newEnt[key] = toClone[key];
 		}
 
 		// Copy the rawXML
-		newEnt.rawXML = window.viewEntityActive.rawXML;
+		newEnt.rawXML = toClone.rawXML;
+
+		// Set the ID to be "cloned"
+		newEnt.ID = toClone.ID + ' (cloned)';
+
+		// Copy props
+		newEnt.__entityType = toClone.__entityType;
+		newEnt.__theStore = toClone.__theStore;
+		newEnt.isActive = false;
+		newEnt.shouldHide = true;
 
 		// Push it into the list of entities
-	}
+		window.viewEntityActive.__theStore.push(newEnt);
+
+		// Rebuild the UI
+		window.updateEntityMenu();
+
+		// Tell the user it was cloned
+		alertify.success('Entity was successfully cloned!');
+	};
+
+	// Asks if the user really wants to delete the entity
+	window.deleteEntityWarning = function() {
+		alertify.confirm('Are you sure you want to delete this entity?', function() {
+			// Actually delete the entity
+			window.deleteEntity();
+		}, function() {
+			// Do nothing
+		});
+	};
+
+	// Actually deletes an entity
+	window.deleteEntity = function() {
+		var toDelete = window.viewEntityActive;
+
+		if(toDelete == null) {
+			alertify.error('Please select an entity to delete.');
+			return;
+		}
+
+		var store = toDelete.__theStore;
+
+		for(var i=0; i<store.length; ++i) {
+			if(store[i] == toDelete) {
+				// Remove the entity
+				store.splice(i, 1);
+
+				// We no longer have an active entity
+				window.viewEntityActive = null;
+
+				// Delete the drag and drop prop
+				if(toDelete.lastContainer != null) {
+					toDelete.lastContainer.remove();
+				}
+
+				// Update the display
+				window.updateEntityMenu();
+
+				// Notify Success
+				alertify.success('Entity was successfully removed.');
+
+				return;
+			}
+		}
+
+		// Alert the error
+		alertify.error('Failed to get a reference to the entity!');
+	};
 
 	window.viewEntityProps = function(props) {
 		// Remove that the old entity is active

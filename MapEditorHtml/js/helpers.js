@@ -270,7 +270,12 @@ function addVisualEnt(ent) {
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
 		click: function() {
-			window.viewEntityProps(ent);
+			// Is this entity active?
+			if(!ent.isActive) {
+				// Nope, view it, and load the menu:
+				window.viewEntityProps(ent);
+				window.updateEntityMenu();
+			}
 		}
 	})
 		.css('width', window.pixelSize + 'px')
@@ -283,7 +288,7 @@ function addVisualEnt(ent) {
 		.appendTo($('#mapDisplayHolder'))
 		.append($('<span>', {
 			class: 'mapEntityText',
-			text: ent.__entityType.split(',')[0]
+			text: (ent.__entityType || 'unknown').split(',')[0]
 		}));
 
 	// Should we hide it?
@@ -540,6 +545,9 @@ function loadLevelEntities(commitUpdate) {
 
 					// Hidden by default
 					thisEntityStore.shouldHide = true;
+
+					// Store a reference to the store
+					thisEntityStore.__theStore = allEntities[entityType];
 				}, true, true);
 
 			// Store all the entities
@@ -705,6 +713,9 @@ function loadLevelEvents(commitUpdate) {
 
 				// Hide it
 				thisEventStore.shouldHide = true;
+
+				// Add a reference to the store
+				thisEventStore.__theStore = allEvents;
 			}
 
 			// Store it
@@ -776,7 +787,8 @@ function loadFastEntities(commitUpdate) {
 								ID: entId,
 								Position: position,
 								shouldHide: true,
-								__entityType: entType
+								__entityType: entType,
+								__theStore: fastEnts[entType]
 							});
 						}, true, true
 					);
