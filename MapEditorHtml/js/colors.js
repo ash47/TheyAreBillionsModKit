@@ -257,5 +257,7 @@ var hiddenFields = {
 	Capacity: true,
 	IDEntity: true,
 	lastContainer: true,
-	isActive: true
+	isActive: true,
+	__entityType: true,
+	shouldHide: true
 };

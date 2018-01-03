@@ -61,6 +61,9 @@ $(document).ready(function() {
 			// Commit updates to entities
 			loadLevelEntities(true);
 
+			// Commit updates to events
+			loadLevelEvents(true);
+
 			// Update our local storage
 			updateLocalStorage();
 
@@ -396,6 +399,12 @@ $(document).ready(function() {
 		// Read main entities chunk
 		loadLevelEntities();
 
+		// Read fast entities
+		loadFastEntities();
+
+		// Read map events
+		loadLevelEvents();
+
 		// Update the entity display
 		updateEntityMenu();
 
@@ -418,28 +427,40 @@ $(document).ready(function() {
 		$('#mainContainer').addClass('mapIsLoaded	');
 	}
 
-	function updateEntityMenu() {
-		var entities = window.layerStore.entities;
+	function generateEntityMenu(entityText, entities) {
 		if(entities == null) return;
+
+		var outerChildrenAreChecked = true;
 
 		var entityData = [];
 		for(var entityName in entities) {
 			var myEntities = entities[entityName];
 			var thisEntityList = [];
 
+			// Used for if we should check this node
+			var childrenAreChecked = true;
+
 			// Add all the subnodes
 			for(var i=0; i<myEntities.length; ++i) {
 				var myEntity = myEntities[i];
 
+				if(myEntity.shouldHide) {
+					childrenAreChecked = false;
+					outerChildrenAreChecked = false;
+				}
+
+				var displayText = myEntity.ID;
+
 				thisEntityList.push({
-					text: myEntity.ID + ' (' + myEntity.Position + ')',
+					text: displayText,
 					state: {
-						checked: true
+						checked: (myEntity.shouldHide) ? false : true
 					},
 					entityReference: {
 						entityName: entityName,
 						entryNumber: i
-					}
+					},
+					__sort: entityText
 				});
 			}
 
@@ -454,15 +475,22 @@ $(document).ready(function() {
 				}
 			});
 
-			// Store it
-			entityData.push({
-				text: entityName,
-				selectable: false,
-				nodes: thisEntityList,
-				state: {
-					checked: true
+			if(entityName == 'addDirect') {
+				// All of these sit directly in the main one
+				for(var i=0; i<thisEntityList.length; ++i) {
+					entityData.push(thisEntityList[i]);
 				}
-			});
+			} else {
+				// Store it
+				entityData.push({
+					text: entityName,
+					selectable: false,
+					nodes: thisEntityList,
+					state: {
+						checked: childrenAreChecked
+					}
+				});
+			}
 		}
 
 		// Sort it alphabetically
@@ -476,97 +504,170 @@ $(document).ready(function() {
 			}
 		});
 
+		// Remove old tree
+		$('#entityTree').empty();
+
+		return {
+			text: entityText,
+			selectable: false,
+			nodes: entityData,
+			state: {
+				checked: outerChildrenAreChecked
+			}
+		};
+	}
+
+	function updateEntityMenu() {
+		var theNodeTree = [];
+
+		// Generate the entities subMenu
+		var treeEnts = generateEntityMenu('Entities', window.layerStore.entities);
+		if(treeEnts != null) theNodeTree.push(treeEnts);
+
+		var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
+		if(treeEnts != null) theNodeTree.push(treeEnts);
+
+		var treeEnts = generateEntityMenu('Events', {
+			addDirect: window.layerStore.events
+		});
+		if(treeEnts != null) theNodeTree.push(treeEnts);
+
+		// Create the tree
 		var theTree = $('#entityTree').treeview({
 			showCheckbox: true,
-			levels: 2,
+			levels: 1,
 			onNodeSelected: function(event, node) {
+				// Check the sort
 				if(node.entityReference != null) {
-					var ref = node.entityReference;
-					window.viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
+					if(node.__sort == 'Entities') {
+						var ref = node.entityReference;
+						window.viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
+					}
+
+					if(node.__sort == 'FastEntities') {
+						var ref = node.entityReference;
+						window.viewEntityProps(window.layerStore.fastEntities[ref.entityName][ref.entryNumber]);
+					}
+
+					if(node.__sort == 'Events') {
+						var ref = node.entityReference;
+						window.viewEntityProps(window.layerStore.events[ref.entryNumber]);
+					}
 				}
 			},
 			onNodeChecked: function(event, node) {
 				// Are there subnodes?
 				if(node.nodes != null) {
-					// Loop over all sub nodes
-					for(var i=0; i<node.nodes.length; ++i) {
-						// Mark as checked
-						var subNode = node.nodes[i];
+					var thei = 0;
+					var theCont = function() {
+						setTimeout(function() {
+							if(thei < node.nodes.length) {
+								// Mark as checked
+								var subNode = node.nodes[thei];
 
-						theTree.treeview('checkNode', [subNode.nodeId]);
-					}
+								theTree.treeview('checkNode', [subNode.nodeId]);
+
+								++thei;
+								theCont();
+							}
+						}, 1);
+					};
+
+					theCont();
 				}
 
 				// Is there an entity we are referencing
 				if(node.entityReference != null) {
-					var ref = node.entityReference;
-					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
-					var mapEnt = ent.lastContainer;
+					if(node.__sort == 'Entities') {
+						// Check the sort
+						var ref = node.entityReference;
+						var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
 
-					// Change the default view
-					ent.shouldHide = false;
+						// Change the default view
+						ent.shouldHide = false;
 
-					// Hide the entity
-					mapEnt.show();
+						// Hide the entity
+						var mapEnt = ent.lastContainer;
+
+						// Does that exist?
+						if(mapEnt == null) {
+							addVisualEnt(ent);
+						} else {
+							mapEnt.show();
+						}
+					}
+
+					if(node.__sort == 'FastEntities') {
+						// Check the sort
+						var ref = node.entityReference;
+						var ent = window.layerStore.fastEntities[ref.entityName][ref.entryNumber];
+
+						// Change the default view
+						ent.shouldHide = false;
+
+						// Hide the entity
+						var mapEnt = ent.lastContainer;
+
+						// Does that exist?
+						if(mapEnt == null) {
+							addVisualEnt(ent);
+						} else {
+							mapEnt.show();
+						}
+					}
 				}
 			},
 			onNodeUnchecked: function(event, node) {
 				// Are there subnodes?
 				if(node.nodes != null) {
-					// Loop over all sub nodes
-					for(var i=0; i<node.nodes.length; ++i) {
-						// Mark as checked
-						var subNode = node.nodes[i];
+					var thei = 0;
+					var theCont = function() {
+						setTimeout(function() {
+							if(thei < node.nodes.length) {
+								// Mark as checked
+								var subNode = node.nodes[thei];
 
-						theTree.treeview('uncheckNode', [subNode.nodeId]);
-					}
+								theTree.treeview('uncheckNode', [subNode.nodeId]);
+
+								++thei;
+								theCont();
+							}
+						}, 1);
+					};
+
+					theCont();
 				}
 
 				// Is there an entity we are referencing
 				if(node.entityReference != null) {
-					var ref = node.entityReference;
-					var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
-					var mapEnt = ent.lastContainer;
+					// Check the sort
+					if(node.__sort == 'Entities') {
+						var ref = node.entityReference;
+						var ent = window.layerStore.entities[ref.entityName][ref.entryNumber];
+						var mapEnt = ent.lastContainer;
 
-					// Shouldn't show
-					ent.shouldHide = true;
+						// Shouldn't show
+						ent.shouldHide = true;
 
-					// Hide the entity
-					mapEnt.hide();
-				}
-			},
-			/*onNodeChecked: function(event, node) {
-				console.log('asd');
+						// Hide the entity
+						mapEnt.hide();
+					}
 
-				var sibs = theTree.treeview('getSiblings', node);
-				for(var i=0; i<sibs.length; ++i) {
-					var sib = sibs[i];
+					// Check the sort
+					if(node.__sort == 'FastEntities') {
+						var ref = node.entityReference;
+						var ent = window.layerStore.fastEntities[ref.entityName][ref.entryNumber];
+						var mapEnt = ent.lastContainer;
 
-					console.log('sib');
+						// Shouldn't show
+						ent.shouldHide = true;
 
-					theTree.treeview('uncheckNode', sib);
-				}
-
-				if(node.entityReference != null) {
-					var ref = node.entityReference;
-					
-					var thisEnt = window.layerStore.entities[ref.entityName][ref.entryNumber];
-
-
-
-					alert(1)
-				}
-			},*/
-			data: [
-				{
-					text: 'Entities',
-					selectable: false,
-					nodes: entityData,
-					state: {
-						checked: true
+						// Hide the entity
+						mapEnt.hide();
 					}
 				}
-			]
+			},
+			data: theNodeTree
 		});
 	}
 
@@ -599,6 +700,27 @@ $(document).ready(function() {
 			// Redo
 			window.viewEntityProps(window.viewEntityActive);
 		}
+	}
+
+	// Clones an entity
+	window.cloneEntity = function() {
+		if(window.viewEntityActive == null) {
+			alertify.error('Please select an entity to clone');
+			return;
+		}
+
+		var newEnt = {};
+		for(var key in window.viewEntityActive) {
+			if(hiddenFields[key]) continue;
+
+			// Copy keys
+			newEnt[key] = window.viewEntityActive[key];
+		}
+
+		// Copy the rawXML
+		newEnt.rawXML = window.viewEntityActive.rawXML;
+
+		// Push it into the list of entities
 	}
 
 	window.viewEntityProps = function(props) {

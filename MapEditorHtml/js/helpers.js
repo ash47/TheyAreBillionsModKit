@@ -224,83 +224,98 @@ function renderEntities() {
 	var entities = window.layerStore.entities;
 	if(entities == null) return;
 
-	var layerTerrain = window.layerStore.LayerTerrain;
-	var width = layerTerrain.width;
-
 	for(var entityType in entities) {
 		var entList = entities[entityType];
 
-		var red = Math.floor(Math.random() * 255);
-		var green = Math.floor(Math.random() * 255);
-		var blue = Math.floor(Math.random() * 255);
-
-		var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
-		var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
-
 		for(var i=0; i<entList.length; ++i) {
-			(function(ent) {
-				var pos = ent.Position;
-				if(pos == null) return;
+			var theEnt = entList[i];
 
-				var posParts = pos.split(';');
-				var posX = (width - parseInt(posParts[1]) - 1);
-				var posY = parseInt(posParts[0]);
+			// Last entity is null
+			theEnt.lastContainer = null;
 
-				posX = posX * window.pixelSize;
-				posY = posY * window.pixelSize;
-
-				ent.lastContainer = $('<div>', {
-					class: 'mapEntity',
-					click: function() {
-						window.viewEntityProps(ent);
-					}
-				})
-					.css('width', window.pixelSize + 'px')
-					.css('height', window.pixelSize + 'px')
-					.css('background-color', cssColor)
-					.css('border', '1px solid ' + cssColor2)
-					.css('position', 'absolute')
-					.css('top', posY + 'px')
-					.css('left', posX + 'px')
-					.appendTo($('#mapDisplayHolder'))
-					.append($('<span>', {
-						class: 'mapEntityText',
-						text: entityType.split(',')[0]
-					}));
-
-				// Should we hide it?
-				if(ent.shouldHide) {
-					ent.lastContainer.hide();
-				}
-
-				// Are we active?
-				if(ent.isActive) {
-					ent.lastContainer.addClass('entityIsSelected');
-				}
-
-				// Make it dragable
-				ent.lastContainer.draggable({
-					// Not allowed out of terrain area
-					containment: $('#mapRenderTerrain'),
-					stack: '.mapEntity',
-					stop: function(event, ui) {
-						var xNice = ui.position.left / window.pixelSize;
-						var yNice = ui.position.top / window.pixelSize;
-
-						var x = (width - xNice - 1).toFixed(2);
-						var y = yNice.toFixed(2);
-
-						var mapCoords = y + ';' + x;
-
-						ent.Position = mapCoords;
-
-						// When props are changed
-						window.onPropsChanged(ent);
-					}
-				});
-			})(entList[i]);
+			// Should we draw it?
+			if(!theEnt.shouldHide) {
+				// Add the visual ent
+				addVisualEnt(entList[i]);
+			}
 		}
 	}
+}
+
+function addVisualEnt(ent) {
+	var pos = ent.Position;
+	if(pos == null) return;
+
+	var width = window.layerStore.LayerTerrain.width;
+
+	var posParts = pos.split(';');
+	var posX = (width - parseInt(posParts[1]) - 1);
+	var posY = parseInt(posParts[0]);
+
+	posX = posX * window.pixelSize;
+	posY = posY * window.pixelSize;
+
+	// Remove it if it already exist
+	if(ent.lastContainer != null) {
+		ent.lastContainer.remove();
+	}
+
+	var red = Math.floor(Math.random() * 255);
+	var green = Math.floor(Math.random() * 255);
+	var blue = Math.floor(Math.random() * 255);
+
+	var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
+	var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
+
+	ent.lastContainer = $('<div>', {
+		class: 'mapEntity',
+		click: function() {
+			window.viewEntityProps(ent);
+		}
+	})
+		.css('width', window.pixelSize + 'px')
+		.css('height', window.pixelSize + 'px')
+		.css('background-color', cssColor)
+		.css('border', '1px solid ' + cssColor2)
+		.css('position', 'absolute')
+		.css('top', posY + 'px')
+		.css('left', posX + 'px')
+		.appendTo($('#mapDisplayHolder'))
+		.append($('<span>', {
+			class: 'mapEntityText',
+			text: ent.__entityType.split(',')[0]
+		}));
+
+	// Should we hide it?
+	if(ent.shouldHide) {
+		ent.lastContainer.hide();
+	}
+
+	// Are we active?
+	if(ent.isActive) {
+		ent.lastContainer.addClass('entityIsSelected');
+	}
+
+	// Make it dragable
+	ent.lastContainer.draggable({
+		// Not allowed out of terrain area
+		containment: $('#mapRenderTerrain'),
+		stack: '.mapEntity',
+		stop: function(event, ui) {
+			var xNice = ui.position.left / window.pixelSize;
+			var yNice = ui.position.top / window.pixelSize;
+
+			var x = (width - xNice - 1).toFixed(2);
+			var y = yNice.toFixed(2);
+
+			var mapCoords = y + ';' + x;
+
+			ent.Position = mapCoords;
+
+			// When props are changed
+			window.onPropsChanged(ent);
+		}
+	});
 }
 
 // Generates a checksum for a string
@@ -519,12 +534,260 @@ function loadLevelEntities(commitUpdate) {
 
 					// Add raw xml
 					thisEntityStore.rawXML = thisItemData;
+
+					// Store the entity type
+					thisEntityStore.__entityType = entityType;
+
+					// Hidden by default
+					thisEntityStore.shouldHide = true;
 				}, true, true);
 
 			// Store all the entities
 			window.layerStore.entities = allEntities;
 		}, false, true
 	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
+}
+
+function loadLevelEvents(commitUpdate) {
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Collection name="LevelEvents" elementType="ZX.GameSystems.ZXLevelEvent, TheyAreBillions">',
+		'</Collection>', function(theData) {
+			if(commitUpdate) {
+				var events = window.layerStore.events || [];
+
+				var theOutput = '';
+				theOutput += '<Collection name="LevelEvents" elementType="ZX.GameSystems.ZXLevelEvent, TheyAreBillions">\n';
+				theOutput += '<Properties>\n';
+				theOutput += '<Simple name="Capacity" value="' + events.length + '" />\n';
+				theOutput += '</Properties>\n';
+				theOutput += '<Items>\n';
+
+				var entProp = function(ent, prop) {
+					if(ent[prop] == null || ent[prop] == '') {
+						return '<Null name="' + prop + '" />\n';
+					} else {
+						return '<Simple name="' + prop + '" value="' + ent[prop] + '" />\n';
+					}
+				};
+
+				for(var i=0; i<events.length; ++i) {
+					var event = events[i]
+
+					theOutput += '<Complex>\n';
+					theOutput += '<Properties>\n';
+
+					theOutput += entProp(event, 'CurrentIDGenerators');
+					theOutput += entProp(event, 'Created');
+
+					theOutput += '<Complex name="Random">\n';
+					theOutput += '<Properties>\n';
+					theOutput += entProp(event, 'Mt');
+					theOutput += '</Properties>\n';
+					theOutput += '</Complex>\n';
+
+					theOutput += entProp(event, 'NTimesTriggered');
+					theOutput += entProp(event, 'StartTimeH');
+					theOutput += entProp(event, 'GameTimeH');
+					theOutput += entProp(event, 'RepeatTimeH');
+					theOutput += entProp(event, 'GameTimeRandomOffsetH');
+					theOutput += entProp(event, 'StartNotifyTimeH');
+					theOutput += entProp(event, 'TimeToNotifyInAdvanceH');
+					theOutput += entProp(event, 'NTimesNotified');
+					theOutput += entProp(event, 'Repeteable');
+					theOutput += '<Simple name="ID" value="' + (i+1) + '" />\n';
+					theOutput += entProp(event, 'LevelName');
+					theOutput += entProp(event, 'MaxRepetitions');
+					theOutput += entProp(event, 'Message');
+					theOutput += entProp(event, 'FinalSwarm');
+					theOutput += entProp(event, 'FactorUnitsNumberPerRepetition');
+					theOutput += entProp(event, 'MaxFactorUnitsNumberPerRepetition');
+					theOutput += entProp(event, 'AutoNotifyPlayer');
+					theOutput += entProp(event, 'ShowCountdown');
+					theOutput += entProp(event, 'ShowMiniMapIndicator');
+					theOutput += entProp(event, 'GameOver');
+					theOutput += entProp(event, 'GameWon');
+					theOutput += entProp(event, 'Generators');
+					theOutput += entProp(event, 'AttackCommandCenter');
+					theOutput += entProp(event, 'AllInfectedToCommandCenter');
+					theOutput += entProp(event, 'MaxCellDispersionGeneration');
+					theOutput += entProp(event, 'EntityType1');
+					theOutput += entProp(event, 'EntityType2');
+					theOutput += entProp(event, 'EntityType3');
+					theOutput += entProp(event, 'EntityType4');
+					theOutput += entProp(event, 'EntityType5');
+					theOutput += entProp(event, 'EntityType6');
+					theOutput += entProp(event, 'EntityType7');
+					theOutput += entProp(event, 'EntityType8');
+					theOutput += entProp(event, 'EntityType9');
+					theOutput += entProp(event, 'EntityType10');
+					theOutput += entProp(event, 'Music');
+
+					theOutput += '</Properties>\n'
+					theOutput += '</Complex>\n';
+				}
+				
+
+				theOutput += '</Items>\n';
+				theOutput += '</Collection>\n';
+
+				return theOutput;
+			}
+
+			var possibleEvents = theData.split('<Complex>');
+
+			// First one has no events in it
+
+			var allEvents = [];
+
+			for(var i=1; i<possibleEvents.length; ++i) {
+				var possibleEvent = possibleEvents[i];
+
+				var thisEventStore = {
+					CurrentIDGenerators: '',
+					Created: '',
+					Mt: '',
+					NTimesTriggered: '',
+					StartTimeH: '',
+					GameTimeH: '',
+					RepeatTimeH: '',
+					GameTimeRandomOffsetH: '',
+					StartNotifyTimeH: '',
+					TimeToNotifyInAdvanceH: '',
+					NTimesNotified: '',
+					Repeteable: '',
+					LevelName: '',
+					MaxRepetitions: '',
+					Message: '',
+					FinalSwarm: '',
+					FactorUnitsNumberPerRepetition: '',
+					MaxFactorUnitsNumberPerRepetition: '',
+					AutoNotifyPlayer: '',
+					ShowCountdown: '',
+					ShowMiniMapIndicator: '',
+					GameOver: '',
+					GameWon: '',
+					Generators: '',
+					AttackCommandCenter: '',
+					AllInfectedToCommandCenter: '',
+					MaxCellDispersionGeneration: '',
+					EntityType1: '',
+					EntityType2: '',
+					EntityType3: '',
+					EntityType4: '',
+					EntityType5: '',
+					EntityType6: '',
+					EntityType7: '',
+					EntityType8: '',
+					EntityType9: '',
+					EntityType10: '',
+					Music: ''
+				};
+				allEvents.push(thisEventStore);
+
+				var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+				var theMatch;
+				while((theMatch = propertyExtractor.exec(possibleEvent)) != null) {
+					if(theMatch.length < 3) continue;
+
+					// Grab stuff
+					var propertyName = theMatch[1];
+					var propertyValue = theMatch[2];
+
+					// Store it
+					thisEventStore[propertyName] = propertyValue;
+				}
+
+				// Hide it
+				thisEventStore.shouldHide = true;
+			}
+
+			// Store it
+			window.layerStore.events = allEvents;
+		}, false, true);
+
+	if(commitUpdate && res != null) {
+		window.activeMap.Data = res;
+	}
+}
+
+function loadExtraEntities(commitUpdate) {
+	/*var res = loadSection(
+		window.activeMap.Data,
+		'<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">',
+		/<\/Collection>[\n\r ]*<Complex name="Random">/
+	);
+
+	// Do an update if we need to
+	if(commitUpdate && res != null) {
+		window.activeMap.Data = res;
+	}
+
+	// 
+
+
+
+	// */
+
+}
+
+function loadFastEntities(commitUpdate) {
+	return;
+
+	var fastEnts = {};
+
+	// Find the part we need to edit
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Dictionary name="LevelFastSerializedEntities" keyType="System.UInt64, mscorlib" valueType="System.Collections.Generic.List`1[[DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision]], mscorlib">',
+		'</Dictionary>',
+		function(theData) {
+			if(commitUpdate) {
+				// TODO: Commit the update
+
+			}
+
+			// We need to break this into individual entities
+			loadSection(
+				theData,
+				'<Item>',
+				'</Item>',
+				function(theData2) {
+					var entType = (/<Simple value="([^"]*)" \/>/.exec(theData2) || [])[1] || 'Unknown';
+
+					// Ensure we have a store for this kind of entity
+					fastEnts[entType] = fastEnts[entType] || [];
+
+					loadSection(
+						theData2,
+						'<Complex>',
+						'</Complex>',
+						function(possibleFastEnt) {
+							var entId = (/<Simple name="A" value="([^"]*)" \/>/.exec(possibleFastEnt) || [])[1] || 'Unknown';
+							var position = (/<Simple name="B" value="([^"]*)" \/>/.exec(possibleFastEnt) || [])[1] || 'Unknown';
+
+							// Push it in
+							fastEnts[entType].push({
+								ID: entId,
+								Position: position,
+								shouldHide: true,
+								__entityType: entType
+							});
+						}, true, true
+					);
+				}, true, true
+			);
+			
+		}, false, true
+	);
+
+	// Store them
+	window.layerStore.fastEntities = fastEnts;
 
 	if(commitUpdate && res != null) {
 		// Update the res
