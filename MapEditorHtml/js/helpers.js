@@ -430,6 +430,88 @@ function updateLayerSer() {
 	}
 }
 
+function extractOrReplaceMapProp(theData, propName, storage, commitUpdate) {
+	var regex = new RegExp('<Simple name="' + propName + '" value="([^"]*)" \\/>', 'g');
+
+	if(commitUpdate) {
+		if(storage[propName] != null) {
+			theData = theData.replace(regex, '<Simple name="' + propName + '" value="' + storage[propName] + '" />');
+		}
+	} else {
+		// Find and store the match
+		var theMatch = (regex.exec(theData) || [])[1] || '';
+
+		storage[propName] = theMatch;
+	}
+
+	return theData;
+}
+
+// Allows map props to be loaded / edited
+function loadMapProps(commitUpdate) {
+	// Grab useful stuff
+	var theData = window.activeMap.Data;
+	var storage = window.layerStore.MapProps || {};
+	window.layerStore.MapProps = storage;
+
+	// Extract / commit the data
+	var toExtract = [
+		'ShowFullMap',
+		'FoodReserved',
+		'WorkersReserved',
+		'EnergyReserved',
+		'WoodProductionReserved',
+		'StoneProductionReserved',
+		'IronProductionReserved',
+		'OilProductionReserved',
+		'NTurnsWithNegativeGold',
+		'NTurnsWithNegativeFood',
+		'ArmyGoldCost',
+		'ArmyFoodPenaltyCost',
+		'StructuresGoldCost',
+		'TotalGoldPerColonists',
+		'NMarkets',
+		'MaxGoldByExportingExcedents',
+		'Wood',
+		'Stone',
+		'Iron',
+		'Oil',
+		'Gold',
+		'WoodProduction',
+		'GoldProduction',
+		'IronProduction',
+		'StoneProduction',
+		'OilProduction',
+		'NZombiesDead',
+		'NSoldiersDead',
+		'NColonistsDead',
+		'MaxColonists',
+		'NColonistsInfected',
+		'GameTime',
+		'LastGameTimeIAUpdate',
+		'Date',
+		'Physics_TimeLastBodyPosition',
+		'Physics_TimeBodyPosition',
+		'Physics_FactorTimeForInterpolation',
+		'Physics_LastTimeUpdatePhysics',
+		'Seed',
+		'ThemeType',
+		'FactorGameDuration',
+		'FactorZombiePopulation',
+		'DifficultyType',
+		'Difficulty'
+	];
+
+	for(var i=0; i<toExtract.length; ++i) {
+		theData = extractOrReplaceMapProp(theData, toExtract[i], storage, commitUpdate);
+	}
+	
+	// Do we commit?
+	if(commitUpdate) {
+		window.activeMap.Data = theData;
+	}
+};
+
 // Allows entities in the level to be edited
 function loadLevelEntities(commitUpdate) {
 	// Find the part we need to edit

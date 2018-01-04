@@ -72,6 +72,9 @@ $(document).ready(function() {
 			// Commit updates to events
 			loadLevelEvents(true);
 
+			// Commit updates to map props
+			loadMapProps(true);
+
 			// Update our local storage
 			updateLocalStorage();
 
@@ -551,6 +554,9 @@ $(document).ready(function() {
 		// Read map events
 		loadLevelEvents();
 
+		// Load map props
+		loadMapProps();
+
 		// Update the entity display
 		window.updateEntityMenu();
 
@@ -716,6 +722,14 @@ $(document).ready(function() {
 		});
 		if(treeEnts != null) theNodeTree.push(treeEnts);
 
+		// Add entity editor
+		theNodeTree.push({
+			text: 'Map Properties',
+			selectable: true,
+			entityReference: {},
+			__sort: 'MapProps'
+		});
+
 		// Create the tree
 		var theTree = $('#entityTree').treeview({
 			showCheckbox: true,
@@ -756,6 +770,10 @@ $(document).ready(function() {
 					if(node.__sort == 'Events') {
 						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.events[ref.entryNumber]);
+					}
+					
+					if(node.__sort == 'MapProps') {
+						window.viewEntityProps(window.layerStore.MapProps);	
 					}
 				}
 			},
