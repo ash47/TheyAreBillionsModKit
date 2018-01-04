@@ -89,3 +89,16 @@ They following options exist:
    - PayResources
    		- Remove / Change logic
 
+
+## CurrentCommandCenterCell
+ - Where do you want your energy to come from?
+
+## Camera position?
+ - <Simple name="LevelCameraArea" type="System.Drawing.RectangleF, System.Drawing" value="116.1768;118.3912;24;13.5" />
+
+## Mayor States?
+ - <Collection name="MayorStates" elementType="ZX.ZXLevelState+MayorState, TheyAreBillions">
+
+## Scenery?
+ - <Collection name="LevelPersistentSceneObjects" elementType="ZX.OSalvableObject, TheyAreBillions">
+

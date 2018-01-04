@@ -262,3 +262,14 @@ var hiddenFields = {
 	shouldHide: true,
 	__theStore: true
 };
+
+var enum_toolPaint = 1;
+var enum_toolSelection = 2;
+
+var enum_brushSingle = 1;
+var enum_brushLine = 2;
+
+
+// History stuff
+historyItemDrawPixel = 1;
+

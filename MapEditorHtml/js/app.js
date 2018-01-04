@@ -24,7 +24,15 @@ $(document).ready(function() {
 	var isMouseDown = false;
 
 	var activeLayer = null;
-	var activeToolNumber = 0;
+
+	// Which primary tool is currently activated
+	var activePrimaryTool = 0;
+
+	// Which brush is currently selected
+	var activeBrush = 0;
+
+	// Which color is currently active
+	var activeToolColor = 0;
 
 	window.brushSize = 1;
 
@@ -158,72 +166,122 @@ $(document).ready(function() {
 	};
 
 	// Updates which tool is selected
-	window.setTool = function(toolName) {
-		// Deactivate all old tools buttons
-		$('.btnSelectTool')
-			.removeClass('btn-success')
-			.addClass('btn-primary');
+	window.setTool = function(toolSort, toolName) {
+		if(toolSort == 'primaryTool') {
+			$('.btnSelectTool')
+				.removeClass('btn-success')
+				.addClass('btn-primary');
 
-		$('#btn_' + toolName)
-			.removeClass('btn-primary')
-			.addClass('btn-success');
+			$('#btn_' + toolName)
+				.removeClass('btn-primary')
+				.addClass('btn-success');
 
-		switch(toolName) {
-			case 'toolTerrainEarth':
-				activeLayer = window.layerStore.LayerTerrain;
-				activeToolNumber = 0;
-			break;
+			// Remove classes
+			$('#mainContainer').removeClass('paintToolActivated');
+			$('#mainContainer').removeClass('selectionToolActivated');
 
-			case 'toolTerrainWater':
-				activeLayer = window.layerStore.LayerTerrain;
-				activeToolNumber = 1;
-			break;
+			switch(toolName) {
+				case 'setToolMapPainter':
+					activePrimaryTool = enum_toolPaint;
+					$('#mainContainer').addClass('paintToolActivated');
+				break;
 
-			case 'toolTerrainGrass':
-				activeLayer = window.layerStore.LayerTerrain;
-				activeToolNumber = 2;
-			break;
-
-			case 'toolTerrainSky':
-				activeLayer = window.layerStore.LayerTerrain;
-				activeToolNumber = 3;
-			break;
-
-			case 'toolTerrainAbyse':
-				activeLayer = window.layerStore.LayerTerrain;
-				activeToolNumber = 4;
-			break;
-
-			case 'toolObjectNone':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 0;
-			break;
-
-			case 'toolObjectMountain':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 1;
-			break;
-
-			case 'toolObjectWood':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 2;
-			break;
-
-			case 'toolObjectGold':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 3;
-			break;
-
-			case 'toolObjectStone':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 4;
-			break;
-
-			case 'toolObjectIron':
-				activeLayer = window.layerStore.LayerObjects;
-				activeToolNumber = 5;
-			break;
+				case 'setToolSelection':
+					activePrimaryTool = enum_toolSelection;
+					$('#mainContainer').addClass('selectionToolActivated');
+				break;
+			}
 		}
+
+		if(toolSort == 'brushType') {
+			$('.btnSelectPaintType')
+				.removeClass('btn-success')
+				.addClass('btn-primary');
+
+			$('#btn_' + toolName)
+				.removeClass('btn-primary')
+				.addClass('btn-success');
+
+			switch(toolName) {
+				case 'setToolMapPainterSingle':
+					activeBrush = enum_brushSingle;
+				break;
+
+				case 'setToolMapPainterLine':
+					activeBrush = enum_brushLine;
+				break;
+			}
+		}
+
+		if(toolSort == 'brushColor') {
+			// Deactivate all old tools buttons
+			$('.btnSelectToolColor')
+				.removeClass('btn-success')
+				.addClass('btn-primary');
+
+			$('#btn_' + toolName)
+				.removeClass('btn-primary')
+				.addClass('btn-success');
+
+			switch(toolName) {
+				case 'toolTerrainEarth':
+					activeLayer = window.layerStore.LayerTerrain;
+					activeToolColor = 0;
+				break;
+
+				case 'toolTerrainWater':
+					activeLayer = window.layerStore.LayerTerrain;
+					activeToolColor = 1;
+				break;
+
+				case 'toolTerrainGrass':
+					activeLayer = window.layerStore.LayerTerrain;
+					activeToolColor = 2;
+				break;
+
+				case 'toolTerrainSky':
+					activeLayer = window.layerStore.LayerTerrain;
+					activeToolColor = 3;
+				break;
+
+				case 'toolTerrainAbyse':
+					activeLayer = window.layerStore.LayerTerrain;
+					activeToolColor = 4;
+				break;
+
+				case 'toolObjectNone':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 0;
+				break;
+
+				case 'toolObjectMountain':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 1;
+				break;
+
+				case 'toolObjectWood':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 2;
+				break;
+
+				case 'toolObjectGold':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 3;
+				break;
+
+				case 'toolObjectStone':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 4;
+				break;
+
+				case 'toolObjectIron':
+					activeLayer = window.layerStore.LayerObjects;
+					activeToolColor = 5;
+				break;
+			}
+		}
+
+		
 
 		// Update the preview
 		updateMousePreview(true);
@@ -309,6 +367,9 @@ $(document).ready(function() {
 	var prevX = null;
 	var prevY = null;
 
+	var startX = null;
+	var startY = null;
+
 	$('#helperLayer').mousedown(function(e) {
 		// Grab offset
 		var offset = $(this).offset();
@@ -324,11 +385,59 @@ $(document).ready(function() {
   		prevX = mouseX;
   		prevY = mouseY;
 
-  		// Run the callback
-		clickPixel(mouseX, mouseY);
+  		// Store the starting position
+  		startX = prevX;
+  		startY = prevY;
+
+  		if(activePrimaryTool == enum_toolPaint) {
+  			if(activeBrush == enum_brushSingle) {
+  				// Run the callback
+				clickPixel(mouseX, mouseY);
+  			}
+  		}
 	}).mouseup(function(e) {
 		// Mouse is no longer down
 		isMouseDown = false;
+
+		// Line tool?
+		if(activePrimaryTool == enum_toolPaint) {
+			// Brush tool
+		  	if(activeBrush == enum_brushLine) {
+		  		// Clear the helper canvas
+		  		var ctx = helperCanvas.getContext('2d');
+		  		ctx.clearRect(0, 0, helperCanvas.width, helperCanvas.height);
+
+		  		// Grab offset
+				var offset = $(this).offset();
+
+				// Calculate mouseX
+				var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
+		  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+
+		  		// Calculate the max number of pixels the mouse travelled
+		  		var xDist = mouseX - startX;
+		  		var yDist = mouseY - startY;
+
+		  		var dist = Math.max(
+		  			Math.abs(xDist),
+		  			Math.abs(yDist)
+		  		);
+
+		  		var width = window.layerStore.LayerTerrain.width;
+
+		  		// Render a line
+		  		for(var i=0; i<=dist; ++i) {
+		  			var renderPixelAtX = Math.round(startX + i/dist * xDist);
+		  			var renderPixelAtY = Math.round(startY + i/dist * yDist);
+
+		  			// Actually click it
+					clickPixel(renderPixelAtX, renderPixelAtY);
+		  		}
+		  	}
+
+		  	// Mark off this history item
+		  	window.closeHistoryStack();
+		}
 	}).mousemove(function(e) {
 		// Grab offset
 		var offset = $(this).offset();
@@ -338,21 +447,57 @@ $(document).ready(function() {
   		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
 
 		if(isMouseDown) {
-			// Run the cll
-	  		clickPixel(mouseX, mouseY);
+			if(activePrimaryTool == enum_toolPaint) {
+				// Single point tool
+				if(activeBrush == enum_brushSingle) {
+					// Run the call
+			  		clickPixel(mouseX, mouseY);
 
-	  		// Calculate the max number of pixels the mouse travelled
-	  		var xDist = mouseX - prevX;
-	  		var yDist = mouseY - prevY;
+			  		// Calculate the max number of pixels the mouse travelled
+			  		var xDist = mouseX - prevX;
+			  		var yDist = mouseY - prevY;
 
-	  		var dist = Math.max(
-	  			Math.abs(xDist),
-	  			Math.abs(yDist)
-	  		);
+			  		var dist = Math.max(
+			  			Math.abs(xDist),
+			  			Math.abs(yDist)
+			  		);
 
-	  		for(var i=1; i<dist; ++i) {
-	  			clickPixel(Math.floor(mouseX - i/dist * xDist), Math.floor(mouseY - i/dist * yDist));
-	  		}
+			  		for(var i=1; i<dist; ++i) {
+			  			clickPixel(Math.round(mouseX - i/dist * xDist), Math.round(mouseY - i/dist * yDist));
+			  		}
+			  	}
+
+			  	// Brush tool
+			  	if(activeBrush == enum_brushLine) {
+			  		// Update the preview
+
+			  		var ctx = helperCanvas.getContext('2d');
+
+			  		// Clear the helper canvas
+			  		ctx.clearRect(0, 0, helperCanvas.width, helperCanvas.height);
+
+			  		// Calculate the max number of pixels the mouse travelled
+			  		var xDist = mouseX - startX;
+			  		var yDist = mouseY - startY;
+
+			  		var dist = Math.max(
+			  			Math.abs(xDist),
+			  			Math.abs(yDist)
+			  		);
+
+			  		var width = window.layerStore.LayerTerrain.width;
+			  		var theColor = activeLayer.colorMap[activeToolColor];
+
+			  		// Render a line
+			  		for(var i=0; i<=dist; ++i) {
+			  			var renderPixelAtX = Math.round(startX + i/dist * xDist);
+			  			var renderPixelAtY = Math.round(startY + i/dist * yDist);
+
+						ctx.fillStyle = getRBG(theColor);
+						ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+			  		}
+			  	}
+			}
 		}
 
   		// Update Previous mouse positions
@@ -374,7 +519,8 @@ $(document).ready(function() {
 
 		for(var xx=0; xx<window.brushSize; ++xx) {
 			for(var yy=0; yy<window.brushSize; ++yy) {
-				updatePixel(activeLayer, x + xx - theOffset, y + yy - theOffset, activeToolNumber);
+				// Update the pixel
+				updatePixel(activeLayer, x + xx - theOffset, y + yy - theOffset, activeToolColor);
 			}
 		}
 	}
@@ -418,7 +564,9 @@ $(document).ready(function() {
 		window.setMapExportUpToDate(false);
 
 		// Update which tool is selected
-		window.setTool('toolTerrainEarth');
+		window.setTool('primaryTool', 'setToolMapPainter');
+		window.setTool('brushType', 'setToolMapPainterSingle');
+		window.setTool('brushColor', 'toolTerrainEarth');
 
 		// We are no longer loading
 		setIsLoading(false);
@@ -427,12 +575,20 @@ $(document).ready(function() {
 		$('#mainContainer').addClass('mapIsLoaded	');
 	}
 
+	var entityExpandedPath = {};
 	function generateEntityMenu(entityText, entities) {
 		if(entities == null) return;
+
+		// Entity Expansion remembering
+		entityExpandedPath[entityText] = entityExpandedPath[entityText] || {};
+		var expandList1 = entityExpandedPath[entityText];
 
 		var outerChildrenAreChecked = true;
 
 		var shouldExpand0 = false;
+		if(expandList1.expanded) {
+			shouldExpand0 = true;
+		}
 
 		var entityData = [];
 		for(var entityName in entities) {
@@ -445,12 +601,22 @@ $(document).ready(function() {
 			// should we expand the node?
 			var shouldExpand1 = false;
 
+			expandList1[entityName] = expandList1[entityName] || {};
+			if(expandList1[entityName].expanded) {
+				shouldExpand1 = true;
+				shouldExpand0 = true;
+			}
+
 			// Add all the subnodes
 			for(var i=0; i<myEntities.length; ++i) {
 				var myEntity = myEntities[i];
 
+				expandList1[entityName][i] = expandList1[entityName][i] || {};
+
 				var shouldExpand2 = false;
-				if(myEntity.isActive) {
+				if(myEntity.isActive || (
+					expandList1[entityName][i].expanded
+				)) {
 					shouldExpand0 = true;
 					shouldExpand1 = true;
 					shouldExpand2 = true;
@@ -473,6 +639,7 @@ $(document).ready(function() {
 						entityName: entityName,
 						entryNumber: i
 					},
+					path: [entityText, entityName, i],
 					__sort: entityText
 				});
 			}
@@ -502,7 +669,8 @@ $(document).ready(function() {
 					state: {
 						checked: childrenAreChecked,
 						expanded: shouldExpand1
-					}
+					},
+					path: [entityText, entityName]
 				});
 			}
 		}
@@ -528,7 +696,8 @@ $(document).ready(function() {
 			state: {
 				checked: outerChildrenAreChecked,
 				expanded: shouldExpand0
-			}
+			},
+			path: [entityText]
 		};
 	}
 
@@ -551,6 +720,26 @@ $(document).ready(function() {
 		var theTree = $('#entityTree').treeview({
 			showCheckbox: true,
 			levels: 1,
+			onNodeExpanded: function(event, node) {
+				if(node.path) {
+					var toSearch = entityExpandedPath;
+					node.path.map(function(a) {
+						toSearch = toSearch[a] || {};
+					});
+
+					toSearch.expanded = true;
+				}
+			},
+			onNodeCollapsed: function(event, node) {
+				if(node.path) {
+					var toSearch = entityExpandedPath;
+					node.path.map(function(a) {
+						toSearch = toSearch[a] || {};
+					});
+
+					toSearch.expanded = false;
+				}
+			},
 			onNodeSelected: function(event, node) {
 				// Check the sort
 				if(node.entityReference != null) {
@@ -760,6 +949,13 @@ $(document).ready(function() {
 
 	// Asks if the user really wants to delete the entity
 	window.deleteEntityWarning = function() {
+		var toDelete = window.viewEntityActive;
+
+		if(toDelete == null) {
+			alertify.error('Please select an entity to delete.');
+			return;
+		}
+
 		alertify.confirm('Are you sure you want to delete this entity?', function() {
 			// Actually delete the entity
 			window.deleteEntity();
@@ -1027,6 +1223,100 @@ $(document).ready(function() {
 	//ctx.fillStyle = 'green';
 	//ctx.fillRect(10, 10, 100, 100);
 
+	window.loadTemplateSave = function(fileName) {
+		// Set that it is loading
+		setIsLoading(true);
+
+		// Load it, and do it
+		/*$.get('../TemplateMaps/' + fileName + '.zxsav', function(data) {
+			console.log(data.length);
+			loadDataFromFile(data);
+		})*/
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '../TemplateMaps/' + fileName + '.zxsav', true);
+		xhr.responseType = 'blob';
+		 
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// get binary data as a response
+				var blob = this.response;
+
+				loadDataFromFile(blob);
+			}
+		};
+
+		xhr.onerror = function() {
+			// Tell them about the error
+			alertify.error('Failed to load template.');
+
+			// We are no longer loading
+			setIsLoading(false);
+		}
+		 
+		xhr.send();
+	}
+
+	// Closure to capture the file information.
+    function loadDataFromFile(f) {
+        /*var $title = $("<h4>", {
+            text : f.name
+        });
+
+        var $fileContent = $("<ul>");
+        $result.append($title);
+        $result.append($fileContent);
+
+        var dateBefore = new Date();*/
+
+        setIsLoading(true);
+
+        JSZip.loadAsync(f)                                   // 1) read the Blob
+        .then(function(zip) {
+            //var dateAfter = new Date();
+            /*$title.append($("<span>", {
+                "class": "small",
+                text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
+            }));*/
+
+            var fileData = zip.file('Data');
+            var fileInfo = zip.file('Info');
+            if(fileData == null || fileInfo == null) {
+            	setIsLoading(false);
+            	alertify.error('This does not appear to be a valid "They Are Billions" save file. It is missing "Data" or "Info".');
+            	return;
+            }
+
+            // Stores info about the map that is currently loaded
+			window.activeMap = {
+				name: f.name
+			};
+
+            fileData.async('string').then(function(data) {
+            	// Store the Data
+				window.activeMap.Data = data;
+
+				// Load the map
+				loadMap();
+			});
+
+			fileInfo.async('string').then(function(data) {
+				// Store the Data
+				window.activeMap.Info = data;
+
+				// Load the map
+				loadMap();
+			})
+        }, function (e) {
+        	alertify.error('Error loading zip file! ' + f.name + ' - ' + e.message);
+        	setIsLoading(false);
+            /*$result.append($("<div>", {
+                "class" : "alert alert-danger",
+                text : "Error reading " + f.name + ": " + e.message
+            }));*/
+        });
+    }
+
 	$("#file").on("change", function(evt) {
 		var files = evt.target.files;
 		if(files.length != 1) {
@@ -1034,66 +1324,157 @@ $(document).ready(function() {
 			return;
 		}
 
-	    // Closure to capture the file information.
-	    function handleFile(f) {
-	        /*var $title = $("<h4>", {
-	            text : f.name
-	        });
-
-	        var $fileContent = $("<ul>");
-	        $result.append($title);
-	        $result.append($fileContent);
-
-	        var dateBefore = new Date();*/
-
-	        setIsLoading(true);
-
-	        JSZip.loadAsync(f)                                   // 1) read the Blob
-	        .then(function(zip) {
-	            //var dateAfter = new Date();
-	            /*$title.append($("<span>", {
-	                "class": "small",
-	                text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
-	            }));*/
-
-	            var fileData = zip.file('Data');
-	            var fileInfo = zip.file('Info');
-	            if(fileData == null || fileInfo == null) {
-	            	setIsLoading(false);
-	            	alertify.error('This does not appear to be a valid "They Are Billions" save file. It is missing "Data" or "Info".');
-	            	return;
-	            }
-
-	            // Stores info about the map that is currently loaded
-				window.activeMap = {
-					name: f.name
-				};
-
-	            fileData.async('string').then(function(data) {
-	            	// Store the Data
-					window.activeMap.Data = data;
-
-					// Load the map
-					loadMap();
-				});
-
-				fileInfo.async('string').then(function(data) {
-					// Store the Data
-					window.activeMap.Info = data;
-
-					// Load the map
-					loadMap();
-				})
-	        }, function (e) {
-	        	alertify.error('Error loading zip file! ' + f.name + ' - ' + e.message);
-	        	setIsLoading(false);
-	            /*$result.append($("<div>", {
-	                "class" : "alert alert-danger",
-	                text : "Error reading " + f.name + ": " + e.message
-	            }));*/
-	        });
-	    }
-	    
-	    handleFile(files[0]);
+	    loadDataFromFile(files[0]);
 	});
+
+	// Undo & Redo
+	var _undoHistory = {
+		undo: [],
+		redo: []
+	};
+
+	// Adds undo history
+	window.addHistory = function(info) {
+		// We can no longer redo actions
+		if(_undoHistory.redo.length > 0) {
+			_undoHistory.redo = [];
+		}
+
+		var shouldAdd = true;
+
+		// Do we have any previous history?
+		if(_undoHistory.undo.length > 0) {
+			var lastItem = _undoHistory.undo[_undoHistory.undo.length-1];
+			if(lastItem.actionSort == info.actionSort) {
+				if(lastItem.stackable) {
+					// We can totally stack
+					shouldAdd = false;
+
+					for(var i=0; i<info.data.length; ++i) {
+						lastItem.data.push(info.data[i]);
+					}
+				}
+			}
+		}
+
+		// Don't need to add if we already stacked
+		if(shouldAdd) {
+			// Add to the list of things we can undo
+			_undoHistory.undo.push(info);
+		}
+
+		// Update the button states
+		window.updateHistoryButtonStates();
+	};
+
+	// Closes the current stack
+	window.closeHistoryStack = function() {
+		if(_undoHistory.undo.length > 0) {
+			_undoHistory.undo[_undoHistory.undo.length - 1].stackable = false;
+		}
+	}
+
+	// Updates the buttons
+	window.updateHistoryButtonStates = function() {
+		var btnUndo = $('#btnHistoryUndo');
+		var btnRedo = $('#btnHistoryRedo');
+
+		// Undo
+		if(_undoHistory.undo.length > 0) {
+			btnUndo.prop('disabled', false);
+		} else {
+			btnUndo.prop('disabled', true);
+		}
+
+		// Redo
+		if(_undoHistory.redo.length > 0) {
+			btnRedo.prop('disabled', false);
+		} else {
+			btnRedo.prop('disabled', true);
+		}
+	}
+
+	// Runs the undo function
+	window.executeUndo = function() {
+		if(_undoHistory.undo.length <= 0) {
+			alertify.error('There is nothing left to undo.');
+			return;
+		}
+
+		// Grab the next action
+		var nextAction = _undoHistory.undo.pop();
+
+		// Mark it as no longer stackable
+		nextAction.stackable = false;
+
+		// Store it onto the list of redo actions
+		_undoHistory.redo.push(nextAction);
+
+		// Try to execute it
+		switch(nextAction.actionSort) {
+			case historyItemDrawPixel:
+				handleHistoryDraw(nextAction, false);
+			break;
+
+			default:
+				alertify.error('No undo handler for ' + nextAction.actionSort);
+			break;
+		}
+
+		// Update the button states
+		window.updateHistoryButtonStates();
+	};
+
+	// Runs the undo function
+	window.executeRedo = function() {
+		if(_undoHistory.redo.length <= 0) {
+			alertify.error('There is nothing left to redo.');
+			return;
+		}
+
+		// Grab the next action
+		var nextAction = _undoHistory.redo.pop();
+
+		// Store it onto the list of undo actions
+		_undoHistory.undo.push(nextAction);
+
+		// Try to execute it
+		switch(nextAction.actionSort) {
+			case historyItemDrawPixel:
+				handleHistoryDraw(nextAction, true);
+			break;
+
+			default:
+				alertify.error('No redo handler for ' + nextAction.actionSort);
+			break;
+		}
+
+		// Update the button states
+		window.updateHistoryButtonStates();
+	};
+
+	// Drawing undo / redo handler
+	function handleHistoryDraw(action, shouldRedo) {
+		for(var i=0; i<action.data.length; ++i) {
+			var theItem = action.data[i];
+
+			var theLayer = window.layerStore[theItem.layer];
+
+			var theNumber;
+			if(shouldRedo) {
+				theNumber = theItem.redo;
+			} else {
+				theNumber = theItem.undo;
+			}
+
+			// Update the pixel
+			updatePixel(
+				theLayer,
+				theItem.xReverse,
+				theItem.y,
+				theNumber,
+				true
+			);
+		}
+	}
 });

@@ -12,3 +12,4 @@ MapEditor/custommap.txt
 MapEditor/input/*
 MapEditor/working/*
 MapEditor/output/*
+node_modules/*

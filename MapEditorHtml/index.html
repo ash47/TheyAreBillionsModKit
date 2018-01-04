@@ -8,7 +8,7 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
 	<script src="js/alertify.min.js"></script>
-	<script src="js/colors.js"></script>
+	<script src="js/constants.js"></script>
 	<script src="js/helpers.js"></script>
 	<script src="js/buffer.js"></script>
 	<script src="js/FileSaver.min.js"></script>
@@ -51,6 +51,12 @@
 
 		<div class="instructions">
 			<br>
+			<b>Template Maps:</b>
+			<ul>
+				<li>
+					<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">512x512 Template</button>
+				</li>
+			</ul>
 			<b>Previous Maps:</b><br>
 			Note: There is a limit of 50MB.
 			<ul id="previousMapStore">
@@ -95,7 +101,7 @@
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
-		<canvas id="mousePreview"></canvas>
+		<canvas id="mousePreview" class="requirePaintTool"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -110,21 +116,6 @@
 
 	<div id="mapTools">
 		<ul class="mapToolsList">
-			<li><b>Terrain Layer</b></li>
-			<li><button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainEarth')">Earth</button></li>
-			<li><button id="btn_toolTerrainWater" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainWater')">Water</button></li>
-			<li><button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainGrass')">Grass</button></li>
-			<li><button id="btn_toolTerrainSky" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainSky')">Sky</button></li>
-			<li><button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolTerrainAbyse')">Abyse</button></li>
-
-			<li><b>Object Layer</b></li>
-			<li><button id="btn_toolObjectNone" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectNone')">No Object</button></li>
-			<li><button id="btn_toolObjectMountain" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectMountain')">Mountain</button></li>
-			<li><button id="btn_toolObjectWood" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectWood')">Wood</button></li>
-			<li><button id="btn_toolObjectGold" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectGold')">Gold</button></li>
-			<li><button id="btn_toolObjectStone" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectStone')">Stone</button></li>
-			<li><button id="btn_toolObjectIron" class="btn btn-primary btnSelectTool" onclick="window.setTool('toolObjectIron')">Iron</button></li>
-
 			<li><b>Toggle Layers</b></li>
 			<li>
 				<ul class="layerToggle">
@@ -154,12 +145,39 @@
 				<input class="form-control" type="number" value="4" min="1" step="1" id="mapZoom" onchange="window.updateMapZoom()">
 			</li>
 
-			<li><b>Brush Size</b></li>
+			<li><b>Cursor:</b> <span id="cursorPos"></span></li>
+
 			<li>
-				<input class="form-control" type="number" value="1" min="1" step="1" id="brushSize" onchange="window.updateBrushSize()">
+				<button id="btnHistoryUndo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeUndo();">Undo</button>
+				<button id="btnHistoryRedo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeRedo();">Redo</button>
 			</li>
 
-			<li><b>Cursor:</b> <span id="cursorPos"></span></li>
+			<li><b>Tools</b></li>
+			<li><button id="btn_setToolMapPainter" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolMapPainter')">Paint Tool</button></li>
+			<li><button id="btn_setToolSelection" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolSelection')">Selection Tool</button></li>
+			<div class="requirePaintTool">
+				<li><b>Brushes</b></li>
+				<li><button id="btn_setToolMapPainterSingle" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterSingle')">Single Point Tool</button></li>
+				<li><button id="btn_setToolMapPainterLine" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterLine')">Line Tool</button></li>
+				<li><b>Brush Size</b></li>
+				<li>
+					<input class="form-control" type="number" value="1" min="1" step="1" id="brushSize" onchange="window.updateBrushSize()">
+				</li>
+				<li><b>Terrain Layer</b></li>
+				<li><button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainEarth')">Earth</button></li>
+				<li><button id="btn_toolTerrainWater" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainWater')">Water</button></li>
+				<li><button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainGrass')">Grass</button></li>
+				<li><button id="btn_toolTerrainSky" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainSky')">Sky</button></li>
+				<li><button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainAbyse')">Abyse</button></li>
+
+				<li><b>Object Layer</b></li>
+				<li><button id="btn_toolObjectNone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectNone')">No Object</button></li>
+				<li><button id="btn_toolObjectMountain" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectMountain')">Mountain</button></li>
+				<li><button id="btn_toolObjectWood" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectWood')">Wood</button></li>
+				<li><button id="btn_toolObjectGold" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectGold')">Gold</button></li>
+				<li><button id="btn_toolObjectStone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectStone')">Stone</button></li>
+				<li><button id="btn_toolObjectIron" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectIron')">Iron</button></li>
+			</div>
 		</ul>
 	</div>
 </div>

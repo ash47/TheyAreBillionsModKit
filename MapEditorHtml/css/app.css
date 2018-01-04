@@ -122,6 +122,11 @@
 	margin-bottom: 4px;
 }
 
+#mapTools button.undoButtons {
+	width: 66px;
+	text-align: center;
+}
+
 #isSaving {
 	display: none;
 }
@@ -154,6 +159,12 @@
 }
 
 .mapEntity {
+	pointer-events: none;
+}
+
+.selectionToolActivated .mapEntity {
+	pointer-events: auto;
+
 	cursor: move;
     cursor: grab;
     cursor: -moz-grab;
@@ -163,6 +174,12 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.selectionToolActivated .mapEntity:active {
+	cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
 }
 
 .mapEntity.entityIsSelected span {
@@ -175,14 +192,17 @@
 	color: #000;
 	background-color: #FFF;
 	border-radius: 4px;
-}
-
-.mapEntity:active {
-	cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
+	opacity: 0.75;
 }
 
 .hideEntities .mapEntity {
 	display: none;
+}
+
+.requirePaintTool {
+	display: none;
+}
+
+.paintToolActivated .requirePaintTool {
+	display: block;
 }

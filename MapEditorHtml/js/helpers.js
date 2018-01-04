@@ -195,7 +195,7 @@ function renderPixel(mapData, x, y) {
 }
 
 // Updates a pixel
-function updatePixel(mapData, xReverse, y, theNumber) {
+function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	var width = mapData.width;
 
 	// do not allow invalid pixels to be updated
@@ -207,14 +207,31 @@ function updatePixel(mapData, xReverse, y, theNumber) {
 	// We need to grab the datastore position
 	var mapPos = width * y + x;
 
-	// Store it
-	mapData.data[mapPos] = theNumber;
+	if(mapData.data[mapPos] != theNumber) {
+		// Add undo history
+		if(!noHistory) {
+			window.addHistory({
+				actionSort: historyItemDrawPixel,
+				stackable: true,
+				data: [{
+					layer: mapData.name,
+					xReverse: xReverse,
+					y: y,
+					redo: theNumber,
+					undo: mapData.data[mapPos]
+				}]
+			});
+		}
 
-	// Re-render the canvas for this pixel
-	renderPixel(mapData, x, y);
+		// Store it
+		mapData.data[mapPos] = theNumber;
 
-	// We are no longer up to date
-	window.setMapExportUpToDate(false);
+		// Re-render the canvas for this pixel
+		renderPixel(mapData, x, y);
+
+		// We are no longer up to date
+		window.setMapExportUpToDate(false);
+	}
 }
 
 function renderEntities() {
@@ -269,7 +286,7 @@ function addVisualEnt(ent) {
 
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
-		click: function() {
+		mousedown: function() {
 			// Is this entity active?
 			if(!ent.isActive) {
 				// Nope, view it, and load the menu:
