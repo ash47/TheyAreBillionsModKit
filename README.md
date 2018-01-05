@@ -37,9 +37,7 @@ They following options exist:
  - Instant Build -- Makes buildings build almost instantly
 
 ### Cheats
- - Set your computer's hostname to `JESUSMAC`, or use the MethodInjector to enable dev mode.
- - You can set your hostname by right clicking on "This PC" (or "My Computer"), Selecting "Advanced System Settings", select the "Computer Name" tab, select the "Change..." option, and change the "Computer Name" field.
- - Enable cheats by pressing `control` + `shift` + `H`
+ - The only way to enable cheats now is to use the MethodInjector. The latest version can be found in the [Releases Section](https://github.com/ash47/TheyAreBillionsModKit/releases)
 
 |  Hotkey	| Result                            	|
 | --------	| ------------------------------------- |
