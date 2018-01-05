@@ -4,12 +4,29 @@ function loadSection(xmlData, startPoint, endPoint, editFunction, loopMatches, i
 	// Infinite loop
 	while(true) {
 		// Grab the start chunk we were looking for
-		var startPos = xmlData.indexOf(startPoint, firstMatchPos);
-		if(startPos == -1) return xmlData;
+		var startPos = -1;
+		if(typeof(startPoint) == 'string') {
+			startPos = xmlData.indexOf(startPoint, firstMatchPos);
+			if(startPos == -1) return xmlData;
 
-		if(!includeHeaders) {
-			startPos += startPoint.length;
+			if(!includeHeaders) {
+				startPos += startPoint.length;
+			}
+		} else {
+			if(typeof(startPoint.exec) == 'function') {
+				var match = startPoint.exec(xmlData.substr(firstMatchPos));
+
+				if(match && match.index != -1) {
+					startPos = match.index + firstMatchPos;
+
+					if(!includeHeaders) {
+						startPos += match[0].length;
+					}
+				}
+			}
 		}
+
+		if(startPos == -1) return xmlData;
 
 		// Grab the end chunk we were looking for
 		var endPos = -1;
@@ -512,6 +529,149 @@ function loadMapProps(commitUpdate) {
 	}
 };
 
+// Allows loading of extra entities
+function loadLevelExtraEntites(commitUpdate) {
+	// Find the part we need to edit
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">',
+		/<\/Complex>[\n\r ]*<\/Items>[\n\r ]*<\/Collection>/,
+		function(theData) {
+			var theStorage;
+			if(commitUpdate) {
+				theStorage = window.layerStore.extraEntities || {};
+			} else {
+				theStorage = {};
+				window.layerStore.extraEntities = theStorage;
+			}
+
+			// Used if we use commit mode
+			//var newStorage = {};
+
+			// Can we make changes?
+			if(commitUpdate) {
+				// We will use referenceData to build a new xmlData output
+
+				var theOutput = '';
+				theOutput += '<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">\n';
+
+				var totalNewEnts = 0;
+				for(var key in theStorage) {
+					totalNewEnts += theStorage[key].length;
+				}
+
+				theOutput += '<Properties>\n';
+				theOutput += '<Simple name="Capacity" value="' + totalNewEnts + '" />\n';
+				theOutput += '</Properties>\n';
+
+				theOutput += '<Items>\n';
+				
+				for(var entityType in theStorage) {
+					var allEntitiesOfThisType = theStorage[entityType];
+					for(var i=0; i<allEntitiesOfThisType.length; ++i) {
+						var thisEntity = allEntitiesOfThisType[i];
+						var thisXML = thisEntity.rawXML;
+
+						var newEntityId = ++window.totalEntities;
+
+						// Normal properties
+						for(propertyName in thisEntity) {
+							// Ignore these properties
+							if(hiddenFields[propertyName]) continue;
+
+							var theValue = thisEntity[propertyName];
+							if(theValue == null || theValue == "") {
+								theValue = '<Null name="' + propertyName + '" />';
+							} else {
+								theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+							}
+
+							// Replace the property
+							thisXML = thisXML.replace(
+								new RegExp('<Simple name="' + propertyName + '" value="[^"]*" \/>'),
+								theValue
+							);
+						}
+
+						// EntityId again
+						thisXML = replaceEntityProperty(
+							thisXML,
+							true,
+							/<Simple name="ID" value="[^"]*" \/>/,
+							null,
+							'<Simple name="ID" value="' + newEntityId + '" />'
+						);
+
+						// Add the XML
+						theOutput += thisXML;
+					}
+				}
+
+				theOutput += '</Items>\n';
+				theOutput += '</Collection>';
+
+				return theOutput;
+			}
+
+			loadSection(
+				theData,
+				/<Complex( type="[^"]*")?>/,
+				/<Simple name="Z_Offset" value="[^"]*" \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
+				function(theData2) {
+					var entityType = (/<Complex type="([^"]*)">/.exec(theData2) || [])[1] || 'Unknown';
+
+					theStorage[entityType] = theStorage[entityType] || [];
+
+					var thisEntityStore = {};
+					theStorage[entityType].push(thisEntityStore);
+
+					var blackListedProps = {};
+
+					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+					var theMatch;
+					while((theMatch = propertyExtractor.exec(theData2)) != null) {
+						if(theMatch.length < 3) continue;
+
+						// Grab stuff
+						var propertyName = theMatch[1];
+						var propertyValue = theMatch[2];
+
+						// Is this blacklisted?
+						if(blackListedProps[propertyName]) continue;
+
+						// Have we already collected this prop?
+						if(thisEntityStore[propertyName] != null) {
+							// We are not touching this prop
+							delete thisEntityStore[propertyName];
+							blackListedProps[propertyName] = true;
+							continue;
+						}
+
+						// Store it
+						thisEntityStore[propertyName] = propertyValue;
+					}
+
+					// Add raw xml
+					thisEntityStore.rawXML = theData2;
+
+					// Store the entity type
+					thisEntityStore.__entityType = entityType;
+
+					// Hidden by default
+					thisEntityStore.shouldHide = true;
+
+					// Store a reference to the store
+					thisEntityStore.__theStore = theStorage[entityType];
+				}, true, true
+			);
+		}, false, true
+	);
+
+	if(commitUpdate && res != null) {
+		window.activeMap.Data = res;
+	}
+}
+
 // Allows entities in the level to be edited
 function loadLevelEntities(commitUpdate) {
 	// Find the part we need to edit
@@ -530,7 +690,7 @@ function loadLevelEntities(commitUpdate) {
 				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
 				theOutput += '<Items>\n';
 
-				var totalEntities = 0;
+				window.totalEntities = 0;
 				
 				for(var entityType in window.layerStore.entities) {
 					var allEntitiesOfThisType = window.layerStore.entities[entityType];
@@ -538,7 +698,7 @@ function loadLevelEntities(commitUpdate) {
 						var thisEntity = allEntitiesOfThisType[i];
 						var thisXML = thisEntity.rawXML;
 
-						var newEntityId = ++totalEntities;
+						var newEntityId = ++window.totalEntities;
 
 						// Normal properties
 						for(propertyName in thisEntity) {
@@ -824,26 +984,6 @@ function loadLevelEvents(commitUpdate) {
 	if(commitUpdate && res != null) {
 		window.activeMap.Data = res;
 	}
-}
-
-function loadExtraEntities(commitUpdate) {
-	/*var res = loadSection(
-		window.activeMap.Data,
-		'<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">',
-		/<\/Collection>[\n\r ]*<Complex name="Random">/
-	);
-
-	// Do an update if we need to
-	if(commitUpdate && res != null) {
-		window.activeMap.Data = res;
-	}
-
-	// 
-
-
-
-	// */
-
 }
 
 function loadFastEntities(commitUpdate) {

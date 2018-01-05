@@ -69,6 +69,9 @@ $(document).ready(function() {
 			// Commit updates to entities
 			loadLevelEntities(true);
 
+			// Commit updates to extra entites
+			loadLevelExtraEntites(true);
+
 			// Commit updates to events
 			loadLevelEvents(true);
 
@@ -548,6 +551,9 @@ $(document).ready(function() {
 		// Read main entities chunk
 		loadLevelEntities();
 
+		// Read extra entities
+		loadLevelExtraEntites();
+
 		// Read fast entities
 		loadFastEntities();
 
@@ -717,6 +723,9 @@ $(document).ready(function() {
 		var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
 		if(treeEnts != null) theNodeTree.push(treeEnts);
 
+		var treeEnts = generateEntityMenu('ExtraEntities', window.layerStore.extraEntities);
+		if(treeEnts != null) theNodeTree.push(treeEnts);
+
 		var treeEnts = generateEntityMenu('Events', {
 			addDirect: window.layerStore.events
 		});
@@ -774,6 +783,10 @@ $(document).ready(function() {
 					
 					if(node.__sort == 'MapProps') {
 						window.viewEntityProps(window.layerStore.MapProps);	
+					}
+
+					if(node.__sort == 'ExtraEntities') {
+						window.viewEntityProps(window.layerStore.extraEntities[ref.entityName][ref.entryNumber]);
 					}
 				}
 			},
@@ -837,6 +850,25 @@ $(document).ready(function() {
 							mapEnt.show();
 						}
 					}
+
+					if(node.__sort == 'ExtraEntities') {
+						// Check the sort
+						var ref = node.entityReference;
+						var ent = window.layerStore.extraEntities[ref.entityName][ref.entryNumber];
+
+						// Change the default view
+						ent.shouldHide = false;
+
+						// Hide the entity
+						var mapEnt = ent.lastContainer;
+
+						// Does that exist?
+						if(mapEnt == null) {
+							addVisualEnt(ent);
+						} else {
+							mapEnt.show();
+						}
+					}
 				}
 			},
 			onNodeUnchecked: function(event, node) {
@@ -881,6 +913,19 @@ $(document).ready(function() {
 					if(node.__sort == 'FastEntities') {
 						var ref = node.entityReference;
 						var ent = window.layerStore.fastEntities[ref.entityName][ref.entryNumber];
+						var mapEnt = ent.lastContainer;
+
+						// Shouldn't show
+						ent.shouldHide = true;
+
+						// Hide the entity
+						mapEnt.hide();
+					}
+
+					// Check the sort
+					if(node.__sort == 'ExtraEntities') {
+						var ref = node.entityReference;
+						var ent = window.layerStore.extraEntities[ref.entityName][ref.entryNumber];
 						var mapEnt = ent.lastContainer;
 
 						// Shouldn't show
