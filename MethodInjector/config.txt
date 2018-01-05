@@ -2,3 +2,4 @@ allowModifiedSaveGames=true
 enableDevTools=true
 enableInstantBuild=true
 allowFreeBuildings=true
+allowCheats=true

@@ -49,6 +49,7 @@ namespace MethodInjector
             bool enableDevTools = true;
             bool enableInstantBuild = true;
             bool allowFreeBuildings = true;
+            bool enableCheats = true;
 
             try
             {
@@ -92,6 +93,10 @@ namespace MethodInjector
                             allowFreeBuildings = isEnabled;
                             break;
 
+                        case "allowcheats":
+                            enableCheats = isEnabled;
+                            break;
+
                         default:
                             Console.WriteLine("Unknown config: " + lineConfig[0]);
                             break;
@@ -107,6 +112,12 @@ namespace MethodInjector
                 Perform patching
             */
 
+            // Allow cheats
+            if(enableCheats)
+            {
+                ReplaceMethod("ZX.ZXGame", "get_CheatsEnabled", BindingFlags.Static | BindingFlags.Public);
+            }
+
             // Allow hacked save games to be loaded
             if(allowModifiedSaveGames)
             {
@@ -119,7 +130,7 @@ namespace MethodInjector
                 ReplaceMethod("ZX.ZXGame", "get_IsDevelopmentVersion", BindingFlags.Static | BindingFlags.Public);
                 ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
             }
-            ReplaceMethod("ZX.ZXGame", "get_IsSteam", BindingFlags.Static | BindingFlags.Public);
+            ReplaceMethod("ZX.ZXSteam", "ValidateSteamLicense", BindingFlags.Static | BindingFlags.Public);
 
             // Instant Build
             if (enableInstantBuild)
@@ -269,6 +280,12 @@ namespace MethodInjector
             LogMessage("Successfully replaced: " + className + " :: " + methodName);
         }
 
+        // Enable cheats
+        public static bool get_CheatsEnabled()
+        {
+            return true;
+        }
+
         // Replacement for can pay resources
         public bool CanPayResources(object ignoreThis)
         {
@@ -295,9 +312,9 @@ namespace MethodInjector
         }
 
         // Returns if this is a steam build
-        public static bool get_IsSteam()
+        public static bool ValidateSteamLicense(object ignoreMe)
         {
-            return false;
+            return true;
         }
 
         // Returns that this is a private build
