@@ -195,6 +195,10 @@
 	opacity: 0.75;
 }
 
+.hideEntityLabels .mapEntityText {
+	display: none;
+}
+
 .hideEntities .mapEntity {
 	display: none;
 }

@@ -298,6 +298,7 @@ $(document).ready(function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
 		var objectsVisible = $('#toggleLayerObjects').is(':checked');
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
+		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
@@ -314,6 +315,7 @@ $(document).ready(function() {
 			cObjects.hide();
 
 		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
+		entityLabelsVisible ? mainWindow.removeClass('hideEntityLabels') : mainWindow.addClass('hideEntityLabels');
 	};
 
 	// Updates the map zoom

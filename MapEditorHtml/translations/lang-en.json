@@ -61,6 +61,7 @@
 	"trInfoLayerTerrain": "Terrain",
 	"trInfoLayerObjects": "Objects",
 	"trInfoLayerEntities": "Entities",
+	"trInfoLayerEntityLabels": "Entity Labels",
 
 	"trInfoMapZoom": "Map Zoom",
 

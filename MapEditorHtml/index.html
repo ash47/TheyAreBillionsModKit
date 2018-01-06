@@ -134,35 +134,9 @@
 					</ul>
 				</div>
 			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						<span data-translate="trHelpHeader">
-							Is there somewhere I can ask questions, or share my mods?
-						</span>
-					</h3>
-				</div>
-				<div class="panel-body">
-					<ul>
-						<li>
-							<span data-translate="trHelpBody1">
-								Feel free to post questions on any of <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix's Videos</a>.
-							</span>
-						</li>
-						<li>
-							<span data-translate="trHelpBody2">
-								Feel free to post on <a href="https://www.reddit.com/r/TheyAreBillionsModded/" target="_blank">https://www.reddit.com/r/TheyAreBillionsModded/</a>
-							</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-			
 		</div>
 
-		<input type="file" id="file" name="file" />
+		<input type="file" id="file" name="file" accept=".zxsav" />
 		<button class="btn btn-primary" onclick="$('#file').click();">
 			<span data-translate="trBtnLoadSaveFile">
 				Load Save File
@@ -279,6 +253,32 @@
 									Intro Dev VLog
 								</span>
 							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="instructions">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trHelpHeader">
+							Is there somewhere I can ask questions, or share my mods?
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<span data-translate="trHelpBody1">
+								Feel free to post questions on any of <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix's Videos</a>.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpBody2">
+								Feel free to post on <a href="https://www.reddit.com/r/TheyAreBillionsModded/" target="_blank">https://www.reddit.com/r/TheyAreBillionsModded/</a>
+							</span>
 						</li>
 					</ul>
 				</div>
@@ -582,6 +582,14 @@
 						<label for="toggleLayerEntities">
 							<span data-translate="trInfoLayerEntities">
 								Entities
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerEntityLabels" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerEntityLabels">
+							<span data-translate="trInfoLayerEntityLabels">
+								Entity Labels
 							</span>
 						</label>
 					</li>

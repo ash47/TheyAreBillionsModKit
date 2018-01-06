@@ -65,6 +65,7 @@
 	"trInfoLayerTerrain": "地形",
 	"trInfoLayerObjects": "对象",
 	"trInfoLayerEntities": "实体",
+	"trInfoLayerEntityLabels": "实体标签",
 
 	"trInfoMapZoom": "地图缩放",
 

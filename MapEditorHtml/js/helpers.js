@@ -283,6 +283,90 @@ function renderEntities() {
 	}
 }
 
+function getEntityOffsets(ent) {
+	// Do we know what kind of entity this is?
+	if(ent.__entityType != null) {
+		// Yep, lets see if we have scaling information
+		var niceEntityType = ent.__entityType.split(',')[0];
+
+		var entitySizeInfo = window.entitySizes[niceEntityType];
+
+		if(ent.Size != null) {
+			var possibleParts = ent.Size.split(';');
+			if(possibleParts.length == 2) {
+				var partX = parseFloat(possibleParts[0]);
+				var partY = parseFloat(possibleParts[1]);
+
+				if(!isNaN(partX) && partX > 0 && !isNaN(partY) && partY > 0) {
+					entitySizeInfo = {
+						width: partX,
+						height: partY
+					};
+				}
+			}
+		}
+
+		if(entitySizeInfo != null) {
+			// We do, store it
+			var scaleWidth = entitySizeInfo.width;
+			var scaleHeight = entitySizeInfo.height;
+
+			// Adjust offset
+			//var posX = - Math.ceil((entitySizeInfo.width - 1 - 0.5) / 2);
+			//var posY = - Math.ceil((entitySizeInfo.height - 1) / 2);
+
+			var posX = 0;
+			var posY = 0;
+
+			switch(scaleWidth) {
+				case 3:
+					posX -= 1;
+				break;
+
+				case 4:
+					posX -= 1;
+				break;
+
+				case 5:
+					posX = -2;
+				break;
+			}
+
+			switch(scaleHeight) {
+				case 2:
+					posY -= 1;
+				break;
+
+				case 3:
+					posY -= 1;
+				break;
+
+				case 4:
+					posY -= 2;
+				break;
+
+				case 5:
+					posY = -2;
+				break;
+			}
+
+			return {
+				width: scaleWidth,
+				height: scaleHeight,
+				offsetX: posX,
+				offsetY: posY
+			};
+		}
+	}
+
+	return {
+		width: 1,
+		height: 1,
+		offsetX: 0,
+		offsetY: 0
+	};
+}
+
 function addVisualEnt(ent) {
 	var pos = ent.Position;
 	if(pos == null) return;
@@ -292,9 +376,6 @@ function addVisualEnt(ent) {
 	var posParts = pos.split(';');
 	var posX = (width - parseInt(posParts[1]) - 1);
 	var posY = parseInt(posParts[0]);
-
-	posX = posX * window.pixelSize;
-	posY = posY * window.pixelSize;
 
 	// Remove it if it already exist
 	if(ent.lastContainer != null) {
@@ -308,6 +389,15 @@ function addVisualEnt(ent) {
 	var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
 	var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
 
+	// Grab offsets and make adjustments
+	var offsets = getEntityOffsets(ent);
+	posX += offsets.offsetX;
+	posY += offsets.offsetY;
+
+	// Update position to reflect the actual drawing
+	posX = posX * window.pixelSize;
+	posY = posY * window.pixelSize;
+
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
 		mousedown: function() {
@@ -319,8 +409,8 @@ function addVisualEnt(ent) {
 			}
 		}
 	})
-		.css('width', window.pixelSize + 'px')
-		.css('height', window.pixelSize + 'px')
+		.css('width', (window.pixelSize * offsets.width) + 'px')
+		.css('height', (window.pixelSize * offsets.height) + 'px')
 		.css('background-color', cssColor)
 		.css('border', '1px solid ' + cssColor2)
 		.css('position', 'absolute')
@@ -347,12 +437,16 @@ function addVisualEnt(ent) {
 		// Not allowed out of terrain area
 		containment: $('#mapRenderTerrain'),
 		stack: '.mapEntity',
+		grid: [window.pixelSize, window.pixelSize],
 		stop: function(event, ui) {
 			var xNice = ui.position.left / window.pixelSize;
 			var yNice = ui.position.top / window.pixelSize;
 
-			var x = (width - xNice - 1).toFixed(2);
-			var y = yNice.toFixed(2);
+			xNice -= offsets.offsetX;
+			yNice -= offsets.offsetY;
+
+			var x = (width - xNice - 1).toFixed(0);
+			var y = yNice.toFixed(0);
 
 			var mapCoords = y + ';' + x;
 
