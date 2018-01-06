@@ -178,6 +178,8 @@
 
 	"trChangeLogBody_106_01": "Added Chinese translations files.",
 	"trChangeLogBody_106_02": "Made UI more pretty.",
+	"trChangeLogBody_106_03": "Improved accuracy and size of entities.",
+	"trChangeLogBody_106_04": "Added toggle option for entity labels.",
 
 	"trChangeLogBody_105_01": "Added oil source editing.",
 

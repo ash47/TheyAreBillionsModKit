@@ -181,6 +181,8 @@
 
 	"trChangeLogBody_106_01": "增加了中文翻译文件.",
 	"trChangeLogBody_106_02": "使UI更漂亮.",
+	"trChangeLogBody_106_03": "提高了实体的准确性和大小.",
+	"trChangeLogBody_106_04": "添加了实体标签的切换选项.",
 
 	"trChangeLogHeader": "更新记录",
 	"trChangeLogBody_105_01": "添加油源编辑.",
