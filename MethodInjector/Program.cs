@@ -14,6 +14,9 @@ namespace MethodInjector
         // The name of the executable to inject into
         private static string theExecutable = "TheyAreBillions.exe";
 
+        // The file to log to
+        private static string logFileName = "MethodInjector_log.txt";
+
         // A reference to the assembly we are hacking
         private static Assembly theyAreBillionsAssembly;
         
@@ -82,11 +85,11 @@ namespace MethodInjector
                             break;
 
                         case "enabledevtools":
-                            allowFreeBuildings = isEnabled;
+                            enableDevTools = isEnabled;
                             break;
 
                         case "enableinstantbuild":
-                            allowFreeBuildings = isEnabled;
+                            enableInstantBuild = isEnabled;
                             break;
 
                         case "allowfreebuildings":
@@ -130,7 +133,7 @@ namespace MethodInjector
                 ReplaceMethod("ZX.ZXGame", "get_IsDevelopmentVersion", BindingFlags.Static | BindingFlags.Public);
                 ReplaceMethod("ZX.ZXGame", "get_IsBetaPrivateVersion", BindingFlags.Static | BindingFlags.Public);
             }
-            ReplaceMethod("ZX.ZXSteam", "ValidateSteamLicense", BindingFlags.Static | BindingFlags.Public);
+            ReplaceMethod("ZX.ZXSteam", "ValidateSteamLicense", BindingFlags.Static | BindingFlags.Public, true, true);
 
             // Instant Build
             if (enableInstantBuild)
@@ -196,7 +199,7 @@ namespace MethodInjector
         }
 
         // Replaces a method with one defined below
-        public static void ReplaceMethod(string className, string methodName, BindingFlags attr, bool bothWays = true)
+        public static void ReplaceMethod(string className, string methodName, BindingFlags attr, bool bothWays = true, bool showMessage=true)
         {
             // Grab the method we will replace
             Type theType = theyAreBillionsAssembly.GetType(className);
@@ -277,7 +280,10 @@ namespace MethodInjector
             }
 
             // Log success
-            LogMessage("Successfully replaced: " + className + " :: " + methodName);
+            if(showMessage)
+            {
+                LogMessage("Successfully replaced: " + className + " :: " + methodName);
+            }
         }
 
         // Enable cheats
@@ -331,9 +337,10 @@ namespace MethodInjector
             return 1;
         }
         
-        private static void LogMessage(string error)
+        private static void LogMessage(string message)
         {
-            System.IO.File.AppendAllText("inject.log", "error: " + error + Environment.NewLine);
+            Console.WriteLine("MethodInjector: " + message);
+            System.IO.File.AppendAllText(logFileName, message + Environment.NewLine);
         }
     }
 }
