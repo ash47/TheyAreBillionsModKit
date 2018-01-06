@@ -101,7 +101,14 @@ function loadLayer(layerName, commitUpdate) {
 function loadLayerDirect(layerName, layerData, commitUpdate) {
 	var dataParts = layerData.split('|');
 	if(dataParts.length != 3) {
-		alertify.error('Unknown length for terrain layer -- ' + dataParts.length);
+		alertify.error(
+			window.getTranslation(
+				'trErrorUnknownLengthForLayer',
+				'Unknown length for terrain layer -- {{id}}',
+				{
+					id: dataParts.length
+				}
+			));
 		return;
 	}
 

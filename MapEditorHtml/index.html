@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>They Are Billions | Map Editor</title>
+	<title data-translate="trTitle">They Are Billions | Map Editor</title>
 	<script src="js/jszip.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/jqueryTranslator.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
 	<script src="js/alertify.min.js"></script>
 	<script src="js/constants.js"></script>
+	<script src="js/entitySizes.js"></script>
 	<script src="js/helpers.js"></script>
 	<script src="js/buffer.js"></script>
 	<script src="js/FileSaver.min.js"></script>
 	<script src="js/localStorageDB.min.js"></script>
 	<script src="js/editabletable.js"></script>
 	<script src="js/clipboard.min.js"></script>
+	<script src="js/translate.js"></script>
 	<script src="js/app.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
@@ -28,94 +31,492 @@
 <div id="mainContainer">
 	<div id="headingContainer">
 		<div class="instructions">
-			<h1>They Are Billions Save Editor | v1.05</h1>
-			<p>For more original mods, maps and gaming content, subscribe to <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix on YouTube</a>.</p>
+			<h1 class="text-center">
+				<span data-translate="trHeader">
+					They Are Billions Save Editor
+				</span> | v1.06
+				</h1>
+			<p class="text-center">
+				<span data-translate="trHeaderSub">
+					For more original mods, maps and gaming content, subscribe to <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix on YouTube</a>.
+				</span>
+			</p>
+			<p class="text-center">
+				<button class="btn btn-primary" onclick="window.setLanguage('en');">
+					<span data-translate="trLanguageEnglish">
+						English
+					</span>
+				</button>
 
-			<h2>Make sure you tell the devs of the game that you <b>want modding to be allowed</b>, or we may <b>lose modding (and this level editor) forever!</b></h2>
+				<button class="btn btn-primary" onclick="window.setLanguage('zh');">
+					<span data-translate="trLanguageChinese">
+						Chinese
+					</span>
+				</button>
+			</p>
 
-			<h3>Go and post on the <a href="https://steamcommunity.com/app/644930/discussions/" target="_blank">Steam Discussion boards</a> &amp; <a href="https://www.reddit.com/r/TheyAreBillions/" target="_blank">SubReddit (/r/TheyAreBillions)</a>, post anywhere else you can think of where you think the devs may see the message.</h3>
+			<div class="alert alert-info alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+					x
+				</button>
 
-			<h3>The game devs are banning modders from the forums and trying to prevent tools such as this map editor from being released to the community.</h3>
+				<p>
+					<span data-translate="trMessage1">
+						Make sure you tell the devs of the game that you <b>want modding to be allowed</b>, or we may <b>lose modding (and this level editor) forever!</b>
+					</span>
+				</p>
+				<p>
+					<span data-translate="trMessage2">
+						Go and post on the <a href="https://steamcommunity.com/app/644930/discussions/" target="_blank">Steam Discussion boards</a> &amp; <a href="https://www.reddit.com/r/TheyAreBillions/" target="_blank">SubReddit (/r/TheyAreBillions)</a>, post anywhere else you can think of where you think the devs may see the message.
+					</span>
+				</p>
+				<p>
+					<span data-translate="trMessage3">
+						The game devs are banning modders from the forums and trying to prevent tools such as this map editor from being released to the community.
+					</span>
+				</p>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trExplainWhatHeader">
+							What is this?
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<span data-translate="trExplainWhatBody1">
+								This is a save file editor for "They Are Billions".
+							</span>
+						</li>
+						<li>
+							<span data-translate="trExplainWhatBody2">
+								It allows you to edit save files relatively easily.
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trExplainHowHeader">
+							How do I use this?
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<span data-translate="trExplainHowBody1">
+								Press <b>"control + F5"</b> to ensure you have the latest version of the app.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trExplainHowBody2">
+								Load a "They Are Billions" save file.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trExplainHowBody3">
+								Save files can be found in "My Documents" --&gt; "My Games" --&gt; "They Are Billions" --&gt; "Saves".
+							</span>
+						</li>
+						<li>
+							<span data-translate="trExplainHowBody4">
+								Select one of the ".zxsav" files to begin the editing process.
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trHelpHeader">
+							Is there somewhere I can ask questions, or share my mods?
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<span data-translate="trHelpBody1">
+								Feel free to post questions on any of <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix's Videos</a>.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpBody2">
+								Feel free to post on <a href="https://www.reddit.com/r/TheyAreBillionsModded/" target="_blank">https://www.reddit.com/r/TheyAreBillionsModded/</a>
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
 			
-			<b>What is this?</b>
-			<ul>
-				<li>This is a save file editor for "They Are Billions".</li>
-				<li>It allows you to edit save files relatively easily.</li>
-			</ul>
-
-			<b>How to use this:</b>
-			<ul>
-				<li>Press "control + F5" to ensure you have the latest version of the app.</li>
-				<li>Load a "They Are Billions" save file.</li>
-				<li>Save files can be found in "My Documents" --&gt; "My Games" --&gt; "They Are Billions" --&gt; "Saves".</li>
-				<li>Select one of the ".zxsav" files to begin the editing process.</li>
-			</ul>
-
-			<b>Is there somewhere I can ask questions, or share my mods?</b>
-			<ul>
-				<li>Feel free to post questions on any of <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix's Videos</a>.</li>
-				<li>Feel free to post on <a href="https://www.reddit.com/r/TheyAreBillionsModded/" target="_blank">https://www.reddit.com/r/TheyAreBillionsModded/</a></li>
-			</ul>
 		</div>
 
 		<input type="file" id="file" name="file" />
-		<button class="btn btn-primary" onclick="$('#file').click();">Load Save File</button>
-		<div class="loadingDisplay">Loading...</div>
+		<button class="btn btn-primary" onclick="$('#file').click();">
+			<span data-translate="trBtnLoadSaveFile">
+				Load Save File
+			</span>
+		</button>
+		<div class="loadingDisplay">
+			<span data-translate="trHintLoading">
+				Loading...
+			</span>
+		</div>
 
 		<div class="instructions">
 			<br>
-			<b>Template Maps:</b>
-			<ul>
-				<li>
-					<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">512x512 Template</button>
-				</li>
-			</ul>
-			<b>Previous Maps:</b><br>
-			Note: There is a limit of 50MB.
-			<ul id="previousMapStore">
-				<li>None</li>
-			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trTemplateMapsHeader">
+							Template Maps
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">
+								<span data-translate="trTemplate512">
+									512x512 Template
+								</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trRecentMapsHeader">
+							Recently Edited Maps
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<span data-translate="trRecentMapsLimit">
+						<b>Note:</b> There is a limit of 50MB.
+					</span>
+					<ul id="previousMapStore">
+						<li>
+							<span data-translate="trRecentMapsEmpty">
+								None
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 
 		<div class="instructions">
-			<b>Tutorials / Dev VLogs:</b>
-			<ul>
-				<li><a href="https://www.youtube.com/watch?v=u2R1XWY-pl4&feature=youtu.be" target="_blank"><b>(v1.05)</b> Oil Sources</a></li>
-				<li><a href="https://www.youtube.com/watch?v=pzKA-SCDEOg&feature=youtu.be
-" target="_blank"><b>(v1.04)</b> Usability #1 - Undo, Redo, Menu Bug Fixes, New Tools, Map Props Editor</a></li>
-				<li><a href="https://youtu.be/-SaHRWIOeGg" target="_blank"><b>(v1.03)</b> Wave Editor, Entity Cloning &amp; Deleting Dev VLog</a></li>
-				<li><a href="https://youtu.be/M2q5kzGbU88" target="_blank"><b>(v1.02)</b> Visual Entity Editor Dev VLog</a></li>
-				<li><a href="https://www.youtube.com/watch?v=XlppfGtDcNs" target="_blank"><b>(v1.01)</b> Entity Editor Dev VLog</a></li>
-				<li><a href="https://www.youtube.com/watch?v=IsBZlsk7k_E" target="_blank"><b>(v1.00)</b> Intro Dev VLog</a></li>
-			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trTutorialsHeader">
+							Tutorials / Dev VLogs:
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<a href="https://www.youtube.com/watch?v=u2R1XWY-pl4&feature=youtu.be" target="_blank">
+								<b>(v1.05)</b>
+								<span data-translate="trTutorials_105">
+									Oil Sources
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=pzKA-SCDEOg&feature=youtu.be
+		" target="_blank">
+								<b>(v1.04)</b>
+								<span data-translate="trTutorials_104">
+									Usability #1 - Undo, Redo, Menu Bug Fixes, New Tools, Map Props Editor
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/-SaHRWIOeGg" target="_blank">
+								<b>(v1.03)</b>
+								<span data-translate="trTutorials_103">
+									Wave Editor, Entity Cloning &amp; Deleting Dev VLog
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/M2q5kzGbU88" target="_blank">
+								<b>(v1.02)</b>
+								<span data-translate="trTutorials_102">
+									Visual Entity Editor Dev VLog
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=XlppfGtDcNs" target="_blank">
+								<b>(v1.01)</b>
+								<span data-translate="trTutorials_101">
+									Entity Editor Dev VLog
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=IsBZlsk7k_E" target="_blank">
+								<b>(v1.00)</b>
+								<span data-translate="trTutorials_100">
+									Intro Dev VLog
+								</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 
 		<div class="instructions">
-			<b>Recent Changes:</b>
-			<ul>
-				<li><b>(v1.05)</b> Added oil source editing.</li>
-				<li><b>(v1.04)</b> Added 512x512 template map.</li>
-				<li>Added map properties editor.</li>
-				<li>Fixed entity menu closing when deleting / cloning entities.</li>
-				<li>Added selection tool.</li>
-				<li>Added line tool.</li>
-				<li>Added undo &amp; redo for layers.</li>
-				<li><b>(v1.03)</b> Added entity Cloning and Deleting.</li>
-				<li>Added Wave Editor to change how waves spawn.</li>
-				<li><b>(v1.02)</b> Added visual entity display.</li>
-				<li><b>(v1.01)</b> Added entity editor.</li>
-				<li><b>(v1.00)</b> Added previous maps list.</li>
-				<li>Updated editor to be more useable (zooming, brush size, scrolling).</li>
-				<li>Added the ability to export the map.</li>
-				<li>Added the ability to edit the terrain and resources on a map.</li>
-				<li>Added the ability to load save files.</li>
-			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trHelpTranslations">
+							Translations
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<span data-translate="trHelpTranslations_01">
+								This level editor fully supports translations.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpTranslations_02">
+								The language files are stored <a href="https://github.com/ash47/TheyAreBillionsModKit/tree/master/MapEditorHtml/translations" target="_blank">here</a>
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpTranslations_03">
+								There is one file for each language.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpTranslations_04">
+								Create a pull request on the repository to submit updated language files.
+							</span>
+						</li>
+						<li>
+							<span data-translate="trHelpTranslations_05">
+								Look in the browser's console for any missing translations.
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="instructions">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trChangeLogHeader">
+							Change Log
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<!-- v1.06 -->
+						<li>
+							<b>(v1.06)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_106_01">
+										Added Chinese translations files.
+									</span>
+								</li>
+								<li>
+									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span data-translate="trChangeLogBody_106_02">
+										Made UI more pretty.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.05 -->
+						<li>
+							<b>(v1.05)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_105_01">
+										Added oil source editing.
+									</span>
+								</li>
+							</ul>
+						</li>
+						
+						<!-- v1.04 -->
+						<li>
+							<b>(v1.04)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_104_01">
+										Added 512x512 template map.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_104_02">
+										Added map properties editor.
+									</span>
+								</li>
+								<li>
+									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span data-translate="trChangeLogBody_104_03">
+										Fixed entity menu closing when deleting / cloning entities.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_104_04">
+										Added selection tool.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_104_05">
+										Added line tool.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_104_06">
+										Added undo &amp; redo for layers.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.03 -->
+						<li>
+							<b>(v1.03)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_103_01">
+										Added entity Cloning and Deleting.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_103_02">
+										Added Wave Editor to change how waves spawn.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.02 -->
+						<li>
+							<b>(v1.02)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_102_01">
+										Added visual entity display.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.01 -->
+						<li>
+							<b>(v1.01)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_101_01">
+										Added entity editor.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.00 -->
+						<li>
+							<b>(v1.00)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_100_01">
+										Added previous maps list.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_100_02">
+										Updated editor to be more useable (zooming, brush size, scrolling).
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_100_03">
+										Added the ability to export the map.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_100_04">
+										Added the ability to edit the terrain and resources on a map.
+									</span>
+								</li>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_100_05">
+										Added the ability to load save files.
+									</span>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 
 		<div id="saveButtons">
-			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">Save Changes</button><span id="isSaving">Saving...</span>
-			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">Export .zxsav</button>
-			<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">Export .zxcheck</button>
+			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
+				<span data-translate="trBtnGenerateSaveFile">
+					Save Changes
+				</span>
+			</button>
+			<span id="isSaving" data-translate="trHintSaving">
+				Saving...
+			</span>
+			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
+				<span data-translate="trBtnExportZXSav">
+					Export .zxsav
+				</span>
+			</button>
+			<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">
+				<span data-translate="trBtnExportZXCheck">
+					Export .zxcheck
+				</span>
+			</button>
 		</div>
 
 		
@@ -131,75 +532,241 @@
 	<div id="entityBrowser">
 		<div id="entityTree"></div>
 		<div id="entityPropsOptions">
-			<button class="btn btn-primary" onclick="window.cloneEntity();">Clone Entity</button>
-			<button class="btn btn-danger" onclick="window.deleteEntityWarning();">Delete Entity</button>
+			<button class="btn btn-primary" onclick="window.cloneEntity();">
+				<span data-translate="trBtnEntityClone">
+					Clone Entity
+				</span>
+			</button>
+			<button class="btn btn-danger" onclick="window.deleteEntityWarning();">
+				<span data-translate="trBtnEntityDelete">
+					Delete Entity
+				</span>
+			</button>
 		</div>
-		<div id="entityProps">Select an entity to view it's properties.</div>
+		<div id="entityProps">
+			<span data-translate="trHelpEntitySelection">
+				Select an entity to view it's properties.
+			</span>
+		</div>
 	</div>
 
 	<div id="mapTools">
 		<ul class="mapToolsList">
-			<li><b>Toggle Layers</b></li>
+			<li>
+				<b>
+					<span data-translate="trInfoToggleLayers">
+						Toggle Layers
+					</span>
+				</b>
+			</li>
 			<li>
 				<ul class="layerToggle">
 					<li>
 						<input type="checkbox" checked="checked" id="toggleLayerTerrain" onchange="window.updateLayerToggles()">
 						<label for="toggleLayerTerrain">
-							Terrain
+							<span data-translate="trInfoLayerTerrain">
+								Terrain
+							</span>
 						</label>
 					</li>
 					<li>
 						<input type="checkbox" checked="checked" id="toggleLayerObjects" onchange="window.updateLayerToggles()">
 						<label for="toggleLayerObjects">
-							Objects
+							<span data-translate="trInfoLayerObjects">
+								Objects
+							</span>
 						</label>
 					</li>
 					<li>
 						<input type="checkbox" checked="checked" id="toggleLayerEntities" onchange="window.updateLayerToggles()">
 						<label for="toggleLayerEntities">
-							Entities
+							<span data-translate="trInfoLayerEntities">
+								Entities
+							</span>
 						</label>
 					</li>
 				</ul>
 			</li>
 
-			<li><b>Map Zoom</b></li>
+			<li>
+				<b>
+					<span data-translate="trInfoMapZoom">
+						Map Zoom
+					</span>
+				</b>
+			</li>
 			<li>
 				<input class="form-control" type="number" value="4" min="1" step="1" id="mapZoom" onchange="window.updateMapZoom()">
 			</li>
 
-			<li><b>Cursor:</b> <span id="cursorPos"></span></li>
-
 			<li>
-				<button id="btnHistoryUndo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeUndo();">Undo</button>
-				<button id="btnHistoryRedo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeRedo();">Redo</button>
+				<b>
+					<span data-translate="trInfoCursorPosition">
+						Cursor:
+					</span>
+				</b>
+				<span id="cursorPos"></span>
 			</li>
 
-			<li><b>Tools</b></li>
-			<li><button id="btn_setToolMapPainter" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolMapPainter')">Paint Tool</button></li>
-			<li><button id="btn_setToolSelection" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolSelection')">Selection Tool</button></li>
+			<li>
+				<button id="btnHistoryUndo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeUndo();">
+					<span data-translate="trBtnUndo">
+						Undo
+					</span>
+				</button>
+				<button id="btnHistoryRedo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeRedo();">
+					<span data-translate="trBtnRedo">
+						Redo
+					</span>
+				</button>
+			</li>
+
+			<li>
+				<b>
+					<span data-translate="trInfoTools">
+						Tools
+					</span>
+				</b>
+			</li>
+
+			<li>
+				<button id="btn_setToolMapPainter" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolMapPainter')">
+					<span data-translate="trBtnToolPaint">
+						Paint Tool
+					</span>
+				</button>
+			</li>
+			<li>
+				<button id="btn_setToolSelection" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolSelection')">
+					<span data-translate="trBtnToolSelection">
+						Selection Tool
+					</span>
+				</button>
+			</li>
 			<div class="requirePaintTool">
-				<li><b>Brushes</b></li>
-				<li><button id="btn_setToolMapPainterSingle" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterSingle')">Single Point Tool</button></li>
-				<li><button id="btn_setToolMapPainterLine" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterLine')">Line Tool</button></li>
-				<li><b>Brush Size</b></li>
+				<li>
+					<b>
+						<span data-translate="trInfoBrushes">
+							Brushes
+						</span>
+					</b>
+				</li>
+				<li>
+					<button id="btn_setToolMapPainterSingle" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterSingle')">
+						<span data-translate="trBtnBrushSinglePoint">
+							Single Point Tool
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_setToolMapPainterLine" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterLine')">
+						<span data-translate="trBtnBrushLine">
+							Line Tool
+						</span>
+					</button>
+				</li>
+				<li>
+					<b>
+						<span data-translate="trInfoBrushSize">
+							Brush Size
+						</span>
+					</b>
+				</li>
 				<li>
 					<input class="form-control" type="number" value="1" min="1" step="1" id="brushSize" onchange="window.updateBrushSize()">
 				</li>
-				<li><b>Terrain Layer</b></li>
-				<li><button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainEarth')">Earth</button></li>
-				<li><button id="btn_toolTerrainWater" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainWater')">Water</button></li>
-				<li><button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainGrass')">Grass</button></li>
-				<li><button id="btn_toolTerrainSky" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainSky')">Sky</button></li>
-				<li><button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainAbyse')">Abyse</button></li>
+				<li>
+					<b>
+						<span data-translate="trInfoBrushesTerrain">
+							Terrain Layer
+						</span>
+					</b>
+				</li>
+				<li>
+					<button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainEarth')">
+						<span data-translate="trBtnBrushTypeEarth">
+							Earth
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolTerrainWater" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainWater')">
+						<span data-translate="trBtnBrushTypeWater">
+							Water
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainGrass')">
+						<span data-translate="trBtnBrushTypeGrass">
+							Grass
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolTerrainSky" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainSky')">
+						<span data-translate="trBtnBrushTypeSky">
+							Sky
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainAbyse')">
+						<span data-translate="trBtnBrushTypeAbyse">
+							Abyse
+						</span>
+					</button>
+				</li>
 
-				<li><b>Object Layer</b></li>
-				<li><button id="btn_toolObjectNone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectNone')">No Object</button></li>
-				<li><button id="btn_toolObjectMountain" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectMountain')">Mountain</button></li>
-				<li><button id="btn_toolObjectWood" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectWood')">Wood</button></li>
-				<li><button id="btn_toolObjectGold" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectGold')">Gold</button></li>
-				<li><button id="btn_toolObjectStone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectStone')">Stone</button></li>
-				<li><button id="btn_toolObjectIron" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectIron')">Iron</button></li>
+				<li>
+					<b>
+						<span data-translate="trInfoBrushesObject">
+							Object Layer
+						</span>
+					</b>
+				</li>
+				<li>
+					<button id="btn_toolObjectNone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectNone')">
+						<span data-translate="trBtnBrushTypeNoObject">
+							No Object
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolObjectMountain" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectMountain')">
+						<span data-translate="trBtnBrushTypeMountain">
+							Mountain
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolObjectWood" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectWood')">
+						<span data-translate="trBtnBrushTypeWood">
+							Wood
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolObjectGold" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectGold')">
+						<span data-translate="trBtnBrushTypeGold">
+							Gold
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolObjectStone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectStone')">
+						<span data-translate="trBtnBrushTypeStone">
+							Stone
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_toolObjectIron" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectIron')">
+						<span data-translate="trBtnBrushTypeIron">
+							Iron
+						</span>
+					</button>
+				</li>
 			</div>
 		</ul>
 	</div>

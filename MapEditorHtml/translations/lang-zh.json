@@ -1,0 +1,206 @@
+{
+	"trTitle": "亿万僵尸 | 地图编辑器",
+
+	"trHeader": "亿万僵尸地图编辑器",
+	"trHeaderSub": "获取更多mod,地图,游戏资讯,请订阅 <a href=\"https://www.youtube.com/AzzaFortysix/videos\" target=\"_blank\">AzzaFortysix 的 YouTube</a>",
+
+	"trLanguageEnglish": "英语 (English)",
+	"trLanguageChinese": "中文 (Chinese)",
+
+	"trMessage1": "请告诉开发者你希望允许制作游戏mod,否则你可能会永远失去mod(以及存档编辑器)!",
+	"trMessage2": "请前往 <a href=\"https://steamcommunity.com/app/644930/discussions/\" target=\"_blank\">Steam 社区</a> &amp; <a href=\"https://www.reddit.com/r/TheyAreBillions/\" target=\"_blank\">SubReddit (/r/TheyAreBillions)</a> 发帖, 或者任意你认为开发者能看到的地方发帖.",
+	"trMessage3": "游戏开发者在论坛上禁止mod制作,并且正在尝试阻止类似于地图编辑器一类的工具在社区发布.",
+
+	"trExplainWhatHeader": "这是什么?",
+	"trExplainWhatBody1": "这是一个\"亿万僵尸\"存档编辑器.",
+	"trExplainWhatBody2": "他能让你十分方便的编辑存档.",
+
+	"trExplainHowHeader": "如何使用:",
+	"trExplainHowBody1": "开始使用前请刷新以确保你使用的是最新版本.",
+	"trExplainHowBody2": "载入 \"亿万僵尸\" 存档.",
+	"trExplainHowBody3": "存档可以在 \"我的文档\" --&gt; \"My Games\" --&gt; \"They Are Billions\" --&gt; \"Saves\" 里找到.",
+	"trExplainHowBody4": "选中 \".zxsav\" 后缀的存档文件,开始编辑.",
+
+	"trHelpHeader": "有什么地方可以让我提问, 或者分享我的mod?",
+	"trHelpBody1": "你可以在 <a href=\"https://www.youtube.com/AzzaFortysix/videos\" target=\"_blank\">AzzaFortysix的视频</a>下方随时提出问题.",
+	"trHelpBody2": "你可以在 <a href=\"https://www.reddit.com/r/TheyAreBillionsModded/\" target=\"_blank\">https://www.reddit.com/r/TheyAreBillionsModded/</a> 上发帖",
+
+	"trTemplateMapsHeader": "模板地图",
+	"trTemplate512": "512x512 模板",
+
+	"trRecentMapsHeader": "上次载入的地图",
+	"trRecentMapsLimit": "<b>注意:</b> 文件大小限制为50MB.",
+	"trRecentMapsEmpty": "没有",
+
+	"trTutorialsHeader": "视频教程",
+	"trTutorials_105": "石油来源",
+	"trTutorials_104": "可用性＃1 - 撤消，重做，菜单错误修复，新工具，地图道具编辑器",
+	"trTutorials_103": "波形编辑器，实体克隆＆amp; 删除Dev VLog",
+	"trTutorials_102": "可视实体编辑器Dev VLog",
+	"trTutorials_101": "实体编辑器Dev VLog",
+	"trTutorials_100": "介绍Dev VLog",
+
+	"trHelpTranslations": "翻译",
+	"trHelpTranslations_01": "这个级别的编辑器完全支持翻译.",
+	"trHelpTranslations_02": "语言文件被存储 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/tree/master/MapEditorHtml/translations\" target=\"_blank\">这里</a>",
+	"trHelpTranslations_03": "每种语言都有一个文件.",
+	"trHelpTranslations_04": "在存储库上创建一个拉取请求以提交更新的语言文件.",
+	"trHelpTranslations_05": "在浏览器的控制台中查找任何遗漏的翻译.",
+
+	"trHintLoading": "载入中...",
+	"trHintSaving": "Saving...",
+
+	"trBtnLoadSaveFile": "载入存档",
+	"trBtnGenerateSaveFile": "保存更改",
+	"trBtnExportZXSav": "导出 .zxsav",
+	"trBtnExportZXCheck": "导出 .zxcheck",
+
+	"trBtnEntityClone": "复制实体",
+	"trBtnEntityDelete": "删除实体",
+
+	"trHelpEntitySelection": "选择一个实体查看它的属性.",
+
+	"trInfoToggleLayers": "切换层",
+
+	"trInfoLayerTerrain": "地形",
+	"trInfoLayerObjects": "对象",
+	"trInfoLayerEntities": "实体",
+
+	"trInfoMapZoom": "地图缩放",
+
+	"trInfoCursorPosition": "坐标:",
+
+	"trBtnUndo": "撤销",
+	"trBtnRedo": "重做",
+
+	"trInfoTools": "工具",
+
+	"trBtnToolPaint": "绘画工具",
+	"trBtnToolSelection": "选择工具",
+
+	"trInfoBrushes": "刷子",
+
+	"trBtnBrushSinglePoint": "单点工具",
+	"trBtnBrushLine": "连线工具",
+
+	"trInfoBrushSize": "笔刷大小",
+
+	"trInfoBrushesTerrain": "地形层",
+	"trInfoBrushesObject": "地形层",
+
+	"trBtnBrushTypeEarth": "泥土",
+	"trBtnBrushTypeWater": "湖泊",
+	"trBtnBrushTypeGrass": "草地",
+	"trBtnBrushTypeSky": "天空",
+	"trBtnBrushTypeAbyse": "深渊",
+
+	"trBtnBrushTypeNoObject": "清除对象",
+	"trBtnBrushTypeMountain": "山脉",
+	"trBtnBrushTypeWood": "树木",
+	"trBtnBrushTypeGold": "黄金",
+	"trBtnBrushTypeStone": "石头",
+	"trBtnBrushTypeIron": "铁矿",
+
+	"trBtnOldSaveLoad": "载入",
+	"trBtnOldSaveDelete": "删除",
+
+	"trInfoMapProperties": "地图属性",
+	"trInfoMapProperties_menu_Entities": "实体",
+	"trInfoMapProperties_menu_ExtraEntities": "额外 实体",
+	"trInfoMapProperties_menu_Events": "事件",
+
+	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "军队食品处罚费用",
+	"trInfoMapProperties_key_ArmyGoldCost": "军队黄金成本",
+	"trInfoMapProperties_key_Date": "日期",
+	"trInfoMapProperties_key_Difficulty": "Difficulty",
+	"trInfoMapProperties_key_DifficultyType": "Difficulty Type",
+	"trInfoMapProperties_key_EnergyReserved": "Energy Reserved",
+	"trInfoMapProperties_key_FactorGameDuration": "Factor Game Duration",
+	"trInfoMapProperties_key_FactorZombiePopulation": "Factor Zombie Population",
+	"trInfoMapProperties_key_FoodReserved": "Food Reserved",
+	"trInfoMapProperties_key_GameTime": "Game Time",
+	"trInfoMapProperties_key_Gold": "Gold",
+	"trInfoMapProperties_key_GoldProduction": "Gold Production",
+	"trInfoMapProperties_key_Iron": "Iron",
+	"trInfoMapProperties_key_IronProduction": "Iron Production",
+	"trInfoMapProperties_key_IronProductionReserved": "Iron Production Reserved",
+	"trInfoMapProperties_key_LastGameTimeIAUpdate": "Last Game Time IA Update",
+	"trInfoMapProperties_key_MaxColonists": "Max Colonists",
+	"trInfoMapProperties_key_MaxGoldByExportingExcedents": "Max Gold By Exporting Excedents",
+	"trInfoMapProperties_key_NColonistsDead": "N Colonists Dead",
+	"trInfoMapProperties_key_NColonistsInfected": "N Colonists Infected",
+	"trInfoMapProperties_key_NMarkets": "N Markets",
+	"trInfoMapProperties_key_NSoldiersDead": "N Soldiers Dead",
+	"trInfoMapProperties_key_NTurnsWithNegativeFood": "N Turns With Negative Food",
+	"trInfoMapProperties_key_NTurnsWithNegativeGold": "N Turns With Negative Gold",
+	"trInfoMapProperties_key_NZombiesDead": "N Zombies Dead",
+	"trInfoMapProperties_key_Oil": "Oil",
+	"trInfoMapProperties_key_OilProduction": "Oil Production",
+	"trInfoMapProperties_key_OilProductionReserved": "Oil Production Reserved",
+	"trInfoMapProperties_key_Physics_FactorTimeForInterpolation": "Physics Factor Time For Interpolation",
+	"trInfoMapProperties_key_Physics_TimeBodyPosition": "Physics Time Body Position",
+	"trInfoMapProperties_key_Physics_TimeLastBodyPosition": "Physics Time Last Body Position",
+	"trInfoMapProperties_key_Seed": "Seed",
+	"trInfoMapProperties_key_ShowFullMap": "Show Full Map",
+	"trInfoMapProperties_key_Stone": "Stone",
+	"trInfoMapProperties_key_StoneProduction": "Stone Production",
+	"trInfoMapProperties_key_StoneProductionReserved": "Stone Production Reserved",
+	"trInfoMapProperties_key_StructuresGoldCost": "Structures Gold Cost",
+	"trInfoMapProperties_key_ThemeType": "Theme Type",
+	"trInfoMapProperties_key_TotalGoldPerColonists": "Total Gold Per Colonists",
+	"trInfoMapProperties_key_Wood": "Wood",
+	"trInfoMapProperties_key_WoodProduction": "Wood Production",
+	"trInfoMapProperties_key_WoodProductionReserved": "Wood Production Reserved",
+	"trInfoMapProperties_key_WorkersReserved": "Workers Reserved",
+
+	"trMapPropertiesKey": "键",
+	"trMapPropertiesValue": "值",
+
+	"trErrorUnknownLengthForLayer": "地形图层的未知长度 -- {{id}}",
+	"trErrorSaveMapLocal": "本地保存地图失败！",
+	"trErrorInvalidSaveFile": "这似乎不是一个有效的“他们是十亿”保存文件. 缺少“数据”或“信息”.",
+	"trErrorLoadingZip": "加载zip文件时出错! {{fileName}} - {{errorMessage}}",
+	"trErrorMultipleFilesSelected": "请只选择一个 \"他们是十亿\" 保存存档.",
+	"trErrorUndoNothingLeft": "没有什么可撤销的.",
+	"trErrorNoActionSortHandler": "没有撤消处理程序 {{actionSort}}",
+	"trErrorRedoNothingLeft": "没有什么可以重做.",
+	"trErrorNoEntitySelected": "请选择一个实体.",
+	"trErrorNoEntityReference": "无法获得对实体的引用!",
+
+	"trSuccessEntityCloned": "实体被成功克隆!",
+	"trSuccessEntityDeleted": "实体已成功移除.",
+	"trSuccessEntityPropertyUpdated": "变 \"{{propertyName}}\" 至 \"{{newValue}}\"",
+
+	"trConfirmDeleteMap": "你确定你要删除 {{mapName}}?",
+	"trConfirmDeleteEntity": "你确定要删除这个实体吗？",
+
+	"trNewFeature": "新功能",
+	"trPolish": "抛光",
+	"trBugFix": "错误修复",
+
+	"trChangeLogBody_106_01": "增加了中文翻译文件.",
+	"trChangeLogBody_106_02": "使UI更漂亮.",
+
+	"trChangeLogHeader": "更新记录",
+	"trChangeLogBody_105_01": "添加油源编辑.",
+
+	"trChangeLogBody_104_01": "增加512x512模板地图.",
+	"trChangeLogBody_104_02": "增加地图属性编辑器.",
+	"trChangeLogBody_104_03": "修复当克隆/删除实体时实体菜单会关闭的问题.",
+	"trChangeLogBody_104_04": "增加选择工具.",
+	"trChangeLogBody_104_05": "增加划线工具.",
+	"trChangeLogBody_104_06": "增加撤销 &amp; 重做功能.",
+
+	"trChangeLogBody_103_01": "增加实体的复制与删除.",
+	"trChangeLogBody_103_02": "可以更改每波尸潮生成的生物.",
+
+	"trChangeLogBody_102_01": "添加实体显示.",
+
+	"trChangeLogBody_101_01": "添加实体编辑器.",
+
+	"trChangeLogBody_100_01": "新增以前的地图列表",
+	"trChangeLogBody_100_02": "更新的编辑器更加可用（缩放，画笔大小，滚动.",
+	"trChangeLogBody_100_03": "增加了导出地图的功能.",
+	"trChangeLogBody_100_04": "增加了在地图上编辑地形和资源的功能.",
+	"trChangeLogBody_100_05": "增加了加载保存文件的功能."
+}

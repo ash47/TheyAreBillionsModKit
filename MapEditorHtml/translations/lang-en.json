@@ -1,0 +1,202 @@
+{
+	"trTitle": "They Are Billions | Map Editor",
+
+	"trHeader": "They Are Billions Save Editor",
+	"trHeaderSub": "For more original mods, maps and gaming content, subscribe to <a href=\"https://www.youtube.com/AzzaFortysix/videos\" target=\"_blank\">AzzaFortysix on YouTube</a>.",
+
+	"trLanguageEnglish": "English",
+	"trLanguageChinese": "Chinese (中文)",
+
+	"trMessage1": "Make sure you tell the devs of the game that you <b>want modding to be allowed</b>, or we may <b>lose modding (and this level editor) forever!</b>",
+	"trMessage2": "Go and post on the <a href=\"https://steamcommunity.com/app/644930/discussions/\" target=\"_blank\">Steam Discussion boards</a> &amp; <a href=\"https://www.reddit.com/r/TheyAreBillions/\" target=\"_blank\">SubReddit (/r/TheyAreBillions)</a>, post anywhere else you can think of where you think the devs may see the message.",
+	"trMessage3": "The game devs are banning modders from the forums and trying to prevent tools such as this map editor from being released to the community.",
+
+	"trExplainWhatHeader": "What is this?",
+	"trExplainWhatBody1": "This is a save file editor for \"They Are Billions\".",
+	"trExplainWhatBody2": "It allows you to edit save files relatively easily.",
+
+	"trExplainHowHeader": "How do I use this?",
+	"trExplainHowBody1": "Press <b>\"control + F5\"</b> to ensure you have the latest version of the app.",
+	"trExplainHowBody2": "Load a \"They Are Billions\" save file.",
+	"trExplainHowBody3": "Save files can be found in \"My Documents\" --&gt; \"My Games\" --&gt; \"They Are Billions\" --&gt; \"Saves\".",
+	"trExplainHowBody4": "Select one of the \".zxsav\" files to begin the editing process.",
+
+	"trTemplateMapsHeader": "Template Maps",
+	"trTemplate512": "512x512 Template",
+
+	"trRecentMapsHeader": "Recently Edited Maps",
+	"trRecentMapsLimit": "<b>Note:</b> There is a limit of 50MB.",
+	"trRecentMapsEmpty": "None",
+
+	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_105": "Oil Sources",
+	"trTutorials_104": "Usability #1 - Undo, Redo, Menu Bug Fixes, New Tools, Map Props Editor",
+	"trTutorials_103": "Wave Editor, Entity Cloning &amp; Deleting Dev VLog",
+	"trTutorials_102": "Visual Entity Editor Dev VLog",
+	"trTutorials_101": "Entity Editor Dev VLog",
+	"trTutorials_100": "Intro Dev VLog",
+
+	"trHelpTranslations": "Translations",
+	"trHelpTranslations_01": "This level editor fully supports translations.",
+	"trHelpTranslations_02": "The language files are stored <a href=\"https://github.com/ash47/TheyAreBillionsModKit/tree/master/MapEditorHtml/translations\" target=\"_blank\">here</a>",
+	"trHelpTranslations_03": "There is one file for each language.",
+	"trHelpTranslations_04": "Create a pull request on the repository to submit updated language files.",
+	"trHelpTranslations_05": "Look in the browser's console for any missing translations.",
+
+	"trHintLoading": "Loading...",
+	"trHintSaving": "Saving...",
+
+	"trBtnLoadSaveFile": "Load Save File",
+	"trBtnGenerateSaveFile": "Save Changes",
+	"trBtnExportZXSav": "Export .zxsav",
+	"trBtnExportZXCheck": "Export .zxcheck",
+
+	"trBtnEntityClone": "Clone Entity",
+	"trBtnEntityDelete": "Delete Entity",
+
+	"trHelpEntitySelection": "Select an entity to view it's properties.",
+
+	"trInfoToggleLayers": "Toggle Layers",
+
+	"trInfoLayerTerrain": "Terrain",
+	"trInfoLayerObjects": "Objects",
+	"trInfoLayerEntities": "Entities",
+
+	"trInfoMapZoom": "Map Zoom",
+
+	"trInfoCursorPosition": "Cursor:",
+
+	"trBtnUndo": "Undo",
+	"trBtnRedo": "Redo",
+
+	"trInfoTools": "Tools",
+
+	"trBtnToolPaint": "Paint Tool",
+	"trBtnToolSelection": "Selection Tool",
+
+	"trInfoBrushes": "Brushes",
+
+	"trBtnBrushSinglePoint": "Single Point Tool",
+	"trBtnBrushLine": "Line Tool",
+
+	"trInfoBrushSize": "Brush Size",
+
+	"trInfoBrushesTerrain": "Terrain Layer",
+	"trInfoBrushesObject": "Object Layer",
+
+	"trBtnBrushTypeEarth": "Earth",
+	"trBtnBrushTypeWater": "Water",
+	"trBtnBrushTypeGrass": "Grass",
+	"trBtnBrushTypeSky": "Sky",
+	"trBtnBrushTypeAbyse": "Abyse",
+	"trBtnBrushTypeNoObject": "No Object",
+	"trBtnBrushTypeMountain": "Mountain",
+	"trBtnBrushTypeWood": "Wood",
+	"trBtnBrushTypeGold": "Gold",
+	"trBtnBrushTypeStone": "Stone",
+	"trBtnBrushTypeIron": "Iron",
+
+	"trBtnOldSaveLoad": "Load",
+	"trBtnOldSaveDelete": "Delete",
+
+	"trInfoMapProperties": "Map Properties",
+	"trInfoMapProperties_menu_Entities": "Entities",
+	"trInfoMapProperties_menu_ExtraEntities": "Extra Entities",
+	"trInfoMapProperties_menu_Events": "Events",
+
+	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "Army Food Penalty Cost",
+	"trInfoMapProperties_key_ArmyGoldCost": "Army Gold Cost",
+	"trInfoMapProperties_key_Date": "Date",
+	"trInfoMapProperties_key_Difficulty": "Difficulty",
+	"trInfoMapProperties_key_DifficultyType": "Difficulty Type",
+	"trInfoMapProperties_key_EnergyReserved": "Energy Reserved",
+	"trInfoMapProperties_key_FactorGameDuration": "Factor Game Duration",
+	"trInfoMapProperties_key_FactorZombiePopulation": "Factor Zombie Population",
+	"trInfoMapProperties_key_FoodReserved": "Food Reserved",
+	"trInfoMapProperties_key_GameTime": "Game Time",
+	"trInfoMapProperties_key_Gold": "Gold",
+	"trInfoMapProperties_key_GoldProduction": "Gold Production",
+	"trInfoMapProperties_key_Iron": "Iron",
+	"trInfoMapProperties_key_IronProduction": "Iron Production",
+	"trInfoMapProperties_key_IronProductionReserved": "Iron Production Reserved",
+	"trInfoMapProperties_key_LastGameTimeIAUpdate": "Last Game Time IA Update",
+	"trInfoMapProperties_key_MaxColonists": "Max Colonists",
+	"trInfoMapProperties_key_MaxGoldByExportingExcedents": "Max Gold By Exporting Excedents",
+	"trInfoMapProperties_key_NColonistsDead": "N Colonists Dead",
+	"trInfoMapProperties_key_NColonistsInfected": "N Colonists Infected",
+	"trInfoMapProperties_key_NMarkets": "N Markets",
+	"trInfoMapProperties_key_NSoldiersDead": "N Soldiers Dead",
+	"trInfoMapProperties_key_NTurnsWithNegativeFood": "N Turns With Negative Food",
+	"trInfoMapProperties_key_NTurnsWithNegativeGold": "N Turns With Negative Gold",
+	"trInfoMapProperties_key_NZombiesDead": "N Zombies Dead",
+	"trInfoMapProperties_key_Oil": "Oil",
+	"trInfoMapProperties_key_OilProduction": "Oil Production",
+	"trInfoMapProperties_key_OilProductionReserved": "Oil Production Reserved",
+	"trInfoMapProperties_key_Physics_FactorTimeForInterpolation": "Physics Factor Time For Interpolation",
+	"trInfoMapProperties_key_Physics_TimeBodyPosition": "Physics Time Body Position",
+	"trInfoMapProperties_key_Physics_TimeLastBodyPosition": "Physics Time Last Body Position",
+	"trInfoMapProperties_key_Seed": "Seed",
+	"trInfoMapProperties_key_ShowFullMap": "Show Full Map",
+	"trInfoMapProperties_key_Stone": "Stone",
+	"trInfoMapProperties_key_StoneProduction": "Stone Production",
+	"trInfoMapProperties_key_StoneProductionReserved": "Stone Production Reserved",
+	"trInfoMapProperties_key_StructuresGoldCost": "Structures Gold Cost",
+	"trInfoMapProperties_key_ThemeType": "Theme Type",
+	"trInfoMapProperties_key_TotalGoldPerColonists": "Total Gold Per Colonists",
+	"trInfoMapProperties_key_Wood": "Wood",
+	"trInfoMapProperties_key_WoodProduction": "Wood Production",
+	"trInfoMapProperties_key_WoodProductionReserved": "Wood Production Reserved",
+	"trInfoMapProperties_key_WorkersReserved": "Workers Reserved",
+
+	"trMapPropertiesKey": "Key",
+	"trMapPropertiesValue": "Value",
+
+	"trErrorUnknownLengthForLayer": "Unknown length for terrain layer -- {{id}}",
+	"trErrorSaveMapLocal": "FAILED TO SAVE MAP LOCALLY!",
+	"trErrorInvalidSaveFile": "This does not appear to be a valid \"They Are Billions\" save file. It is missing \"Data\" or \"Info\".",
+	"trErrorLoadingZip": "Error loading zip file! {{fileName}} - {{errorMessage}}",
+	"trErrorMultipleFilesSelected": "Please select ONLY ONE \"They Are Billions\" save file.",
+	"trErrorUndoNothingLeft": "There is nothing left to undo.",
+	"trErrorNoActionSortHandler": "No undo handler for {{actionSort}}",
+	"trErrorRedoNothingLeft": "There is nothing left to redo.",
+	"trErrorNoEntitySelected": "Please select an entity.",
+	"trErrorNoEntityReference": "Failed to get a reference to the entity!",
+
+	"trSuccessEntityCloned": "Entity was successfully cloned!",
+	"trSuccessEntityDeleted": "Entity was successfully removed.",
+	"trSuccessEntityPropertyUpdated": "Changed \"{{propertyName}}\" to \"{{newValue}}\"",
+
+	"trConfirmDeleteMap": "Are you sure you want to delete {{mapName}}?",
+	"trConfirmDeleteEntity": "Are you sure you want to delete this entity?",
+
+	"trNewFeature": "New Feature",
+	"trPolish": "Polish",
+	"trBugFix": "Bug Fix",
+
+	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_106_01": "Added Chinese translations files.",
+	"trChangeLogBody_106_02": "Made UI more pretty.",
+
+	"trChangeLogBody_105_01": "Added oil source editing.",
+
+	"trChangeLogBody_104_01": "Added 512x512 template map.",
+	"trChangeLogBody_104_02": "Added map properties editor.",
+	"trChangeLogBody_104_03": "Fixed entity menu closing when deleting / cloning entities.",
+	"trChangeLogBody_104_04": "Added selection tool.",
+	"trChangeLogBody_104_05": "Added line tool.",
+	"trChangeLogBody_104_06": "Added undo &amp; redo for layers.",
+
+	"trChangeLogBody_103_01": "Added entity Cloning and Deleting.",
+	"trChangeLogBody_103_02": "Added Wave Editor to change how waves spawn.",
+
+	"trChangeLogBody_102_01": "Added visual entity display.",
+
+	"trChangeLogBody_101_01": "Added entity editor.",
+
+	"trChangeLogBody_100_01": "Added previous maps list.",
+	"trChangeLogBody_100_02": "Updated editor to be more useable (zooming, brush size, scrolling).",
+	"trChangeLogBody_100_03": "Added the ability to export the map.",
+	"trChangeLogBody_100_04": "Added the ability to edit the terrain and resources on a map.",
+	"trChangeLogBody_100_05": "Added the ability to load save files."
+}

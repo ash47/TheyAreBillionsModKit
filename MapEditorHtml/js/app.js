@@ -702,7 +702,10 @@ $(document).ready(function() {
 		$('#entityTree').empty();
 
 		return {
-			text: entityText,
+			text: window.getTranslation(
+				'trInfoMapProperties_menu_' + (entityText).replace(/ /g, ''),
+				entityText
+			),
 			selectable: false,
 			nodes: entityData,
 			state: {
@@ -715,6 +718,9 @@ $(document).ready(function() {
 
 	window.updateEntityMenu = function() {
 		var theNodeTree = [];
+
+		// Text for these menu's is auto translated based on:
+		// 'trInfoMapProperties_menu_' + (entityText).replace(/ /g, '')
 
 		// Generate the entities subMenu
 		var treeEnts = generateEntityMenu('Entities', window.layerStore.entities);
@@ -733,7 +739,10 @@ $(document).ready(function() {
 
 		// Add entity editor
 		theNodeTree.push({
-			text: 'Map Properties',
+			text: window.getTranslation(
+				'trInfoMapProperties',
+				'Map Properties'
+			),
 			selectable: true,
 			entityReference: {},
 			__sort: 'MapProps'
@@ -976,7 +985,10 @@ $(document).ready(function() {
 		var toClone = window.viewEntityActive;
 
 		if(toClone == null) {
-			alertify.error('Please select an entity to clone.');
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
 			return;
 		}
 
@@ -1007,7 +1019,10 @@ $(document).ready(function() {
 		window.updateEntityMenu();
 
 		// Tell the user it was cloned
-		alertify.success('Entity was successfully cloned!');
+		alertify.success(window.getTranslation(
+			'trSuccessEntityCloned',
+			'Entity was successfully cloned!'
+		));
 	};
 
 	// Asks if the user really wants to delete the entity
@@ -1015,11 +1030,17 @@ $(document).ready(function() {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
-			alertify.error('Please select an entity to delete.');
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
 			return;
 		}
 
-		alertify.confirm('Are you sure you want to delete this entity?', function() {
+		alertify.confirm(window.getTranslation(
+			'trConfirmDeleteEntity',
+			'Are you sure you want to delete this entity?'
+		), function() {
 			// Actually delete the entity
 			window.deleteEntity();
 		}, function() {
@@ -1032,7 +1053,10 @@ $(document).ready(function() {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
-			alertify.error('Please select an entity to delete.');
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
 			return;
 		}
 
@@ -1055,14 +1079,20 @@ $(document).ready(function() {
 				window.updateEntityMenu();
 
 				// Notify Success
-				alertify.success('Entity was successfully removed.');
+				alertify.success(window.getTranslation(
+					'trSuccessEntityDeleted',
+					'Entity was successfully removed.'
+				));
 
 				return;
 			}
 		}
 
 		// Alert the error
-		alertify.error('Failed to get a reference to the entity!');
+		alertify.error(window.getTranslation(
+			'trErrorNoEntityReference',
+			'Failed to get a reference to the entity!'
+		));
 	};
 
 	window.viewEntityProps = function(props) {
@@ -1089,10 +1119,16 @@ $(document).ready(function() {
 			.append(
 				$('<tr>')
 					.append($('<th>', {
-						text: 'Key'
+						text: window.getTranslation(
+							'trMapPropertiesKey',
+							'Key'
+						)
 					}))
 					.append($('<th>', {
-						text: 'Value'
+						text: window.getTranslation(
+							'trMapPropertiesValue',
+							'Value'
+						)
 					}))
 			);
 
@@ -1114,7 +1150,11 @@ $(document).ready(function() {
 			theTable.append(
 				$('<tr>')
 					.append($('<td>', {
-						text: key
+						// Auto translation of attributes
+						text: window.getTranslation(
+							'trInfoMapProperties_key_' + (key).replace(/ /g, ''),
+							key
+						)
 					}))
 					.append($('<td>', {
 						text: props[key],
@@ -1133,7 +1173,13 @@ $(document).ready(function() {
 				props[propertyName] = '' + newValue;
 
 				// Notify
-				alertify.success('Changed "' + propertyName + '" to "' + newValue + '"');
+				alertify.success(window.getTranslation(
+					'trSuccessEntityPropertyUpdated',
+					'Changed "{{propertyName}}" to "{{newValue}}"', {
+						propertyName: propertyName,
+						newValue: newValue
+					}
+				));
 
 				// Mark dirty
 				window.setMapExportUpToDate(false);
@@ -1222,7 +1268,11 @@ $(document).ready(function() {
 							}).append(
 								$('<button>', {
 									class: 'btn btn-primary',
-									text: 'Load',
+									'data-translate': 'trBtnOldSaveLoad',
+									text: window.getTranslation(
+										'trBtnOldSaveLoad',
+										'Load'
+									),
 									click: function() {
 										loadPastMap(mapName);
 									}
@@ -1230,9 +1280,20 @@ $(document).ready(function() {
 							).append(
 								$('<button>', {
 									class: 'btn btn-danger',
-									text: 'Delete',
+									'data-translate': 'trBtnOldSaveDelete',
+									text: window.getTranslation(
+										'trBtnOldSaveDelete',
+										'Delete'
+									),
 									click: function() {
-										alertify.confirm('Are you sure you want to delete ' + mapName + '?',
+										alertify.confirm(
+											window.getTranslation(
+												'trConfirmDeleteMap',
+												'Are you sure you want to delete {{0}}?',
+												{
+													mapName: mapName
+												}
+											),
 											function(){
 												// Delete it
 												deletePastMap(mapName);
@@ -1276,7 +1337,10 @@ $(document).ready(function() {
 				// Store into local storage
 				ldb.set('maps', JSON.stringify(storedMaps));
 			} catch(e) {
-				alertify.error('FAILED TO SAVE MAP LOCALLY!');
+				alertify.error(window.getTranslation(
+					'trErrorSaveMapLocal',
+					'FAILED TO SAVE MAP LOCALLY!'
+				));
 				alertify.error(e.message);
 			}
 			
@@ -1311,7 +1375,10 @@ $(document).ready(function() {
 
 		xhr.onerror = function() {
 			// Tell them about the error
-			alertify.error('Failed to load template.');
+			alertify.error(window.getTranslation(
+				'trErrorFailedLoadTemplate',
+				'Failed to load template.'
+			));
 
 			// We are no longer loading
 			setIsLoading(false);
@@ -1346,7 +1413,10 @@ $(document).ready(function() {
             var fileInfo = zip.file('Info');
             if(fileData == null || fileInfo == null) {
             	setIsLoading(false);
-            	alertify.error('This does not appear to be a valid "They Are Billions" save file. It is missing "Data" or "Info".');
+            	alertify.error(window.getTranslation(
+					'trErrorInvalidSaveFile',
+					'This does not appear to be a valid "They Are Billions" save file. It is missing "Data" or "Info".'
+				));
             	return;
             }
 
@@ -1371,19 +1441,24 @@ $(document).ready(function() {
 				loadMap();
 			})
         }, function (e) {
-        	alertify.error('Error loading zip file! ' + f.name + ' - ' + e.message);
+        	alertify.error(window.getTranslation(
+				'trErrorLoadingZip',
+				'Error loading zip file! {{fileName}} - {{errorMessage}}', {
+					fileName: f.name,
+					errorMessage: e.message
+				}
+			));
         	setIsLoading(false);
-            /*$result.append($("<div>", {
-                "class" : "alert alert-danger",
-                text : "Error reading " + f.name + ": " + e.message
-            }));*/
         });
     }
 
 	$("#file").on("change", function(evt) {
 		var files = evt.target.files;
 		if(files.length != 1) {
-			alertify.error('Please select one "They Are Billions" save file.');
+			alertify.error(window.getTranslation(
+				'trErrorMultipleFilesSelected',
+				'Please select ONLY ONE "They Are Billions" save file.'
+			));
 			return;
 		}
 
@@ -1460,7 +1535,10 @@ $(document).ready(function() {
 	// Runs the undo function
 	window.executeUndo = function() {
 		if(_undoHistory.undo.length <= 0) {
-			alertify.error('There is nothing left to undo.');
+			alertify.error(window.getTranslation(
+				'trErrorUndoNothingLeft',
+				'There is nothing left to undo.'
+			));
 			return;
 		}
 
@@ -1480,7 +1558,12 @@ $(document).ready(function() {
 			break;
 
 			default:
-				alertify.error('No undo handler for ' + nextAction.actionSort);
+				alertify.error(window.getTranslation(
+					'trErrorNoActionSortHandler',
+					'No undo handler for {{actionSort}}', {
+						actionSort: nextAction.actionSort
+					}
+				));
 			break;
 		}
 
@@ -1491,7 +1574,10 @@ $(document).ready(function() {
 	// Runs the undo function
 	window.executeRedo = function() {
 		if(_undoHistory.redo.length <= 0) {
-			alertify.error('There is nothing left to redo.');
+			alertify.error(window.getTranslation(
+				'trErrorRedoNothingLeft',
+				'There is nothing left to redo.'
+			));
 			return;
 		}
 
@@ -1508,7 +1594,12 @@ $(document).ready(function() {
 			break;
 
 			default:
-				alertify.error('No redo handler for ' + nextAction.actionSort);
+				alertify.error(window.getTranslation(
+					'trErrorNoActionSortHandler',
+					'No redo handler for {{actionSort}}', {
+						actionSort: nextAction.actionSort
+					}
+				));
 			break;
 		}
 
