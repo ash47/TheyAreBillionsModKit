@@ -96,6 +96,25 @@ var colorDefault = {
 	alpha: 255
 };
 
+var colorFogOfWar = {
+	red: 0,
+	green: 0,
+	blue: 0,
+	alpha: 200
+};
+
+var colorFogOfWarOff = {
+	red: 0,
+	green: 0,
+	blue: 0,
+	alpha: 100
+};
+
+var colorFoWMap = {
+	[-16777216]: colorFogOfWar,
+	0: colorFogOfWarOff
+};
+
 var colorObject = {
 	0: colorNone,
 	1: colorMountain,

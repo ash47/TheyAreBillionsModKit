@@ -59,10 +59,13 @@
 
 	"trInfoToggleLayers": "Toggle Layers",
 
+	"trInfoBrushesLayerSelect": "Layer",
+
 	"trInfoLayerTerrain": "Terrain",
 	"trInfoLayerObjects": "Objects",
 	"trInfoLayerEntities": "Entities",
 	"trInfoLayerEntityLabels": "Entity Labels",
+	"trInfoLayerFoW": "Fog of War",
 
 	"trInfoMapZoom": "Map Zoom",
 
@@ -85,6 +88,7 @@
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
+	"trInfoBrushesFoW": "Fog of War Layer",
 
 	"trBtnBrushTypeEarth": "Earth",
 	"trBtnBrushTypeWater": "Water",
@@ -97,6 +101,9 @@
 	"trBtnBrushTypeGold": "Gold",
 	"trBtnBrushTypeStone": "Stone",
 	"trBtnBrushTypeIron": "Iron",
+
+	"trBtnBrushTypeFoWAdd": "Add FoW",
+	"trBtnBrushTypeFoWRemove": "Remove FoW",
 
 	"trBtnOldSaveLoad": "Load",
 	"trBtnOldSaveDelete": "Delete",

@@ -210,3 +210,17 @@
 .paintToolActivated .requirePaintTool {
 	display: block;
 }
+
+.mapNameInput {
+	display: none;
+	/*display: inline-block;*/
+	width: 120px;
+}
+
+.layerSelectionGroup {
+	width: 160px;
+}
+
+.layerSelectionGroup button {
+	width: auto !important;
+}
