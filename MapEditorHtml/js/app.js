@@ -797,6 +797,7 @@ $(document).ready(function() {
 					}
 
 					if(node.__sort == 'ExtraEntities') {
+						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.extraEntities[ref.entityName][ref.entryNumber]);
 					}
 				}
