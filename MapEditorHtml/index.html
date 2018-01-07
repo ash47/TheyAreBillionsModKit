@@ -34,7 +34,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.06
+				</span> | v1.07
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -206,6 +206,14 @@
 				<div class="panel-body">
 					<ul>
 						<li>
+							<a href="https://www.youtube.com/watch?v=S_RWXMb5xrg&feature=youtu.be" target="_blank">
+								<b>(v1.07)</b>
+								<span data-translate="trTutorials_107">
+									Fog of War
+								</span>
+							</a>
+						</li>
+						<li>
 							<a href="https://www.youtube.com/watch?v=M9XKI92AbI8&feature=youtu.be" target="_blank">
 								<b>(v1.06)</b>
 								<span data-translate="trTutorials_106">
@@ -222,8 +230,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://www.youtube.com/watch?v=pzKA-SCDEOg&feature=youtu.be
-		" target="_blank">
+							<a href="https://www.youtube.com/watch?v=pzKA-SCDEOg&feature=youtu.be" target="_blank">
 								<b>(v1.04)</b>
 								<span data-translate="trTutorials_104">
 									Usability #1 - Undo, Redo, Menu Bug Fixes, New Tools, Map Props Editor
@@ -345,6 +352,31 @@
 				</div>
 				<div class="panel-body">
 					<ul>
+						<!-- v1.07 -->
+						<li>
+							<b>(v1.07)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_107_01">
+										Added Fog of War Editor.
+									</span>
+								</li>
+								<li>
+									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span data-translate="trChangeLogBody_107_02">
+										Changed layout of brushes into seperate sections to save space.
+									</span>
+								</li>
+								<li>
+									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span data-translate="trChangeLogBody_107_03">
+										Fixed issues with oil entity editor.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.06 -->
 						<li>
 							<b>(v1.06)</b>
@@ -519,6 +551,8 @@
 		</div>
 
 		<div id="saveButtons">
+			<input type="text" id="mapNameHolder" class="form-control mapNameInput" onchange="window.updateSaveName();">
+
 			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
 				<span data-translate="trBtnGenerateSaveFile">
 					Save Changes
@@ -545,6 +579,7 @@
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
+		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
 		<canvas id="mousePreview" class="requirePaintTool"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
@@ -610,6 +645,14 @@
 						<label for="toggleLayerEntityLabels">
 							<span data-translate="trInfoLayerEntityLabels">
 								Entity Labels
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" id="toggleLayerFoW" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerFoW">
+							<span data-translate="trInfoLayerFoW">
+								Fog of War
 							</span>
 						</label>
 					</li>
@@ -703,42 +746,71 @@
 				<li>
 					<input class="form-control" type="number" value="1" min="1" step="1" id="brushSize" onchange="window.updateBrushSize()">
 				</li>
+
 				<li>
+					<b>
+						<span data-translate="trInfoBrushesLayerSelect">
+							Layer
+						</span>
+					</b>
+				</li>
+
+				<li>
+					<div class="btn-group layerSelectionGroup" role="group">
+						<button id="layerSelectionGroupSub_terrain" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('terrain');">
+							<span data-translate="trInfoBrushesSelectTer">
+								Ter
+							</span>
+						</button>
+						<button id="layerSelectionGroupSub_object" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('object');">
+							<span data-translate="trInfoBrushesSelectObj">
+								Obj
+							</span>
+						</button>
+						<button id="layerSelectionGroupSub_fog" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('fog');">
+							<span data-translate="trInfoBrushesSelectFog">
+								Fog
+							</span>
+						</button>
+					</div>
+				</li>
+
+				<li class="requireSubClass_terrain">
 					<b>
 						<span data-translate="trInfoBrushesTerrain">
 							Terrain Layer
 						</span>
 					</b>
 				</li>
-				<li>
+				<li class="requireSubClass_terrain">
 					<button id="btn_toolTerrainEarth" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainEarth')">
 						<span data-translate="trBtnBrushTypeEarth">
 							Earth
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_terrain">
 					<button id="btn_toolTerrainWater" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainWater')">
 						<span data-translate="trBtnBrushTypeWater">
 							Water
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_terrain">
 					<button id="btn_toolTerrainGrass" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainGrass')">
 						<span data-translate="trBtnBrushTypeGrass">
 							Grass
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_terrain">
 					<button id="btn_toolTerrainSky" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainSky')">
 						<span data-translate="trBtnBrushTypeSky">
 							Sky
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_terrain">
 					<button id="btn_toolTerrainAbyse" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolTerrainAbyse')">
 						<span data-translate="trBtnBrushTypeAbyse">
 							Abyse
@@ -746,52 +818,74 @@
 					</button>
 				</li>
 
-				<li>
+				<li class="requireSubClass_object">
 					<b>
 						<span data-translate="trInfoBrushesObject">
 							Object Layer
 						</span>
 					</b>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectNone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectNone')">
 						<span data-translate="trBtnBrushTypeNoObject">
 							No Object
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectMountain" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectMountain')">
 						<span data-translate="trBtnBrushTypeMountain">
 							Mountain
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectWood" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectWood')">
 						<span data-translate="trBtnBrushTypeWood">
 							Wood
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectGold" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectGold')">
 						<span data-translate="trBtnBrushTypeGold">
 							Gold
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectStone" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectStone')">
 						<span data-translate="trBtnBrushTypeStone">
 							Stone
 						</span>
 					</button>
 				</li>
-				<li>
+				<li class="requireSubClass_object">
 					<button id="btn_toolObjectIron" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolObjectIron')">
 						<span data-translate="trBtnBrushTypeIron">
 							Iron
+						</span>
+					</button>
+				</li>
+
+				<li class="requireSubClass_fog">
+					<b>
+						<span data-translate="trInfoBrushesFoW">
+							Fog of War Layer
+						</span>
+					</b>
+				</li>
+				<li class="requireSubClass_fog">
+					<button id="btn_toolFoWEnabled" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFoWEnabled')">
+						<span data-translate="trBtnBrushTypeFoWAdd">
+							Add FoW
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fog">
+					<button id="btn_toolFoWDisabled" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFoWDisabled')">
+						<span data-translate="trBtnBrushTypeFoWRemove">
+							Remove FoW
 						</span>
 					</button>
 				</li>

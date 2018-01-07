@@ -73,6 +73,35 @@ function loadSection(xmlData, startPoint, endPoint, editFunction, loopMatches, i
 	}
 }
 
+function loadLayerSimple(layerName, mergeExtra, commitUpdate) {
+	// Edit layer
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Simple name="' + layerName + '" value="',
+		'" />',
+		function(theData2) {
+			// Load it
+
+			if(mergeExtra != null) {
+				theData2 = mergeExtra + theData2;
+			}
+
+			var thisRes = loadLayerDirect(layerName, theData2, true, commitUpdate);
+
+			if(thisRes != null && mergeExtra != null) {
+				thisRes = thisRes.substr(mergeExtra.length);
+			}
+
+			return thisRes;
+		}
+	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
+}
+
 function loadLayer(layerName, commitUpdate) {
 	// Edit layer
 	var res = loadSection(
@@ -86,7 +115,7 @@ function loadLayer(layerName, commitUpdate) {
 				'" />',
 				function(theData2) {
 					// Load it
-					return loadLayerDirect(layerName, theData2, commitUpdate);
+					return loadLayerDirect(layerName, theData2, false, commitUpdate);
 				}
 			)
 		}
@@ -98,7 +127,7 @@ function loadLayer(layerName, commitUpdate) {
 	}
 }
 
-function loadLayerDirect(layerName, layerData, commitUpdate) {
+function loadLayerDirect(layerName, layerData, isSigned, commitUpdate) {
 	var dataParts = layerData.split('|');
 	if(dataParts.length != 3) {
 		alertify.error(
@@ -119,20 +148,18 @@ function loadLayerDirect(layerName, layerData, commitUpdate) {
 	// Are we doing an update?
 	if(commitUpdate) {
 		// We are doing an update
-		var base64Data = mapArrayToBase64(myLayer.data);
+		var base64Data = mapArrayToBase64(myLayer.data, isSigned);
 		return myLayer.width + '|' + myLayer.height + '|' + base64Data;
 	} else {
 		// Store the data
 		myLayer.width = parseInt(dataParts[0]);
 		myLayer.height = parseInt(dataParts[1]);
-		myLayer.data = base64MapToArray(dataParts[2]);
-
-		var toTest = mapArrayToBase64(myLayer.data);
+		myLayer.data = base64MapToArray(dataParts[2], isSigned);
 	}
 }
 
 // Converts a base64 string into a 1d array that can be used in other functions
-function base64MapToArray(data) {
+function base64MapToArray(data, isSigned) {
 	var buf = new buffer.Buffer(data, 'base64');
 
 	// Map size info
@@ -142,20 +169,28 @@ function base64MapToArray(data) {
 
 	// Read in map
 	for (var i = 0; i < totalData; i++) {
-		outputArray[i] = buf.readUInt32LE(i * intSize);
+		if(isSigned) {
+			outputArray[i] = buf.readInt32LE(i * intSize);
+		} else {
+			outputArray[i] = buf.readUInt32LE(i * intSize);
+		}
 	}
 
 	return outputArray;
 }
 
 // Converts an array of image data to a base64 string
-function mapArrayToBase64(someArray) {
+function mapArrayToBase64(someArray, isSigned) {
 	var intSize = 4;
 
 	var buff = new buffer.Buffer(someArray.length * intSize);
 
 	for(var i=0; i<someArray.length; ++i) {
-		buff.writeUInt32LE(someArray[i], i * intSize);
+		if(isSigned) {
+			buff.writeInt32LE(someArray[i], i * intSize);
+		} else {
+			buff.writeUInt32LE(someArray[i], i * intSize);
+		}
 	}
 
 	return buff.toString('base64');
@@ -203,6 +238,11 @@ function renderPixel(mapData, x, y) {
 
 	var mapPos = width * y + x;
 
+	// Data is stored inverted
+	if(mapData.name == 'LayerFog') {
+		mapPos = width * x + y;
+	}
+
 	var theNumber = mapData.data[mapPos];
 	var theColor = mapData.colorMap[theNumber] || mapData.defaultColor;
 
@@ -231,6 +271,10 @@ function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	// We need to grab the datastore position
 	var mapPos = width * y + x;
 
+	if(mapData.name == 'LayerFog') {
+		mapPos = width * x + y;
+	}
+
 	if(mapData.data[mapPos] != theNumber) {
 		// Add undo history
 		if(!noHistory) {
@@ -258,11 +302,7 @@ function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	}
 }
 
-function renderEntities() {
-	// Remove past entities
-	$('.mapEntity').remove();
-
-	var entities = window.layerStore.entities;
+function renderEntitiesLayer(entities) {
 	if(entities == null) return;
 
 	for(var entityType in entities) {
@@ -281,6 +321,14 @@ function renderEntities() {
 			}
 		}
 	}
+}
+
+function renderEntities() {
+	// Remove past entities
+	$('.mapEntity').remove();
+
+	renderEntitiesLayer(window.layerStore.entities);
+	renderEntitiesLayer(window.layerStore.extraEntities);
 }
 
 function getEntityOffsets(ent) {
@@ -539,7 +587,7 @@ function updateLayerSer() {
 				mergedBuff[i] = mapFile[theNumber] || 0;
 			}
 
-			return layerTerrain.width + '|' + layerTerrain.height + '|' + mapArrayToBase64(mergedBuff);
+			return layerTerrain.width + '|' + layerTerrain.height + '|' + mapArrayToBase64(mergedBuff, false);
 		}
 	);
 
@@ -628,6 +676,53 @@ function loadMapProps(commitUpdate) {
 	if(commitUpdate) {
 		window.activeMap.Data = theData;
 	}
+};
+
+// Loads info about the map
+function loadInfo(commitUpdate) {
+	if(commitUpdate) {
+		var mapInfo = window.mapInfo;
+		if(mapInfo == null) return;
+
+		var info = window.activeMap.Info;
+		if(info == null) return;
+
+		var mapTitle = mapInfo.title;
+
+		// Update title
+		info = info.replace(
+			/<Simple name="Name" value="([^"]*)" \/>/,
+			'<Simple name="Name" value="' + mapTitle + '" />'
+		);
+
+		// Update filename
+		info = info.replace(
+			/<Simple name="FileName" value="([^"]*)" \/>/,
+			'<Simple name="FileName" value="' + mapTitle + '.zxsav" />'
+		);
+
+		// This is now our active map name
+		window.activeMap.name = mapTitle + '.zxsav'
+
+		// Store the new info
+		window.activeMap.Info = info;
+
+		return;
+	}
+
+	var mapInfo = {};
+	window.mapInfo = mapInfo;
+
+	var info = window.activeMap.Info;
+	if(info == null) return;
+
+	var mapTitle = (/<Simple name="Name" value="([^"]*)" \/>/.exec(info) || [])[1] || 'Untitled';
+
+	// Store the title
+	mapInfo.title = mapTitle;
+
+	// Update it in the UI
+	$('#mapNameHolder').val(mapTitle);
 };
 
 // Allows loading of extra entities

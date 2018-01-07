@@ -16,6 +16,7 @@ $(document).ready(function() {
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
@@ -49,7 +50,19 @@ $(document).ready(function() {
 			canvas: mapRenderObjectsCanvas,
 			colorMap: colorObject,
 			defaultColor: colorNone,
+		},
+		LayerFog: {
+			name: 'LayerFog',
+			canvas: mapRenderFoWCanvas,
+			colorMap: colorFoWMap,
+			defaultColor: colorFogOfWarOff,
 		}
+	};
+
+	// Updating the map title
+	window.updateSaveName = function() {
+		// Store the new title
+		window.mapInfo.title = $('#mapNameHolder').val();
 	};
 
 	// Saving the map
@@ -62,6 +75,13 @@ $(document).ready(function() {
 			// Commit the updates to layers
 			loadLayer('LayerTerrain', true);
 			loadLayer('LayerObjects', true);
+
+			// Fog of War
+			loadLayerSimple(
+				'LayerFog',
+				window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|',
+				true
+			);
 
 			// Commit the new ser layer
 			updateLayerSer();
@@ -77,6 +97,9 @@ $(document).ready(function() {
 
 			// Commit updates to map props
 			loadMapProps(true);
+
+			// Commit the changes to the map info
+			loadInfo(true);
 
 			// Update our local storage
 			updateLocalStorage();
@@ -171,6 +194,27 @@ $(document).ready(function() {
 		);
 	};
 
+	// Updates which tool brush section thing is visible
+	window.setActiveLayerSelectionGroupSub = function(newSection) {
+		// Cleanup old selections
+		$('.layerSelectionGroupSub').removeClass('btn-success');
+		$('.layerSelectionGroupSub').addClass('btn-primary');
+
+		var header = 'requireSubClass_';
+		var classes = ['terrain', 'object', 'fog'];
+
+		for(var i=0; i<classes.length; ++i) {
+			var fullClass = header + classes[i];
+
+			$('.' + fullClass).hide();
+		}
+		$('.' + header + newSection).show();
+
+		var highlightClassName = $('#layerSelectionGroupSub_' + newSection);
+		highlightClassName.removeClass('btn-primary');
+		highlightClassName.addClass('btn-success');
+	};
+
 	// Updates which tool is selected
 	window.setTool = function(toolSort, toolName) {
 		if(toolSort == 'primaryTool') {
@@ -231,58 +275,81 @@ $(document).ready(function() {
 
 			switch(toolName) {
 				case 'toolTerrainEarth':
+					window.setActiveLayerSelectionGroupSub('terrain');
 					activeLayer = window.layerStore.LayerTerrain;
 					activeToolColor = 0;
 				break;
 
 				case 'toolTerrainWater':
+					window.setActiveLayerSelectionGroupSub('terrain');
 					activeLayer = window.layerStore.LayerTerrain;
 					activeToolColor = 1;
 				break;
 
 				case 'toolTerrainGrass':
+					window.setActiveLayerSelectionGroupSub('terrain');
 					activeLayer = window.layerStore.LayerTerrain;
 					activeToolColor = 2;
 				break;
 
 				case 'toolTerrainSky':
+					window.setActiveLayerSelectionGroupSub('terrain');
 					activeLayer = window.layerStore.LayerTerrain;
 					activeToolColor = 3;
 				break;
 
 				case 'toolTerrainAbyse':
+					window.setActiveLayerSelectionGroupSub('terrain');
 					activeLayer = window.layerStore.LayerTerrain;
 					activeToolColor = 4;
 				break;
 
 				case 'toolObjectNone':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 0;
 				break;
 
 				case 'toolObjectMountain':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 1;
 				break;
 
 				case 'toolObjectWood':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 2;
 				break;
 
 				case 'toolObjectGold':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 3;
 				break;
 
 				case 'toolObjectStone':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 4;
 				break;
 
 				case 'toolObjectIron':
+					window.setActiveLayerSelectionGroupSub('object');
 					activeLayer = window.layerStore.LayerObjects;
 					activeToolColor = 5;
+				break;
+
+				case 'toolFoWEnabled':
+					window.setActiveLayerSelectionGroupSub('fog');
+					activeLayer = window.layerStore.LayerFog;
+					activeToolColor = -16777216;
+				break;
+
+				case 'toolFoWDisabled':
+					window.setActiveLayerSelectionGroupSub('fog');
+					activeLayer = window.layerStore.LayerFog;
+					activeToolColor = 0;
 				break;
 			}
 		}
@@ -299,9 +366,11 @@ $(document).ready(function() {
 		var objectsVisible = $('#toggleLayerObjects').is(':checked');
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
+		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
+		var cFoW = $(window.layerStore.LayerFog.canvas);
 		var mainWindow = $('#mainContainer');
 
 		// Toggle terrain layer
@@ -309,10 +378,15 @@ $(document).ready(function() {
 			cTerrain.show() : 
 			cTerrain.hide();
 
-		// Toggle objects later
+		// Toggle objects layer
 		objectsVisible ?
 			cObjects.show() : 
 			cObjects.hide();
+
+		// Toggle fog of war layer
+		fogOfWarVisible ?
+			cFoW.show() :
+			cFoW.hide();
 
 		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
 		entityLabelsVisible ? mainWindow.removeClass('hideEntityLabels') : mainWindow.addClass('hideEntityLabels');
@@ -550,6 +624,12 @@ $(document).ready(function() {
 		// Load Objects
 		loadLayer('LayerObjects');
 
+		// Load Activity Layer
+		loadLayerSimple(
+			'LayerFog',
+			window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|'
+		);
+
 		// Read main entities chunk
 		loadLevelEntities();
 
@@ -564,6 +644,9 @@ $(document).ready(function() {
 
 		// Load map props
 		loadMapProps();
+
+		// Load info about map
+		loadInfo();
 
 		// Update the entity display
 		window.updateEntityMenu();
@@ -581,6 +664,9 @@ $(document).ready(function() {
 		window.setTool('primaryTool', 'setToolMapPainter');
 		window.setTool('brushType', 'setToolMapPainterSingle');
 		window.setTool('brushColor', 'toolTerrainEarth');
+
+		// Update what is displayed
+		window.updateLayerToggles();
 
 		// We are no longer loading
 		setIsLoading(false);
@@ -777,18 +863,17 @@ $(document).ready(function() {
 			onNodeSelected: function(event, node) {
 				// Check the sort
 				if(node.entityReference != null) {
+					var ref = node.entityReference;
+
 					if(node.__sort == 'Entities') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
 					}
 
 					if(node.__sort == 'FastEntities') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.fastEntities[ref.entityName][ref.entryNumber]);
 					}
 
 					if(node.__sort == 'Events') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.events[ref.entryNumber]);
 					}
 					
@@ -966,6 +1051,9 @@ $(document).ready(function() {
 
 			// Render Objects
 			renderLayer('LayerObjects');
+
+			// Render Fog of War
+			renderLayer('LayerFog');
 
 			// Render entities (oh god)
 			renderEntities();
