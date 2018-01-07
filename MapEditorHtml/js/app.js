@@ -777,18 +777,17 @@ $(document).ready(function() {
 			onNodeSelected: function(event, node) {
 				// Check the sort
 				if(node.entityReference != null) {
+					var ref = node.entityReference;
+
 					if(node.__sort == 'Entities') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.entities[ref.entityName][ref.entryNumber]);
 					}
 
 					if(node.__sort == 'FastEntities') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.fastEntities[ref.entityName][ref.entryNumber]);
 					}
 
 					if(node.__sort == 'Events') {
-						var ref = node.entityReference;
 						window.viewEntityProps(window.layerStore.events[ref.entryNumber]);
 					}
 					

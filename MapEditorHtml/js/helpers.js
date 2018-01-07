@@ -258,11 +258,7 @@ function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	}
 }
 
-function renderEntities() {
-	// Remove past entities
-	$('.mapEntity').remove();
-
-	var entities = window.layerStore.entities;
+function renderEntitiesLayer(entities) {
 	if(entities == null) return;
 
 	for(var entityType in entities) {
@@ -281,6 +277,14 @@ function renderEntities() {
 			}
 		}
 	}
+}
+
+function renderEntities() {
+	// Remove past entities
+	$('.mapEntity').remove();
+
+	renderEntitiesLayer(window.layerStore.entities);
+	renderEntitiesLayer(window.layerStore.extraEntities);
 }
 
 function getEntityOffsets(ent) {
