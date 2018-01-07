@@ -29,6 +29,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_107": "Fog of War",
 	"trTutorials_106": "Chinese Translations &amp; Accurate Entities",
 	"trTutorials_105": "Oil Sources",
 	"trTutorials_104": "Usability #1 - Undo, Redo, Menu Bug Fixes, New Tools, Map Props Editor",
@@ -85,6 +86,10 @@
 	"trBtnBrushLine": "Line Tool",
 
 	"trInfoBrushSize": "Brush Size",
+
+	"trInfoBrushesSelectTer": "Ter",
+	"trInfoBrushesSelectTer": "Obj",
+	"trInfoBrushesSelectTer": "Fog",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
@@ -183,6 +188,10 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_107_01": "Added Fog of War Editor.",
+	"trChangeLogBody_107_02": "Changed layout of brushes into seperate sections to save space.",
+	"trChangeLogBody_107_03": "Fixed issues with oil entity editor.",
 
 	"trChangeLogBody_106_01": "Added Chinese translations files.",
 	"trChangeLogBody_106_02": "Made UI more pretty.",
