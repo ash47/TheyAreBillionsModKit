@@ -88,8 +88,8 @@
 	"trInfoBrushSize": "Brush Size",
 
 	"trInfoBrushesSelectTer": "Ter",
-	"trInfoBrushesSelectTer": "Obj",
-	"trInfoBrushesSelectTer": "Fog",
+	"trInfoBrushesSelectObj": "Obj",
+	"trInfoBrushesSelectFog": "Fog",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
