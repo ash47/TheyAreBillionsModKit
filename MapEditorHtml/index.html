@@ -29,6 +29,26 @@
 <body>
 
 <div id="mainContainer">
+	<div class="loadingDisplay">
+		<div>
+			<span data-translate="trHintLoading">
+				Loading...
+			</span><br>
+			<span id="loadingPercentage">
+				percentage
+			</span>
+		</div>
+	</div>
+
+	<div class="savingDisplay">
+		<div>
+			<span data-translate="trHintSaving">
+				Saving...
+			</span><br>
+			<span id="savingPercentage">percentage</span>
+		</div>
+	</div>
+
 	<div id="headingContainer">
 		<div class="instructions">
 			<h1 class="text-center">
@@ -142,11 +162,6 @@
 				Load Save File
 			</span>
 		</button>
-		<div class="loadingDisplay">
-			<span data-translate="trHintLoading">
-				Loading...
-			</span>
-		</div>
 
 		<div class="instructions">
 			<br>
@@ -558,9 +573,6 @@
 					Save Changes
 				</span>
 			</button>
-			<span id="isSaving" data-translate="trHintSaving">
-				Saving...
-			</span>
 			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
 				<span data-translate="trBtnExportZXSav">
 					Export .zxsav

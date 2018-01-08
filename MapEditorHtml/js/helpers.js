@@ -1087,15 +1087,11 @@ function loadLevelEvents(commitUpdate) {
 
 			var allEvents = [];
 
-			console.log(theData)
-
 			loadSection(
 				theData,
 				/<Complex>[\n\r ]*<Properties>[\n\r ]*<Collection name="CurrentIDGenerators" elementType="System.String, mscorlib">/,
 				/name="Music"( value="[^"]*")? \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
 				function(possibleEntity) {
-					console.log('asd');
-
 					var thisEntityStore = {};
 					allEvents.push(thisEntityStore);
 

@@ -70,40 +70,74 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
+		var totalParts = 13;
+		var currentPart = 0;
+
+		// Update to be 0%
+		$('#savingPercentage').text('0%');
+
+		var updatePercentage = function() {
+			++currentPart;
+
+			var percent = (currentPart / totalParts * 100).toFixed(2);
+			$('#savingPercentage').text(percent + '%');
+		};
+
 		// Allow async
 		setTimeout(function() {
 			// Commit the updates to layers
 			loadLayer('LayerTerrain', true);
-			loadLayer('LayerObjects', true);
+			updatePercentage();
 
+		setTimeout(function() {
+			loadLayer('LayerObjects', true);
+			updatePercentage();
+
+		setTimeout(function() {
 			// Fog of War
 			loadLayerSimple(
 				'LayerFog',
 				window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|',
 				true
 			);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit the new ser layer
 			updateLayerSer();
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit updates to entities
 			loadLevelEntities(true);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit updates to extra entites
 			loadLevelExtraEntites(true);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit updates to events
 			loadLevelEvents(true);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit updates to map props
 			loadMapProps(true);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Commit the changes to the map info
 			loadInfo(true);
+			updatePercentage();
 
+		setTimeout(function() {
 			// Update our local storage
 			updateLocalStorage();
+			updatePercentage();
 
+		setTimeout(function() {
 			// Generate the save file
 			var zip = new JSZip();
 
@@ -118,22 +152,37 @@ $(document).ready(function() {
 			    }
 			}).then(function(content) {
 				window.activeMap.downloadableZip = content;
+				updatePercentage();
 
-				// Get the checksum
-				blobToBuffer(content, function(err, buff) {
-					// Store the checksum
-					window.activeMap.checksum = generateChecksum(buff);
+				setTimeout(function () {
+					// Get the checksum
+					blobToBuffer(content, function(err, buff) {
+						updatePercentage();
+						
+						// Store the checksum
+						window.activeMap.checksum = generateChecksum(buff);
 
-					// Set up to date
-					window.setMapExportUpToDate(true, true);
+						// Set up to date
+						window.setMapExportUpToDate(true, true);
 
-					// Set that we are no longer saving
-					setIsSaving(false);
-				});
+						// Set that we are no longer saving
+						setIsSaving(false);
+					});
 
-				// You can now export the map
-				window.setMapExportUpToDate(true);
+					// You can now export the map
+					window.setMapExportUpToDate(true);
+				}, 1);
 			});
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
 		}, 1);
 	};
 
@@ -612,67 +661,125 @@ $(document).ready(function() {
 		// Ensure we have data loaded
 		if(window.activeMap.Data == null || window.activeMap.Info == null) return;
 
-		// Update the local storage of maps
-		updateLocalStorage();
+		// We are loading
+		setIsLoading(true);
+		var totalParts = 14;
+		var currentPart = 0;
 
-		// Set the active layer to terrain
-		activeLayer = window.layerStore.LayerTerrain;
+		// Update to be 0%
+		$('#loadingPercentage').text('0%');
 
-		// Load terrain
-		loadLayer('LayerTerrain');
+		var updatePercentage = function() {
+			++currentPart;
 
-		// Load Objects
-		loadLayer('LayerObjects');
+			var percent = (currentPart / totalParts * 100).toFixed(2);
+			$('#loadingPercentage').text(percent + '%');
+		};
 
-		// Load Activity Layer
-		loadLayerSimple(
-			'LayerFog',
-			window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|'
-		);
+		setTimeout(function() {
+			// Update the local storage of maps
+			updateLocalStorage();
+			updatePercentage();
 
-		// Read main entities chunk
-		loadLevelEntities();
+		setTimeout(function() {
+			// Set the active layer to terrain
+			activeLayer = window.layerStore.LayerTerrain;
+			updatePercentage();
 
-		// Read extra entities
-		loadLevelExtraEntites();
+		setTimeout(function() {
+			// Load terrain
+			loadLayer('LayerTerrain');
+			updatePercentage();
 
-		// Read fast entities
-		loadFastEntities();
+		setTimeout(function() {
+			// Load Objects
+			loadLayer('LayerObjects');
+			updatePercentage();
 
-		// Read map events
-		loadLevelEvents();
+		setTimeout(function() {
+			// Load Activity Layer
+			loadLayerSimple(
+				'LayerFog',
+				window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|'
+			);
+			updatePercentage();
 
-		// Load map props
-		loadMapProps();
+		setTimeout(function() {
+			// Read main entities chunk
+			loadLevelEntities();
+			updatePercentage();
 
-		// Load info about map
-		loadInfo();
+		setTimeout(function() {
+			// Read extra entities
+			loadLevelExtraEntites();
+			updatePercentage();
 
-		// Update the entity display
-		window.updateEntityMenu();
+		setTimeout(function() {
+			// Read fast entities
+			loadFastEntities();
+			updatePercentage();
 
-		// Perform a full re-render of the map
-		mapFullRender();
+		setTimeout(function() {
+			// Read map events
+			loadLevelEvents();
+			updatePercentage();
 
-		// Allow export
-		$('#btnSaveChanges').removeAttr('disabled');
+		setTimeout(function (){
+			// Load map props
+			loadMapProps();
+			updatePercentage();
 
-		// But we aren't up to date
-		window.setMapExportUpToDate(false);
+		setTimeout(function() {
+			// Load info about map
+			loadInfo();
+			updatePercentage();
 
-		// Update which tool is selected
-		window.setTool('primaryTool', 'setToolMapPainter');
-		window.setTool('brushType', 'setToolMapPainterSingle');
-		window.setTool('brushColor', 'toolTerrainEarth');
+		setTimeout(function() {
+			// Update the entity display
+			window.updateEntityMenu();
+			updatePercentage();
 
-		// Update what is displayed
-		window.updateLayerToggles();
+		setTimeout(function() {
+			// Perform a full re-render of the map
+			mapFullRender();
+			updatePercentage();
 
-		// We are no longer loading
-		setIsLoading(false);
+		setTimeout(function() {
+			// Allow export
+			$('#btnSaveChanges').removeAttr('disabled');
 
-		// Map is loaded
-		$('#mainContainer').addClass('mapIsLoaded	');
+			// But we aren't up to date
+			window.setMapExportUpToDate(false);
+
+			// Update which tool is selected
+			window.setTool('primaryTool', 'setToolMapPainter');
+			window.setTool('brushType', 'setToolMapPainterSingle');
+			window.setTool('brushColor', 'toolTerrainEarth');
+
+			// Update what is displayed
+			window.updateLayerToggles();
+
+			// We are no longer loading
+			setIsLoading(false);
+
+			// Map is loaded
+			$('#mainContainer').addClass('mapIsLoaded');
+
+			updatePercentage();
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
+		}, 1);
 	}
 
 	var entityExpandedPath = {};
