@@ -9,6 +9,9 @@ $(document).ready(function() {
 		} else {
 			mainCon.removeClass('isLoading');
 		}
+
+		// Update to be 0%
+		$('#loadingPercentage').text('0%');
 	}
 
 	// update our previous maps
@@ -158,7 +161,7 @@ $(document).ready(function() {
 					// Get the checksum
 					blobToBuffer(content, function(err, buff) {
 						updatePercentage();
-						
+
 						// Store the checksum
 						window.activeMap.checksum = generateChecksum(buff);
 
@@ -665,9 +668,6 @@ $(document).ready(function() {
 		setIsLoading(true);
 		var totalParts = 14;
 		var currentPart = 0;
-
-		// Update to be 0%
-		$('#loadingPercentage').text('0%');
 
 		var updatePercentage = function() {
 			++currentPart;
@@ -1387,28 +1387,33 @@ $(document).ready(function() {
 		// Ensure they have local storage
 		if(typeof(localStorage) == 'undefined') return;
 
-		ldb.get('maps', function(pastMaps) {
-			if(pastMaps == null) return;
+		// Set that we are loading
+		setIsLoading(true);
 
-			try {
-				pastMaps = JSON.parse(pastMaps);
-			} catch(e) {
-				return;
-			}
+		setTimeout(function() {
+			ldb.get('maps', function(pastMaps) {
+				if(pastMaps == null) return;
 
-			var ourPastMap = pastMaps[mapName];
-			if(ourPastMap == null) return;
+				try {
+					pastMaps = JSON.parse(pastMaps);
+				} catch(e) {
+					return;
+				}
 
-			// Set this as our active map
-			window.activeMap = {
-				Data: ourPastMap.Data,
-				Info: ourPastMap.Info,
-				name: mapName
-			};
+				var ourPastMap = pastMaps[mapName];
+				if(ourPastMap == null) return;
 
-			// Load it
-			loadMap();
-		});
+				// Set this as our active map
+				window.activeMap = {
+					Data: ourPastMap.Data,
+					Info: ourPastMap.Info,
+					name: mapName
+				};
+
+				// Load it
+				loadMap();
+			});
+		}, 1);
 	}
 
 	function deletePastMap(mapName) {
