@@ -113,6 +113,9 @@ $(document).ready(function() {
 			$('#savingPercentage').text(percent + '%');
 		};
 
+		// Reset Total Entities
+		window.totalEntities = 0;
+
 		// Allow async
 		setTimeout(function() {
 			if(enableEditorTerrain) {

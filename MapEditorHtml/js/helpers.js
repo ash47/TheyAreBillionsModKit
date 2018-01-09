@@ -776,11 +776,12 @@ function loadLevelExtraEntites(commitUpdate) {
 							if(hiddenFields[propertyName]) continue;
 
 							var theValue = thisEntity[propertyName];
-							if(theValue == null || theValue == "") {
+							theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+							/*if(theValue == null || theValue == "") {
 								theValue = '<Null name="' + propertyName + '" />';
 							} else {
 								theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
-							}
+							}*/
 
 							// Replace the property
 							thisXML = thisXML.replace(
@@ -790,13 +791,13 @@ function loadLevelExtraEntites(commitUpdate) {
 						}
 
 						// EntityId again
-						thisXML = replaceEntityProperty(
+						/*thisXML = replaceEntityProperty(
 							thisXML,
 							true,
 							/<Simple name="ID" value="[^"]*" \/>/,
 							null,
 							'<Simple name="ID" value="' + newEntityId + '" />'
-						);
+						);*/
 
 						// Add the XML
 						theOutput += thisXML;
@@ -885,8 +886,6 @@ function loadLevelEntities(commitUpdate) {
 				var theOutput = '';
 				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
 				theOutput += '<Items>\n';
-
-				window.totalEntities = 0;
 				
 				for(var entityType in window.layerStore.entities) {
 					var allEntitiesOfThisType = window.layerStore.entities[entityType];
