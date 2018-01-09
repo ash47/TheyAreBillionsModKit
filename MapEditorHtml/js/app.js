@@ -1,6 +1,33 @@
 "use strict";
 
+window.enableEditorTerrain = true;
+window.enableEditorObjects = true;
+window.enableEditorFog = true;
+window.enableEditorSer = true;
+window.enableEditorEntities = true;
+window.enableEditorExtraEntities = true;
+window.enableEditorEvents = true;
+window.enableEditorMapProps = true;
+window.enableEditorInfo = true;
+
+// Turn features on and off, what a sad world that we have to even have this
+window.updateSelectedFeatures = function() {
+	window.enableEditorTerrain = $('#featureToggleTerrain').is(':checked');
+	window.enableEditorObjects = $('#featureToggleObject').is(':checked');
+	window.enableEditorSer = $('#featureToggleObject').is(':checked');
+	window.featureToggleFog = $('#featureToggleFog').is(':checked');
+	window.enableEditorFog = $('#featureToggleObject').is(':checked');
+	window.enableEditorEntities = $('#featureToggleEntities').is(':checked');
+	window.enableEditorExtraEntities = $('#featureToggleExtraEntities').is(':checked');
+	window.enableEditorEvents = $('#featureToggleEventsEditor').is(':checked');
+	window.enableEditorMapProps = $('#featureToggleMapProps').is(':checked');
+	window.enableEditorInfo = $('#featureToggleMapInfo').is(':checked');
+};
+
 $(document).ready(function() {
+	// Update allowed features
+	window.updateSelectedFeatures();
+
 	function setIsLoading(isLoading) {
 		var mainCon = $('#mainContainer');
 
@@ -88,51 +115,69 @@ $(document).ready(function() {
 
 		// Allow async
 		setTimeout(function() {
-			// Commit the updates to layers
-			loadLayer('LayerTerrain', true);
+			if(enableEditorTerrain) {
+				// Commit the updates to layers
+				loadLayer('LayerTerrain', true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
-			loadLayer('LayerObjects', true);
+			if(enableEditorObjects) {
+				loadLayer('LayerObjects', true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Fog of War
-			loadLayerSimple(
-				'LayerFog',
-				window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|',
-				true
-			);
+			if(enableEditorFog) {
+				loadLayerSimple(
+					'LayerFog',
+					window.layerStore.LayerTerrain.width + '|' + window.layerStore.LayerTerrain.height + '|',
+					true
+				);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Commit the new ser layer
-			updateLayerSer();
+			if(enableEditorSer) {
+				updateLayerSer();
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Commit updates to entities
-			loadLevelEntities(true);
+			if(window.enableEditorEntities) {
+				loadLevelEntities(true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
-			// Commit updates to extra entites
-			loadLevelExtraEntites(true);
+			if(window.enableEditorExtraEntities) {
+				// Commit updates to extra entites
+				loadLevelExtraEntites(true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Commit updates to events
-			loadLevelEvents(true);
+			if(window.enableEditorEvents) {
+				loadLevelEvents(true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Commit updates to map props
-			loadMapProps(true);
+			if(enableEditorMapProps) {
+				loadMapProps(true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
 			// Commit the changes to the map info
-			loadInfo(true);
+			if(window.enableEditorInfo) {
+				loadInfo(true);
+			}
 			updatePercentage();
 
 		setTimeout(function() {
