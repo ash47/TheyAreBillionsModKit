@@ -1089,7 +1089,7 @@ function loadLevelEvents(commitUpdate) {
 
 			loadSection(
 				theData,
-				/<Complex>[\n\r ]*<Properties>[\n\r ]*<Collection name="CurrentIDGenerators" elementType="System.String, mscorlib">/,
+				/<Complex>[\n\r ]*<Properties>/,
 				/name="Music"( value="[^"]*")? \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
 				function(possibleEntity) {
 					var thisEntityStore = {};
