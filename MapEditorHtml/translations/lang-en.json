@@ -46,6 +46,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_108": "Feature Toggles",
 	"trTutorials_107": "Fog of War",
 	"trTutorials_106": "Chinese Translations &amp; Accurate Entities",
 	"trTutorials_105": "Oil Sources",
@@ -104,8 +105,8 @@
 
 	"trInfoBrushSize": "Brush Size",
 
-	"trInfoBrushesSelectTer": "Ter",
-	"trInfoBrushesSelectObj": "Obj",
+	"trInfoBrushesSelectTer": "Terrain",
+	"trInfoBrushesSelectObj": "Objects",
 	"trInfoBrushesSelectFog": "Fog",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
