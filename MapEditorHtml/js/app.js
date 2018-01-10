@@ -1621,7 +1621,8 @@ $(document).ready(function() {
 				// get binary data as a response
 				var blob = this.response;
 
-				loadDataFromFile(blob);
+				var fileOfBlob = new File([blob], fileName + '.zxsav');
+				loadDataFromFile(fileOfBlob);
 			}
 		};
 
