@@ -1142,7 +1142,7 @@ function loadLevelEvents(commitUpdate) {
 }
 
 function loadFastEntities(commitUpdate) {
-	return;
+	if(!window.enableEditorFastEntities) return;
 
 	var fastEnts = {};
 

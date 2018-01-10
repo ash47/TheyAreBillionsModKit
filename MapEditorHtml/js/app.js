@@ -10,6 +10,8 @@ window.enableEditorEvents = true;
 window.enableEditorMapProps = true;
 window.enableEditorInfo = true;
 
+window.enableEditorFastEntities = false;
+
 // Turn features on and off, what a sad world that we have to even have this
 window.updateSelectedFeatures = function() {
 	window.enableEditorTerrain = $('#featureToggleTerrain').is(':checked');
