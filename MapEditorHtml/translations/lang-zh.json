@@ -51,6 +51,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_109": "实体工具",
 	"trTutorials_108": "功能切换",
 	"trTutorials_107": "战争迷雾",
 	"trTutorials_106": "中文翻译与准确实体",
@@ -100,6 +101,7 @@
 
 	"trBtnToolPaint": "绘画工具",
 	"trBtnToolSelection": "选择工具",
+	"trBtnToolEntity": "实体工具",
 
 	"trInfoBrushes": "刷子",
 
@@ -131,6 +133,9 @@
 
 	"trBtnBrushTypeFoWAdd": "增加战争迷雾",
 	"trBtnBrushTypeFoWRemove": "去除战争迷雾",
+
+	"trInfoEntityTool": "实体工具",
+	"trBtnSelectEntity": "选择实体...",
 
 	"trBtnOldSaveLoad": "载入",
 	"trBtnOldSaveDelete": "删除",
