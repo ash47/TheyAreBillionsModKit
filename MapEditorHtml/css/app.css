@@ -300,3 +300,7 @@
 #selectEntityBrushMain li {
 	margin-bottom: 4px;
 }
+
+.rotateEntity {
+	/*transform: rotate(45deg);*/
+}

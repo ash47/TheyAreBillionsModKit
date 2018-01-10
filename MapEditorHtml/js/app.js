@@ -331,6 +331,7 @@ $(document).ready(function() {
 			// Remove classes
 			$('#mainContainer').removeClass('paintToolActivated');
 			$('#mainContainer').removeClass('selectionToolActivated');
+			$('#mainContainer').removeClass('entityToolActivated');
 
 			switch(toolName) {
 				case 'setToolMapPainter':

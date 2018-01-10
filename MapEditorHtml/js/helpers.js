@@ -398,6 +398,10 @@ function getEntityOffsets(ent) {
 				break;
 			}
 
+			if(ent.__entityType == 'ZX.Components.CUnitGenerator') {
+				
+			}
+
 			return {
 				width: scaleWidth,
 				height: scaleHeight,
@@ -446,6 +450,8 @@ function addVisualEnt(ent) {
 	posX = posX * window.pixelSize;
 	posY = posY * window.pixelSize;
 
+	var entName = (ent.__entityType || 'unknown').split(',')[0];
+
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
 		mousedown: function() {
@@ -467,8 +473,12 @@ function addVisualEnt(ent) {
 		.appendTo($('#mapDisplayHolder'))
 		.append($('<span>', {
 			class: 'mapEntityText',
-			text: (ent.__entityType || 'unknown').split(',')[0]
+			text: entName
 		}));
+
+	if(entName == 'ZX.Components.CUnitGenerator') {
+		ent.lastContainer.addClass('rotateEntity');
+	}
 
 	// Should we hide it?
 	if(ent.shouldHide) {
