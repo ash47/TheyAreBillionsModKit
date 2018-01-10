@@ -47,6 +47,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_109": "Entity Tool",
 	"trTutorials_108": "Feature Toggles",
 	"trTutorials_107": "Fog of War",
 	"trTutorials_106": "Chinese Translations &amp; Accurate Entities",
@@ -212,6 +213,8 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_109_01": "Added entity tool which lets you add new entities onto the map.",
 
 	"trChangeLogBody_108_01": "Added feature toggles.",
 
