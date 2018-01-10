@@ -3,11 +3,63 @@
 }
 
 .loadingDisplay {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+
+	background: #fff7ee;
+
 	display: none;
+
+	z-index: 9999999999;
+}
+
+.loadingDisplay div {
+	margin-top: auto;
+	margin-bottom: auto;
+	position: absolute;
+	left:0px;
+	right: 0px;
+	top: calc(50% - 48px);
+
+	text-align: center;
+	font-size: 48px;
 }
 
 .isLoading .loadingDisplay {
-	display: inline-block;
+	display: block;
+}
+
+.savingDisplay {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+
+	background: #fff7ee;
+
+	display: none;
+
+	z-index: 9999999999;
+}
+
+.savingDisplay div {
+	margin-top: auto;
+	margin-bottom: auto;
+	position: absolute;
+	left:0px;
+	right: 0px;
+	top: calc(50% - 48px);
+
+	text-align: center;
+	font-size: 48px;
+}
+
+.isSaving .savingDisplay {
+	display: block;
 }
 
 #previousMapStore button {
@@ -127,14 +179,6 @@
 	text-align: center;
 }
 
-#isSaving {
-	display: none;
-}
-
-.isSaving #isSaving {
-	display: inline-block;
-}
-
 #file {
 	display: none;
 }
@@ -223,4 +267,6 @@
 
 .layerSelectionGroup button {
 	width: auto !important;
+	padding-left: 2px !important;
+	padding-right: 2px !important;
 }

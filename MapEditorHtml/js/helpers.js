@@ -776,11 +776,12 @@ function loadLevelExtraEntites(commitUpdate) {
 							if(hiddenFields[propertyName]) continue;
 
 							var theValue = thisEntity[propertyName];
-							if(theValue == null || theValue == "") {
+							theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+							/*if(theValue == null || theValue == "") {
 								theValue = '<Null name="' + propertyName + '" />';
 							} else {
 								theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
-							}
+							}*/
 
 							// Replace the property
 							thisXML = thisXML.replace(
@@ -790,13 +791,13 @@ function loadLevelExtraEntites(commitUpdate) {
 						}
 
 						// EntityId again
-						thisXML = replaceEntityProperty(
+						/*thisXML = replaceEntityProperty(
 							thisXML,
 							true,
 							/<Simple name="ID" value="[^"]*" \/>/,
 							null,
 							'<Simple name="ID" value="' + newEntityId + '" />'
-						);
+						);*/
 
 						// Add the XML
 						theOutput += thisXML;
@@ -885,8 +886,6 @@ function loadLevelEntities(commitUpdate) {
 				var theOutput = '';
 				theOutput += '<Dictionary name="LevelEntities" keyType="System.UInt64, mscorlib" valueType="DXVision.DXEntity, DXVision">\n';
 				theOutput += '<Items>\n';
-
-				window.totalEntities = 0;
 				
 				for(var entityType in window.layerStore.entities) {
 					var allEntitiesOfThisType = window.layerStore.entities[entityType];
@@ -1020,7 +1019,7 @@ function loadLevelEvents(commitUpdate) {
 	var res = loadSection(
 		window.activeMap.Data,
 		'<Collection name="LevelEvents" elementType="ZX.GameSystems.ZXLevelEvent, TheyAreBillions">',
-		'</Collection>', function(theData) {
+		/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Items>[\n\r ]*<\/Collection>/, function(theData) {
 			if(commitUpdate) {
 				var events = window.layerStore.events || [];
 
@@ -1039,62 +1038,45 @@ function loadLevelEvents(commitUpdate) {
 					}
 				};
 
+				var totalEvents = 0;
+
 				for(var i=0; i<events.length; ++i) {
-					var event = events[i]
+						var thisEntity = events[i];
+						var thisXML = thisEntity.rawXML;
 
-					theOutput += '<Complex>\n';
-					theOutput += '<Properties>\n';
+						var newEntityId = ++totalEvents;
 
-					theOutput += entProp(event, 'CurrentIDGenerators');
-					theOutput += entProp(event, 'Created');
+						// Normal properties
+						for(propertyName in thisEntity) {
+							// Ignore these properties
+							if(hiddenFields[propertyName]) continue;
 
-					theOutput += '<Complex name="Random">\n';
-					theOutput += '<Properties>\n';
-					theOutput += entProp(event, 'Mt');
-					theOutput += '</Properties>\n';
-					theOutput += '</Complex>\n';
+							var theValue = thisEntity[propertyName];
+							if(theValue == null || theValue == "") {
+								theValue = '<Null name="' + propertyName + '" />';
+							} else {
+								theValue = '<Simple name="' + propertyName + '" value="' + theValue + '" />';
+							}
 
-					theOutput += entProp(event, 'NTimesTriggered');
-					theOutput += entProp(event, 'StartTimeH');
-					theOutput += entProp(event, 'GameTimeH');
-					theOutput += entProp(event, 'RepeatTimeH');
-					theOutput += entProp(event, 'GameTimeRandomOffsetH');
-					theOutput += entProp(event, 'StartNotifyTimeH');
-					theOutput += entProp(event, 'TimeToNotifyInAdvanceH');
-					theOutput += entProp(event, 'NTimesNotified');
-					theOutput += entProp(event, 'Repeteable');
-					theOutput += '<Simple name="ID" value="' + (i+1) + '" />\n';
-					theOutput += entProp(event, 'LevelName');
-					theOutput += entProp(event, 'MaxRepetitions');
-					theOutput += entProp(event, 'Message');
-					theOutput += entProp(event, 'FinalSwarm');
-					theOutput += entProp(event, 'FactorUnitsNumberPerRepetition');
-					theOutput += entProp(event, 'MaxFactorUnitsNumberPerRepetition');
-					theOutput += entProp(event, 'AutoNotifyPlayer');
-					theOutput += entProp(event, 'ShowCountdown');
-					theOutput += entProp(event, 'ShowMiniMapIndicator');
-					theOutput += entProp(event, 'GameOver');
-					theOutput += entProp(event, 'GameWon');
-					theOutput += entProp(event, 'Generators');
-					theOutput += entProp(event, 'AttackCommandCenter');
-					theOutput += entProp(event, 'AllInfectedToCommandCenter');
-					theOutput += entProp(event, 'MaxCellDispersionGeneration');
-					theOutput += entProp(event, 'EntityType1');
-					theOutput += entProp(event, 'EntityType2');
-					theOutput += entProp(event, 'EntityType3');
-					theOutput += entProp(event, 'EntityType4');
-					theOutput += entProp(event, 'EntityType5');
-					theOutput += entProp(event, 'EntityType6');
-					theOutput += entProp(event, 'EntityType7');
-					theOutput += entProp(event, 'EntityType8');
-					theOutput += entProp(event, 'EntityType9');
-					theOutput += entProp(event, 'EntityType10');
-					theOutput += entProp(event, 'Music');
+							// Replace the property
+							thisXML = thisXML.replace(
+								new RegExp('<Simple name="' + propertyName + '" value="[^"]*" \/>'),
+								theValue
+							);
+						}
 
-					theOutput += '</Properties>\n'
-					theOutput += '</Complex>\n';
-				}
-				
+						// EntityId again
+						thisXML = replaceEntityProperty(
+							thisXML,
+							true,
+							/<Simple name="ID" value="[^"]*" \/>/,
+							null,
+							'<Simple name="ID" value="' + newEntityId + '" />'
+						);
+
+						// Add the XML
+						theOutput += thisXML;
+					}
 
 				theOutput += '</Items>\n';
 				theOutput += '</Collection>\n';
@@ -1102,76 +1084,53 @@ function loadLevelEvents(commitUpdate) {
 				return theOutput;
 			}
 
-			var possibleEvents = theData.split('<Complex>');
-
-			// First one has no events in it
-
 			var allEvents = [];
 
-			for(var i=1; i<possibleEvents.length; ++i) {
-				var possibleEvent = possibleEvents[i];
+			loadSection(
+				theData,
+				/<Complex>[\n\r ]*<Properties>/,
+				/name="Music"( value="[^"]*")? \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
+				function(possibleEntity) {
+					var thisEntityStore = {};
+					allEvents.push(thisEntityStore);
 
-				var thisEventStore = {
-					CurrentIDGenerators: '',
-					Created: '',
-					Mt: '',
-					NTimesTriggered: '',
-					StartTimeH: '',
-					GameTimeH: '',
-					RepeatTimeH: '',
-					GameTimeRandomOffsetH: '',
-					StartNotifyTimeH: '',
-					TimeToNotifyInAdvanceH: '',
-					NTimesNotified: '',
-					Repeteable: '',
-					LevelName: '',
-					MaxRepetitions: '',
-					Message: '',
-					FinalSwarm: '',
-					FactorUnitsNumberPerRepetition: '',
-					MaxFactorUnitsNumberPerRepetition: '',
-					AutoNotifyPlayer: '',
-					ShowCountdown: '',
-					ShowMiniMapIndicator: '',
-					GameOver: '',
-					GameWon: '',
-					Generators: '',
-					AttackCommandCenter: '',
-					AllInfectedToCommandCenter: '',
-					MaxCellDispersionGeneration: '',
-					EntityType1: '',
-					EntityType2: '',
-					EntityType3: '',
-					EntityType4: '',
-					EntityType5: '',
-					EntityType6: '',
-					EntityType7: '',
-					EntityType8: '',
-					EntityType9: '',
-					EntityType10: '',
-					Music: ''
-				};
-				allEvents.push(thisEventStore);
+					var blackListedProps = {};
 
-				var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
-				var theMatch;
-				while((theMatch = propertyExtractor.exec(possibleEvent)) != null) {
-					if(theMatch.length < 3) continue;
+					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+					var theMatch;
+					while((theMatch = propertyExtractor.exec(possibleEntity)) != null) {
+						if(theMatch.length < 3) continue;
 
-					// Grab stuff
-					var propertyName = theMatch[1];
-					var propertyValue = theMatch[2];
+						// Grab stuff
+						var propertyName = theMatch[1];
+						var propertyValue = theMatch[2];
 
-					// Store it
-					thisEventStore[propertyName] = propertyValue;
-				}
+						// Is this blacklisted?
+						if(blackListedProps[propertyName]) continue;
 
-				// Hide it
-				thisEventStore.shouldHide = true;
+						// Have we already collected this prop?
+						if(thisEntityStore[propertyName] != null) {
+							// We are not touching this prop
+							delete thisEntityStore[propertyName];
+							blackListedProps[propertyName] = true;
+							continue;
+						}
 
-				// Add a reference to the store
-				thisEventStore.__theStore = allEvents;
-			}
+						// Store it
+						thisEntityStore[propertyName] = propertyValue;
+					}
+
+					// Add raw xml
+					thisEntityStore.rawXML = possibleEntity;
+
+					// Hide it
+					thisEntityStore.shouldHide = true;
+
+					// Add a reference to the store
+					thisEntityStore.__theStore = allEvents;
+				},
+				true, true
+			);
 
 			// Store it
 			window.layerStore.events = allEvents;
@@ -1183,7 +1142,7 @@ function loadLevelEvents(commitUpdate) {
 }
 
 function loadFastEntities(commitUpdate) {
-	return;
+	if(!window.enableEditorFastEntities) return;
 
 	var fastEnts = {};
 

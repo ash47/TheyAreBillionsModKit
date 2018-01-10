@@ -29,12 +29,32 @@
 <body>
 
 <div id="mainContainer">
+	<div class="loadingDisplay">
+		<div>
+			<span data-translate="trHintLoading">
+				Loading...
+			</span><br>
+			<span id="loadingPercentage">
+				percentage
+			</span>
+		</div>
+	</div>
+
+	<div class="savingDisplay">
+		<div>
+			<span data-translate="trHintSaving">
+				Saving...
+			</span><br>
+			<span id="savingPercentage">percentage</span>
+		</div>
+	</div>
+
 	<div id="headingContainer">
 		<div class="instructions">
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.07
+				</span> | v1.08
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -136,17 +156,85 @@
 			</div>
 		</div>
 
+		<div class="instructions">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span data-translate="trFeatureToggleHeader">
+							Select Features
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li data-translate="trFeatureToggleInfo1">
+							The devs of the game have once again broken the level editor. (likely on purpose)
+						</li>
+						<li data-translate="trFeatureToggleInfo2">
+							To combat the this editor being constantly broken, we have added the option to enable and disable editor features.
+						</li>
+						<li data-translate="trFeatureToggleInfo3">
+							You should only enable the features you intend to actually use, this way the editor won't modify every part of the game file, and you can avoid editing things that are currently broken.
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleTerrain" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleTerrain" data-translate="featureToggleTerrain">Allow Terrain Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleObject" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleObject" data-translate="featureToggleObject">Allow Object Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleFog" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleFog" data-translate="featureToggleFog">Allow Fog?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleEntities" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleEntities" data-translate="featureToggleEntities">Allow Entity Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleExtraEntities" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleExtraEntities" data-translate="featureToggleExtraEntities">Allow Oil Source Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleEventsEditor" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleEventsEditor" data-translate="featureToggleEventsEditor">Allow Events Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleMapProps" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleMapProps" data-translate="featureToggleMapProps">Allow Map Props Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2017/01/09</span>
+						</li>
+						<!--<li>
+							<input type="checkbox" id="featureToggleMapInfo" onchange="window.updateSelectedFeatures()">
+							<label for="featureToggleMapInfo" data-translate="featureToggleMapInfo">Allow Map Info Editing?</label>
+							<span data-translate="trBrokenAsOf">Broken as of</span>
+							<span>2017/01/09</span>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+
 		<input type="file" id="file" name="file" accept=".zxsav" />
 		<button class="btn btn-primary" onclick="$('#file').click();">
 			<span data-translate="trBtnLoadSaveFile">
 				Load Save File
 			</span>
 		</button>
-		<div class="loadingDisplay">
-			<span data-translate="trHintLoading">
-				Loading...
-			</span>
-		</div>
 
 		<div class="instructions">
 			<br>
@@ -160,6 +248,13 @@
 				</div>
 				<div class="panel-body">
 					<ul>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
+								<span data-translate="trTemplate384">
+									384x384 Template
+								</span>
+							</button>
+						</li>
 						<li>
 							<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">
 								<span data-translate="trTemplate512">
@@ -205,6 +300,14 @@
 				</div>
 				<div class="panel-body">
 					<ul>
+						<li>
+							<a href="https://youtu.be/BW833qNArPY">
+								<b>(v1.08)</b>
+								<span data-translate="trTutorials_108">
+									Feature Toggles
+								</span>
+							</a>
+						</li>
 						<li>
 							<a href="https://www.youtube.com/watch?v=S_RWXMb5xrg&feature=youtu.be" target="_blank">
 								<b>(v1.07)</b>
@@ -352,6 +455,19 @@
 				</div>
 				<div class="panel-body">
 					<ul>
+						<!-- v1.08 -->
+						<li>
+							<b>(v1.08)</b>
+							<ul>
+								<li>
+									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_108_01">
+										Added feature toggles.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.07 -->
 						<li>
 							<b>(v1.07)</b>
@@ -558,9 +674,6 @@
 					Save Changes
 				</span>
 			</button>
-			<span id="isSaving" data-translate="trHintSaving">
-				Saving...
-			</span>
 			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
 				<span data-translate="trBtnExportZXSav">
 					Export .zxsav

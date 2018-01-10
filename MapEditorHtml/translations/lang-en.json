@@ -21,7 +21,25 @@
 	"trExplainHowBody3": "Save files can be found in \"My Documents\" --&gt; \"My Games\" --&gt; \"They Are Billions\" --&gt; \"Saves\".",
 	"trExplainHowBody4": "Select one of the \".zxsav\" files to begin the editing process.",
 
+	"trFeatureToggleHeader": "Select Features",
+	"trFeatureToggleInfo1": "The devs of the game have once again broken the level editor. (likely on purpose)",
+	"trFeatureToggleInfo2": "To combat the this editor being constantly broken, we have added the option to enable and disable editor features.",
+	"trFeatureToggleInfo3": "You should only enable the features you intend to actually use, this way the editor won't modify every part of the game file, and you can avoid editing things that are currently broken.",
+
+	"featureToggleTerrain": "Allow Terrain Editing?",
+	"featureToggleObject": "Allow Object Editing?",
+	"featureToggleFog": "Allow Fog Editing?",
+	"featureToggleEntities": "Allow Entity Editing?",
+	"featureToggleExtraEntities": "Allow Oil Source Editing?",
+	"featureToggleEventsEditor": "Allow Events Editing?",
+	"featureToggleMapProps": "Allow Map Properties Editing?",
+	"featureToggleMapInfo": "Allow Map Info Editing?",
+
+	"trWorkingAsOf": "Working as of",
+	"trBrokenAsOf": "Broken as of",
+
 	"trTemplateMapsHeader": "Template Maps",
+	"trTemplate384": "384x384 Template",
 	"trTemplate512": "512x512 Template",
 
 	"trRecentMapsHeader": "Recently Edited Maps",
@@ -29,6 +47,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_108": "Feature Toggles",
 	"trTutorials_107": "Fog of War",
 	"trTutorials_106": "Chinese Translations &amp; Accurate Entities",
 	"trTutorials_105": "Oil Sources",
@@ -87,9 +106,9 @@
 
 	"trInfoBrushSize": "Brush Size",
 
-	"trInfoBrushesSelectTer": "Ter",
-	"trInfoBrushesSelectTer": "Obj",
-	"trInfoBrushesSelectTer": "Fog",
+	"trInfoBrushesSelectTer": "Terrain",
+	"trInfoBrushesSelectObj": "Objects",
+	"trInfoBrushesSelectFog": "Fog",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
@@ -188,6 +207,8 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_108_01": "Added feature toggles.",
 
 	"trChangeLogBody_107_01": "Added Fog of War Editor.",
 	"trChangeLogBody_107_02": "Changed layout of brushes into seperate sections to save space.",
