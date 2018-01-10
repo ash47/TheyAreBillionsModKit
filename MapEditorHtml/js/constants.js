@@ -284,6 +284,7 @@ var hiddenFields = {
 
 var enum_toolPaint = 1;
 var enum_toolSelection = 2;
+var enum_toolEntity = 3;
 
 var enum_brushSingle = 1;
 var enum_brushLine = 2;

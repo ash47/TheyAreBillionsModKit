@@ -869,6 +869,53 @@ function loadLevelExtraEntites(commitUpdate) {
 	}
 }
 
+// Extracts the info from an entity
+window.extractEntityInfo = function(thisItemData) {
+	var entityType = (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1] || 'Unknown';
+
+	/*var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
+	var possibleEntityId = findEntityId.exec(thisItemData);
+	if(possibleEntityId == null || possibleEntityId.length != 2) return;
+	var entityId = possibleEntityId[1];*/
+
+	var thisEntityStore = {};
+
+	var blackListedProps = {};
+
+	var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+	var theMatch;
+	while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
+		if(theMatch.length < 3) continue;
+
+		// Grab stuff
+		var propertyName = theMatch[1];
+		var propertyValue = theMatch[2];
+
+		// Is this blacklisted?
+		if(blackListedProps[propertyName]) continue;
+
+		// Have we already collected this prop?
+		if(thisEntityStore[propertyName] != null) {
+			// We are not touching this prop
+			delete thisEntityStore[propertyName];
+			blackListedProps[propertyName] = true;
+			continue;
+		}
+
+		// Store it
+		thisEntityStore[propertyName] = propertyValue;
+	}
+
+	// Add raw xml
+	thisEntityStore.rawXML = thisItemData;
+
+	// Store the entity type
+	thisEntityStore.__entityType = entityType;
+
+	// Return it
+	return thisEntityStore;
+}
+
 // Allows entities in the level to be edited
 function loadLevelEntities(commitUpdate) {
 	// Find the part we need to edit
@@ -953,49 +1000,11 @@ function loadLevelEntities(commitUpdate) {
 				function(thisItemData) {
 					// Return an empty string from here to delete the entity!
 
-					var entityType = (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1] || 'Unknown';
+					var thisEntityStore = window.extractEntityInfo(thisItemData);
 
+					var entityType = thisEntityStore.__entityType;
 					allEntities[entityType] = allEntities[entityType] || [];
-
-					/*var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
-					var possibleEntityId = findEntityId.exec(thisItemData);
-					if(possibleEntityId == null || possibleEntityId.length != 2) return;
-					var entityId = possibleEntityId[1];*/
-
-					var thisEntityStore = {};
 					allEntities[entityType].push(thisEntityStore);
-
-					var blackListedProps = {};
-
-					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
-					var theMatch;
-					while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
-						if(theMatch.length < 3) continue;
-
-						// Grab stuff
-						var propertyName = theMatch[1];
-						var propertyValue = theMatch[2];
-
-						// Is this blacklisted?
-						if(blackListedProps[propertyName]) continue;
-
-						// Have we already collected this prop?
-						if(thisEntityStore[propertyName] != null) {
-							// We are not touching this prop
-							delete thisEntityStore[propertyName];
-							blackListedProps[propertyName] = true;
-							continue;
-						}
-
-						// Store it
-						thisEntityStore[propertyName] = propertyValue;
-					}
-
-					// Add raw xml
-					thisEntityStore.rawXML = thisItemData;
-
-					// Store the entity type
-					thisEntityStore.__entityType = entityType;
 
 					// Hidden by default
 					thisEntityStore.shouldHide = true;

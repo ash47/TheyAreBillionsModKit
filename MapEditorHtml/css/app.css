@@ -196,6 +196,15 @@
 	border: 1px solid #000;
 	border-radius: 1px;
 	position: absolute;
+	display: none;
+}
+
+.paintToolActivated #mousePreview {
+	display: block;
+}
+
+.entityToolActivated #mousePreview {
+	display: block;
 }
 
 #brushSize, #mapZoom {
@@ -255,6 +264,14 @@
 	display: block;
 }
 
+.requireEntityTool {
+	display: none;
+}
+
+.entityToolActivated .requireEntityTool {
+	display: block;
+}
+
 .mapNameInput {
 	display: none;
 	/*display: inline-block;*/
@@ -269,4 +286,17 @@
 	width: auto !important;
 	padding-left: 2px !important;
 	padding-right: 2px !important;
+}
+
+#selectEntityBrushMain {
+	height: 480px;
+	overflow-y: scroll;
+}
+
+#selectEntityBrushMain ul {
+	list-style-type: none;
+}
+
+#selectEntityBrushMain li {
+	margin-bottom: 4px;
 }

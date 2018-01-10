@@ -98,6 +98,7 @@
 
 	"trBtnToolPaint": "Paint Tool",
 	"trBtnToolSelection": "Selection Tool",
+	"trBtnToolEntity": "Entity Tool",
 
 	"trInfoBrushes": "Brushes",
 
@@ -128,6 +129,9 @@
 
 	"trBtnBrushTypeFoWAdd": "Add FoW",
 	"trBtnBrushTypeFoWRemove": "Remove FoW",
+
+	"trInfoEntityTool": "Entity Tool",
+	"trBtnSelectEntity": "Select Entity...",
 
 	"trBtnOldSaveLoad": "Load",
 	"trBtnOldSaveDelete": "Delete",
@@ -194,6 +198,7 @@
 	"trErrorRedoNothingLeft": "There is nothing left to redo.",
 	"trErrorNoEntitySelected": "Please select an entity.",
 	"trErrorNoEntityReference": "Failed to get a reference to the entity!",
+	"trErrorInvalidTemplate": "Unknown template: {{template}}",
 
 	"trSuccessEntityCloned": "Entity was successfully cloned!",
 	"trSuccessEntityDeleted": "Entity was successfully removed.",

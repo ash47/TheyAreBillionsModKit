@@ -342,6 +342,11 @@ $(document).ready(function() {
 					activePrimaryTool = enum_toolSelection;
 					$('#mainContainer').addClass('selectionToolActivated');
 				break;
+
+				case 'setToolEntity':
+					activePrimaryTool = enum_toolEntity;
+					$('#mainContainer').addClass('entityToolActivated');
+				break;
 			}
 		}
 
@@ -462,6 +467,46 @@ $(document).ready(function() {
 		updateMousePreview(true);
 	};
 
+	// Set the active entity template
+	window.setActiveTemplate = function(templateName) {
+		// Ensure the template exists
+		if(window.entityTemplates[templateName] == null) {
+			alertify.error(window.getTranslation(
+				'trErrorInvalidTemplate',
+				'Unknown template: {{template}}', {
+					template: templateName
+				}
+			));
+			return;
+		}
+
+		// Store the new active template
+		window.activeTemplate = templateName;
+
+		// Data on the currently active template
+		window.activeTemplateData = window.extractEntityInfo(
+			window.entityTemplates[templateName]
+		);
+
+		// Calculate offsets
+		window.activeTemplateSizeInfo = getEntityOffsets(window.activeTemplateData);
+
+		// Update the mouse preview
+		window.updateMousePreview(true);
+
+		$('#activeEntityGoesHere').text(window.getTranslation(
+			'trEntitySelected_' + (templateName).replace(/ /g, ''),
+			templateName
+		));
+	};
+
+	// Prompt to select which entity
+	window.promptSelectActiveTemplate = function() {
+		alertify.genericDialog(
+			$('#selectEntityBrushMain')[0]
+		);
+	};
+
 	// Updates which layers are visible
 	window.updateLayerToggles = function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
@@ -529,17 +574,33 @@ $(document).ready(function() {
 	window.updateMousePreview = function(updateSize) {
 		var previewCon = $('#mousePreview');
 
-		if(updateSize) {
-			var theSize = window.brushSize * window.pixelSize;
+		var theOffsetX = 0;
+		var theOffsetY = 0;
 
-			previewCon.width(theSize);
-			previewCon.height(theSize);
+		if(activePrimaryTool == enum_toolPaint) {
+			theOffsetX = Math.floor( (window.brushSize - 1) / 2);
+			theOffsetY = theOffsetX;
+
+			if(updateSize) {
+				var theSize = window.brushSize * window.pixelSize;
+
+				previewCon.width(theSize);
+				previewCon.height(theSize);
+			}
 		}
 
-		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+		if(activePrimaryTool == enum_toolEntity) {
+			if(updateSize) {
+				previewCon.width(window.activeTemplateSizeInfo.width * window.pixelSize);
+				previewCon.height(window.activeTemplateSizeInfo.height * window.pixelSize);
+			}
+
+			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
+			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
+		}
 		
-		previewCon.css('left', (prevX - theOffset) * window.pixelSize);
-		previewCon.css('top', (prevY - theOffset) * window.pixelSize);
+		previewCon.css('left', (prevX - theOffsetX) * window.pixelSize);
+		previewCon.css('top', (prevY - theOffsetY) * window.pixelSize);
 
 		// Update the position text
 		if(prevX != null && prevY != null) {
@@ -578,6 +639,44 @@ $(document).ready(function() {
   				// Run the callback
 				clickPixel(mouseX, mouseY);
   			}
+  		}
+
+  		// Entiy placement
+  		if(activePrimaryTool == enum_toolEntity) {
+  			var templateName = window.activeTemplate;
+
+  			// Create the new entity
+  			var newEntity = window.extractEntityInfo(
+				window.entityTemplates[templateName]
+			);
+
+			var entityType = newEntity.__entityType;
+
+			// Do we have a store for this entity?
+			if(window.layerStore.entities[entityType] == null) {
+				window.layerStore.entities[entityType] = [];
+			}
+
+			// Store the new entity
+			window.layerStore.entities[entityType].push(newEntity);
+			newEntity.__theStore = window.layerStore.entities[entityType];
+
+			// Get the position of the entity
+			var x = (activeLayer.width - prevX - 1);
+  			var entPos = '' + prevY + ';' + x;
+  			newEntity.Position = entPos;
+
+  			// We should show this entity
+  			newEntity.shouldHide = false;
+
+  			// Visually create it
+  			addVisualEnt(newEntity);
+
+  			// View this entity
+  			window.viewEntityProps(newEntity);
+
+  			// Update entity menu
+  			window.updateEntityMenu();
   		}
 	}).mouseup(function(e) {
 		// Mouse is no longer down
@@ -805,6 +904,8 @@ $(document).ready(function() {
 			window.setTool('primaryTool', 'setToolMapPainter');
 			window.setTool('brushType', 'setToolMapPainterSingle');
 			window.setTool('brushColor', 'toolTerrainEarth');
+
+			window.setActiveTemplate('ZX.Entities.StoneHouse');
 
 			// Update what is displayed
 			window.updateLayerToggles();

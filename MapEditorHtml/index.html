@@ -12,12 +12,14 @@
 	<script src="js/constants.js"></script>
 	<script src="js/entitySizes.js"></script>
 	<script src="js/helpers.js"></script>
+	<script src="js/util.js"></script>
 	<script src="js/buffer.js"></script>
 	<script src="js/FileSaver.min.js"></script>
 	<script src="js/localStorageDB.min.js"></script>
 	<script src="js/editabletable.js"></script>
 	<script src="js/clipboard.min.js"></script>
 	<script src="js/translate.js"></script>
+	<script src="js/allents.js"></script>
 	<script src="js/app.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
@@ -693,7 +695,7 @@
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
 		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
-		<canvas id="mousePreview" class="requirePaintTool"></canvas>
+		<canvas id="mousePreview"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -824,6 +826,13 @@
 				<button id="btn_setToolSelection" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolSelection')">
 					<span data-translate="trBtnToolSelection">
 						Selection Tool
+					</span>
+				</button>
+			</li>
+			<li>
+				<button id="btn_setToolEntity" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolEntity')">
+					<span data-translate="trBtnToolEntity">
+						Entity Tool
 					</span>
 				</button>
 			</li>
@@ -1003,7 +1012,31 @@
 					</button>
 				</li>
 			</div>
+			<div class="requireEntityTool">
+				<li>
+					<b>
+						<span data-translate="trInfoEntityTool">
+							Entity Tool
+						</span>
+					</b>
+				</li>
+				<li>
+					<button class="btn btn-primary" onclick="window.promptSelectActiveTemplate();">
+						<span id="activeEntityGoesHere" data-translate="trBtnSelectEntity">
+							Select Entity...
+						</span>
+					</button>
+				</li>
+			</div>
 		</ul>
+	</div>
+</div>
+
+<div style="display: none;">
+	<div id="selectEntityBrushMain">
+	    <ul id="selectEntityBrushList">
+	    	<!-- auto populated -->
+	    </ul>
 	</div>
 </div>
 
