@@ -77,7 +77,7 @@ function loadSection(xmlData, startPoint, endPoint, editFunction, loopMatches, i
 
 var allEnts = {};
 
-var theData = '' + fs.readFileSync('allents.xml');
+var theData = '' + fs.readFileSync('Data');
 
 
 loadSection(
