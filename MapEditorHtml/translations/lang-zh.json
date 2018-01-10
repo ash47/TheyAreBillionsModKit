@@ -26,8 +26,8 @@
 	"trHelpBody2": "你可以在 <a href=\"https://www.reddit.com/r/TheyAreBillionsModded/\" target=\"_blank\">https://www.reddit.com/r/TheyAreBillionsModded/</a> 上发帖",
 
 	"trFeatureToggleHeader": "选择功能",
-	"trFeatureToggleInfo1": "游戏的开发者再次打破了关卡编辑。 （可能是故意的）",
-	"trFeatureToggleInfo2": "为了对抗这个不断被破坏的编辑器，我们添加了启用和禁用编辑器功能的选项。",
+	"trFeatureToggleInfo1": "游戏的开发者又一次让存档编辑器失效了。 （可能是故意的）",
+	"trFeatureToggleInfo2": "为了应对这个不断被破坏的编辑器，我们添加了启用和禁用编辑器功能的选项。",
 	"trFeatureToggleInfo3": "您只应启用您打算实际使用的功能，这样编辑器将不会修改游戏文件的每个部分，并且可以避免编辑当前被破坏的内容。",
 
 	"featureToggleTerrain": "允许地形编辑?",
@@ -39,7 +39,7 @@
 	"featureToggleMapProps": "允许地图属性编辑?",
 	"featureToggleMapInfo": "允许地图信息编辑?",
 
-	"trWorkingAsOf": "工作",
+	"trWorkingAsOf": "完成于",
 	"trBrokenAsOf": "破碎的",
 
 	"trTemplateMapsHeader": "模板地图",
@@ -110,11 +110,11 @@
 
 	"trInfoBrushesSelectTer": "地形",
 	"trInfoBrushesSelectObj": "对象",
-	"trInfoBrushesSelectFog": "战争迷雾",
+	"trInfoBrushesSelectFog": "迷雾",
 
 	"trInfoBrushesTerrain": "地形层",
 	"trInfoBrushesObject": "地形层",
-	"trInfoBrushesFoW": "战争的雾层",
+	"trInfoBrushesFoW": "战争迷雾层",
 
 	"trBtnBrushTypeEarth": "泥土",
 	"trBtnBrushTypeWater": "湖泊",
@@ -208,6 +208,12 @@
 	"trNewFeature": "新功能",
 	"trPolish": "美化",
 	"trBugFix": "修复",
+	
+	"trChangeLogBody_108_01": "增加了功能的开关.",
+	
+	"trChangeLogBody_107_01": "增加了战争迷雾编辑器.",
+	"trChangeLogBody_107_02": "修改笔刷的布局以节省空间.",
+	"trChangeLogBody_107_03": "修复石油编辑器的一个问题.",
 
 	"trChangeLogBody_106_01": "增加了中文翻译文件.",
 	"trChangeLogBody_106_02": "使UI更漂亮.",
