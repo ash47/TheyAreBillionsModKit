@@ -292,7 +292,8 @@ var unitColorMap = {
 };
 
 var hiddenMapProps = {
-	ThemeType: true
+	ThemeType: true,
+	_mapName: true
 };
 
 var enum_toolPaint = 1;

@@ -684,6 +684,7 @@ function loadMapProps(commitUpdate) {
 		'Difficulty'
 	];
 
+	// Map Theme
 	if(commitUpdate) {
 		storage.ThemeType = $('#dropdownMapTheme').val();
 	}
@@ -691,12 +692,40 @@ function loadMapProps(commitUpdate) {
 	for(var i=0; i<toExtract.length; ++i) {
 		theData = extractOrReplaceMapProp(theData, toExtract[i], storage, commitUpdate);
 	}
+
+	// Map Name
+	var fieldName = '<Simple name="Name" value="';
+	var fieldNamePos = theData.lastIndexOf(fieldName);
+	if(fieldNamePos != -1) {
+		fieldNamePos += fieldName.length;
+
+		var endFieldPos = theData.indexOf('"', fieldNamePos);
+
+		if(commitUpdate) {
+			// Read in the new map name
+			storage._mapName = $('#inputSaveFileName').val();
+
+			if(storage._mapName != null && storage._mapName.length > 0) {
+				theData = theData.substring(0, fieldNamePos) +
+					storage._mapName +
+					theData.substring(endFieldPos);
+			}
+		} else {
+			var mapName = theData.substring(fieldNamePos, endFieldPos);
+			storage._mapName = mapName;	
+
+			// Put it into the element
+			$('#inputSaveFileName').val(mapName);
+		}
+	}
 	
 	// Do we commit?
 	if(commitUpdate) {
 		window.activeMap.Data = theData;
 	} else {
 		// We need to store stuff back into the UI
+
+		// Map Theme
 		$('#dropdownMapTheme').val(storage['ThemeType']);
 	}
 };

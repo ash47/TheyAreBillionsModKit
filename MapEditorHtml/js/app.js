@@ -291,7 +291,7 @@ $(document).ready(function() {
 	// Downloading the zxsav
 	window.downloadZXSave = function() {
 		// Do the save
-		saveAs(window.activeMap.downloadableZip, window.activeMap.name);
+		saveAs(window.activeMap.downloadableZip, window.layerStore.MapProps._mapName + '.zxsav');
 	};
 
 	// Download the checksum
@@ -299,7 +299,7 @@ $(document).ready(function() {
 		// Do the saveas
 		saveAs(
 			new Blob([window.activeMap.checksum], {type : 'text/plain'}),
-			window.activeMap.name.replace('.zxsav', '.zxcheck')
+			window.layerStore.MapProps._mapName + '.zxcheck'
 		);
 	};
 
