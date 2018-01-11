@@ -47,6 +47,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_110": "Map settings, Raw XML &amp; Delete All of this Entity",
 	"trTutorials_109": "Entity Tool",
 	"trTutorials_108": "Feature Toggles",
 	"trTutorials_107": "Fog of War",
@@ -75,6 +76,7 @@
 
 	"trBtnEntityClone": "Clone Entity",
 	"trBtnEntityDelete": "Delete Entity",
+	"trBtnEntityDeleteAll": "Delete all of this Entity",
 
 	"trHelpEntitySelection": "Select an entity to view it's properties.",
 
@@ -225,6 +227,10 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_110_01": "Added map settings editor.",
+	"trChangeLogBody_110_02": "Added delete all of an entity type.",
+	"trChangeLogBody_110_03": "Added raw XML editor option.",
 
 	"trChangeLogBody_109_01": "Added entity tool which lets you add new entities onto the map.",
 

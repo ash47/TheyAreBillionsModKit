@@ -59,7 +59,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.09
+				</span> | v1.10
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -102,15 +102,15 @@
 				</p>
 			</div>
 
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trExplainWhatHeader">
 							What is this?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trExplainWhatBody1">
@@ -126,15 +126,15 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trExplainHowHeader">
 							How do I use this?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trExplainHowBody1">
@@ -162,15 +162,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trFeatureToggleHeader">
 							Select Features
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li data-translate="trFeatureToggleInfo1">
 							The devs of the game have once again broken the level editor. (likely on purpose)
@@ -243,15 +243,15 @@
 
 		<div class="instructions">
 			<br>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trTemplateMapsHeader">
 							Template Maps
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
@@ -271,15 +271,15 @@
 				</div>
 			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trRecentMapsHeader">
 							Recently Edited Maps
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<span data-translate="trRecentMapsLimit">
 						<b>Note:</b> There is a limit of 50MB.
 					</span>
@@ -295,16 +295,24 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trTutorialsHeader">
 							Tutorials / Dev VLogs:
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
+						<li>
+							<a href="changeme">
+								<b>(v1.10)</b>
+								<span data-translate="trTutorials_109">
+									Map settings, Raw XML &amp; Delete All of this Entity
+								</span>
+							</a>
+						</li>
 						<li>
 							<a href="https://youtu.be/k4tsmJbuqRs">
 								<b>(v1.09)</b>
@@ -391,15 +399,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trHelpHeader">
 							Is there somewhere I can ask questions, or share my mods?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trHelpBody1">
@@ -417,15 +425,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trHelpTranslations">
 							Translations
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trHelpTranslations_01">
@@ -458,22 +466,47 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trChangeLogHeader">
 							Change Log
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
+						<!-- v1.10 -->
+						<li>
+							<b>(v1.10)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_01">
+										Added map settings editor.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_02">
+										Added delete all of an entity type.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_03">
+										Added raw XML editor option.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.09 -->
 						<li>
 							<b>(v1.09)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_109_01">
 										Added entity tool which lets you add new entities onto the map.
 									</span>
@@ -486,7 +519,7 @@
 							<b>(v1.08)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_108_01">
 										Added feature toggles.
 									</span>
@@ -499,19 +532,19 @@
 							<b>(v1.07)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_107_01">
 										Added Fog of War Editor.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_107_02">
 										Changed layout of brushes into seperate sections to save space.
 									</span>
 								</li>
 								<li>
-									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
 									<span data-translate="trChangeLogBody_107_03">
 										Fixed issues with oil entity editor.
 									</span>
@@ -524,25 +557,25 @@
 							<b>(v1.06)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_106_01">
 										Added Chinese translations files.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_106_02">
 										Made UI more pretty.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_106_03">
 										Improved accuracy and size of entities.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_106_04">
 										Added toggle option for entity labels.
 									</span>
@@ -555,7 +588,7 @@
 							<b>(v1.05)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_105_01">
 										Added oil source editing.
 									</span>
@@ -568,37 +601,37 @@
 							<b>(v1.04)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_01">
 										Added 512x512 template map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_02">
 										Added map properties editor.
 									</span>
 								</li>
 								<li>
-									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
 									<span data-translate="trChangeLogBody_104_03">
 										Fixed entity menu closing when deleting / cloning entities.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_04">
 										Added selection tool.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_05">
 										Added line tool.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_06">
 										Added undo &amp; redo for layers.
 									</span>
@@ -611,13 +644,13 @@
 							<b>(v1.03)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_103_01">
 										Added entity Cloning and Deleting.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_103_02">
 										Added Wave Editor to change how waves spawn.
 									</span>
@@ -630,7 +663,7 @@
 							<b>(v1.02)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_102_01">
 										Added visual entity display.
 									</span>
@@ -643,7 +676,7 @@
 							<b>(v1.01)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_101_01">
 										Added entity editor.
 									</span>
@@ -656,31 +689,31 @@
 							<b>(v1.00)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_01">
 										Added previous maps list.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_02">
 										Updated editor to be more useable (zooming, brush size, scrolling).
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_03">
 										Added the ability to export the map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_04">
 										Added the ability to edit the terrain and resources on a map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_05">
 										Added the ability to load save files.
 									</span>
@@ -743,7 +776,7 @@
 			</button>
 			<button class="btn btn-danger" onclick="window.deleteEntityWarning(true);">
 				<span data-translate="trBtnEntityDeleteAll">
-					Delete All of This Entity
+					Delete all of this Entity
 				</span>
 			</button>
 			<button class="btn btn-primary" onclick="window.editRawXML();">
