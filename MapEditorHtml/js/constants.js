@@ -282,6 +282,15 @@ var hiddenFields = {
 	__theStore: true
 };
 
+// Allow custom colors to be defined
+var unitColorMap = {
+	['ZX.Entities.CommandCenter']: {
+		red: 255,
+		blue: 255,
+		green: 255
+	}, 
+};
+
 var enum_toolPaint = 1;
 var enum_toolSelection = 2;
 var enum_toolEntity = 3;

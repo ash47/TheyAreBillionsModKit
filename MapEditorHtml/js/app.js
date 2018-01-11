@@ -559,8 +559,33 @@ $(document).ready(function() {
 		// Update brush size
 		window.updateBrushSize(true);
 
+		var mapZoomContainer = $('#mapDisplayHolder');
+
+		// Grab the current percentage
+		var currentScrollLeft = mapZoomContainer.scrollLeft();
+		var currentScrollTop = mapZoomContainer.scrollTop();
+
+		var currentScrollWidth = mapZoomContainer.prop('scrollWidth');
+		var currentScrollHeight = mapZoomContainer.prop('scrollHeight');
+
 		// Perform a full re-render
 		mapFullRender();
+
+		setTimeout(function () {
+			// Calculate new scroll height
+			var newScrollWidth = mapZoomContainer.prop('scrollWidth');
+			var newScrollHeight = mapZoomContainer.prop('scrollHeight');
+
+			console.log(currentScrollWidth, newScrollWidth)
+
+			mapZoomContainer.scrollLeft(
+				(currentScrollLeft / currentScrollWidth) * newScrollWidth
+			);
+
+			mapZoomContainer.scrollTop(
+				(currentScrollTop / currentScrollHeight) * newScrollHeight
+			);
+		}, 2);
 	};
 
 	// Update brush sizes

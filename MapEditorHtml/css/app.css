@@ -317,3 +317,7 @@
 .node-entityTree .fa-square, .node-entityTree .fa-check-square {
 	margin-right: 8px;
 }
+
+#mapSettingsEditor {
+	padding: 8px;
+}

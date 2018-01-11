@@ -434,9 +434,17 @@ function addVisualEnt(ent) {
 		ent.lastContainer.remove();
 	}
 
+	var entName = (ent.__entityType || 'unknown').split(',')[0];
+
 	var red = Math.floor(Math.random() * 255);
 	var green = Math.floor(Math.random() * 255);
 	var blue = Math.floor(Math.random() * 255);
+
+	if(unitColorMap[entName] != null) {
+		red = unitColorMap[entName].red;
+		green = unitColorMap[entName].green;
+		blue = unitColorMap[entName].blue;
+	}
 
 	var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
 	var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
@@ -449,8 +457,6 @@ function addVisualEnt(ent) {
 	// Update position to reflect the actual drawing
 	posX = posX * window.pixelSize;
 	posY = posY * window.pixelSize;
-
-	var entName = (ent.__entityType || 'unknown').split(',')[0];
 
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
@@ -678,6 +684,10 @@ function loadMapProps(commitUpdate) {
 		'Difficulty'
 	];
 
+	if(commitUpdate) {
+		storage.ThemeType = $('#dropdownMapTheme').val();
+	}
+
 	for(var i=0; i<toExtract.length; ++i) {
 		theData = extractOrReplaceMapProp(theData, toExtract[i], storage, commitUpdate);
 	}
@@ -685,6 +695,9 @@ function loadMapProps(commitUpdate) {
 	// Do we commit?
 	if(commitUpdate) {
 		window.activeMap.Data = theData;
+	} else {
+		// We need to store stuff back into the UI
+		$('#dropdownMapTheme').val(storage['ThemeType']);
 	}
 };
 

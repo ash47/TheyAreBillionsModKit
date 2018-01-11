@@ -1090,22 +1090,20 @@
 	</div>
 
 	<div id="mapSettingsEditor">
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Dropdown button
-			</button>
+		<div class="form-group">
+			<label for="dropdownMapTheme">
+				Map Theme
+			</label>
 
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				<a class="dropdown-item" href="#">
-					Action
-				</a>
-				<a class="dropdown-item" href="#">
-					Another action
-				</a>
-				<a class="dropdown-item" href="#">
-					Something else here
-				</a>
-			</div>
+			<select class="form-control" id="dropdownMapTheme">
+				<option value="BR">The Dark Moorland</option>
+				<option value="TM">The Peaceful Lowlands</option>
+				<option value="AL">The Frozen Highlands</option>
+				<option value="DS">The Desolated Wasteland</option>
+			</select>
+		</div>
+		<div>
+			<button class="btn btn-danger" onclick="alertify.closeAll();">Close</button>
 		</div>
 	</div>
 </div>
