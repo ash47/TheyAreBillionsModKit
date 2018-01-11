@@ -91,12 +91,6 @@ $(document).ready(function() {
 		}
 	};
 
-	// Updating the map title
-	window.updateSaveName = function() {
-		// Store the new title
-		window.mapInfo.title = $('#mapNameHolder').val();
-	};
-
 	// Shows the editor for map settings
 	window.editMapSettings = function() {
 		alertify.genericDialog(
@@ -1046,23 +1040,25 @@ $(document).ready(function() {
 				}
 			});
 
-			if(entityName == 'addDirect') {
-				// All of these sit directly in the main one
-				for(var i=0; i<thisEntityList.length; ++i) {
-					entityData.push(thisEntityList[i]);
+			if(thisEntityList.length > 0) {
+				if(entityName == 'addDirect') {
+					// All of these sit directly in the main one
+					for(var i=0; i<thisEntityList.length; ++i) {
+						entityData.push(thisEntityList[i]);
+					}
+				} else {
+					// Store it
+					entityData.push({
+						text: entityName,
+						selectable: false,
+						nodes: thisEntityList,
+						state: {
+							checked: childrenAreChecked,
+							expanded: shouldExpand1
+						},
+						path: [entityText, entityName]
+					});
 				}
-			} else {
-				// Store it
-				entityData.push({
-					text: entityName,
-					selectable: false,
-					nodes: thisEntityList,
-					state: {
-						checked: childrenAreChecked,
-						expanded: shouldExpand1
-					},
-					path: [entityText, entityName]
-				});
 			}
 		}
 
@@ -1402,12 +1398,14 @@ $(document).ready(function() {
 		// Tell the user it was cloned
 		alertify.success(window.getTranslation(
 			'trSuccessEntityCloned',
-			'Entity was successfully cloned!'
+			'{{entityName}} was successfully cloned!', {
+				entityName: (toClone.__entityType || 'Unknown').split(',')[0]
+			}
 		));
 	};
 
 	// Asks if the user really wants to delete the entity
-	window.deleteEntityWarning = function() {
+	window.deleteEntityWarning = function(deleteAll) {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
@@ -1418,19 +1416,33 @@ $(document).ready(function() {
 			return;
 		}
 
-		alertify.confirm(window.getTranslation(
-			'trConfirmDeleteEntity',
-			'Are you sure you want to delete this entity?'
-		), function() {
+		var msg;
+		if(deleteAll) {
+			msg = window.getTranslation(
+				'trConfirmDeleteEntityAll',
+				'Are you sure you want to delete EVERY {{entityName}}?', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			)
+		} else {
+			msg = window.getTranslation(
+				'trConfirmDeleteEntity',
+				'Are you sure you want to delete {{entityName}}?', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			)
+		}
+
+		alertify.confirm(msg, function() {
 			// Actually delete the entity
-			window.deleteEntity();
+			window.deleteEntity(deleteAll);
 		}, function() {
 			// Do nothing
 		});
 	};
 
 	// Actually deletes an entity
-	window.deleteEntity = function() {
+	window.deleteEntity = function(deleteAll) {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
@@ -1443,29 +1455,70 @@ $(document).ready(function() {
 
 		var store = toDelete.__theStore;
 
-		for(var i=0; i<store.length; ++i) {
-			if(store[i] == toDelete) {
-				// Remove the entity
-				store.splice(i, 1);
-
-				// We no longer have an active entity
-				window.viewEntityActive = null;
+		if(deleteAll) {
+			for(var i=0; i<store.length; ++i) {
+				var toDeleteNew = store[i];
 
 				// Delete the drag and drop prop
-				if(toDelete.lastContainer != null) {
-					toDelete.lastContainer.remove();
+				if(toDeleteNew.lastContainer != null) {
+					toDeleteNew.lastContainer.remove();
 				}
+			}
 
-				// Update the display
-				window.updateEntityMenu();
+			// Remove every item from the store
+			store.length = 0;
 
-				// Notify Success
-				alertify.success(window.getTranslation(
-					'trSuccessEntityDeleted',
-					'Entity was successfully removed.'
-				));
+			// We no longer have an active entity
+			window.viewEntityActive = null;
 
-				return;
+			// No table of props anymore
+			var entityProps = $('#entityProps');
+			entityProps.empty();
+
+			// Update the display
+			window.updateEntityMenu();
+
+			// Notify Success
+			alertify.success(window.getTranslation(
+				'trSuccessEntityDeletedAll',
+				'Every {{entityName}} was removed.', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			));
+
+			// All good
+			return;
+		} else {
+			for(var i=0; i<store.length; ++i) {
+				if(store[i] == toDelete) {
+					// Remove the entity
+					store.splice(i, 1);
+
+					// We no longer have an active entity
+					window.viewEntityActive = null;
+
+					// No table of props anymore
+					var entityProps = $('#entityProps');
+					entityProps.empty();
+
+					// Delete the drag and drop prop
+					if(toDelete.lastContainer != null) {
+						toDelete.lastContainer.remove();
+					}
+
+					// Update the display
+					window.updateEntityMenu();
+
+					// Notify Success
+					alertify.success(window.getTranslation(
+						'trSuccessEntityDeleted',
+						'{{entityName}} was successfully removed.', {
+							entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+						}
+					));
+
+					return;
+				}
 			}
 		}
 

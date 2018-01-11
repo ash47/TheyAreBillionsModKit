@@ -142,6 +142,16 @@
 	"trInfoMapProperties_menu_ExtraEntities": "Extra Entities",
 	"trInfoMapProperties_menu_Events": "Events",
 
+	"trBtnMapSettings": "Map Settings",
+
+	"trSettingsEditorMapName": "Map Name",
+	"trSettingsEditorMapTheme": "Map Theme",
+
+	"trThemeTheDarkMoorland": "The Dark Moorland",
+	"trThemeThePeacefulLowlands": "The Peaceful Lowlands",
+	"trThemeTheFrozenHighlands": "The Frozen Highlands",
+	"trThemeTheDesolatedWasteland": "The Desolated Wasteland",
+
 	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "Army Food Penalty Cost",
 	"trInfoMapProperties_key_ArmyGoldCost": "Army Gold Cost",
 	"trInfoMapProperties_key_Date": "Date",
@@ -201,12 +211,14 @@
 	"trErrorNoEntityReference": "Failed to get a reference to the entity!",
 	"trErrorInvalidTemplate": "Unknown template: {{template}}",
 
-	"trSuccessEntityCloned": "Entity was successfully cloned!",
-	"trSuccessEntityDeleted": "Entity was successfully removed.",
+	"trSuccessEntityCloned": "{{entityName}} was successfully cloned!",
+	"trSuccessEntityDeleted": "{{entityName}} was successfully removed.",
+	"trSuccessEntityDeletedAll": "Every {{entityName}} was successfully removed.",
 	"trSuccessEntityPropertyUpdated": "Changed \"{{propertyName}}\" to \"{{newValue}}\"",
 
 	"trConfirmDeleteMap": "Are you sure you want to delete {{mapName}}?",
-	"trConfirmDeleteEntity": "Are you sure you want to delete this entity?",
+	"trConfirmDeleteEntity": "Are you sure you want to delete {{entityName}}?",
+	"trConfirmDeleteEntityAll": "Are you sure you want to delete EVERY {{entityName}}?",
 
 	"trNewFeature": "New Feature",
 	"trPolish": "Polish",

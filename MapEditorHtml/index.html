@@ -693,8 +693,6 @@
 		</div>
 
 		<div id="saveButtons">
-			<input type="text" id="mapNameHolder" class="form-control mapNameInput" onchange="window.updateSaveName();">
-
 			<button class="btn btn-primary" onclick="window.editMapSettings()">
 				<span data-translate="trBtnMapSettings">
 					Map Settings
@@ -741,6 +739,11 @@
 			<button class="btn btn-danger" onclick="window.deleteEntityWarning();">
 				<span data-translate="trBtnEntityDelete">
 					Delete Entity
+				</span>
+			</button>
+			<button class="btn btn-danger" onclick="window.deleteEntityWarning(true);">
+				<span data-translate="trBtnEntityDeleteAll">
+					Delete All of This Entity
 				</span>
 			</button>
 			<button class="btn btn-primary" onclick="window.editRawXML();">
@@ -1092,20 +1095,32 @@
 	<div id="mapSettingsEditor">
 	<div class="form-group">
 		<label for="inputSaveFileName">
-			Map Name
+			<span data-translate="trSettingsEditorMapName">
+				Map Name
+			</span>
 		</label>
 		<input type="text" class="form-control" id="inputSaveFileName" placeholder="Enter email">
 	</div>
 		<div class="form-group">
 			<label for="dropdownMapTheme">
-				Map Theme
+				<span data-translate="trSettingsEditorMapTheme">
+					Map Theme
+				</span>
 			</label>
 
 			<select class="form-control" id="dropdownMapTheme">
-				<option value="BR">The Dark Moorland</option>
-				<option value="TM">The Peaceful Lowlands</option>
-				<option value="AL">The Frozen Highlands</option>
-				<option value="DS">The Desolated Wasteland</option>
+				<option value="BR" data-translate="trThemeTheDarkMoorland">
+					The Dark Moorland
+				</option>
+				<option value="TM" data-translate="trThemeThePeacefulLowlands">
+					The Peaceful Lowlands
+				</option>
+				<option value="AL" data-translate="trThemeTheFrozenHighlands">
+					The Frozen Highlands
+				</option>
+				<option value="DS" data-translate="trThemeTheDesolatedWasteland">
+					The Desolated Wasteland
+				</option>
 			</select>
 		</div>
 		<div>

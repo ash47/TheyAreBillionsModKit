@@ -145,6 +145,16 @@
 	"trInfoMapProperties_menu_ExtraEntities": "额外实体",
 	"trInfoMapProperties_menu_Events": "事件",
 
+	"trBtnMapSettings": "地图设置",
+
+	"trSettingsEditorMapName": "地图名称",
+	"trSettingsEditorMapTheme": "地图主题",
+
+	"trThemeTheDarkMoorland": "黑暗的荒野",
+	"trThemeThePeacefulLowlands": "和平的低地",
+	"trThemeTheFrozenHighlands": "冻结的高地",
+	"trThemeTheDesolatedWasteland": "荒废荒地",
+
 	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "军队食物消耗",
 	"trInfoMapProperties_key_ArmyGoldCost": "军队维持费用",
 	"trInfoMapProperties_key_Date": "日期",
@@ -203,12 +213,14 @@
 	"trErrorNoEntitySelected": "请选择一个实体.",
 	"trErrorNoEntityReference": "无法获得对实体的引用!",
 
-	"trSuccessEntityCloned": "实体被成功克隆!",
-	"trSuccessEntityDeleted": "实体已成功移除.",
+	"trSuccessEntityCloned": "实体被成功克隆! {{entityName}}",
+	"trSuccessEntityDeleted": "实体已成功移除. {{entityName}}",
+	"trSuccessEntityDeletedAll": "实体已成功移除. {{entityName}}",
 	"trSuccessEntityPropertyUpdated": "变 \"{{propertyName}}\" 至 \"{{newValue}}\"",
 
 	"trConfirmDeleteMap": "你确定你要删除 {{mapName}}?",
-	"trConfirmDeleteEntity": "你确定要删除这个实体吗？",
+	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
+	"trConfirmDeleteEntityAll": "你确定要删除这个实体吗？ {{entityName}}",
 
 	"trNewFeature": "新功能",
 	"trPolish": "美化",
