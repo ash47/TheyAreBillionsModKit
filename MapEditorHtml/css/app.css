@@ -304,3 +304,16 @@
 .rotateEntity {
 	/*transform: rotate(45deg);*/
 }
+
+.centerAlignDiv {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.xmlEditorButtons {
+	padding: 8px;
+}
+
+.node-entityTree .fa-square, .node-entityTree .fa-check-square {
+	margin-right: 8px;
+}

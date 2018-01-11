@@ -97,6 +97,13 @@ $(document).ready(function() {
 		window.mapInfo.title = $('#mapNameHolder').val();
 	};
 
+	// Shows the editor for map settings
+	window.editMapSettings = function() {
+		alertify.genericDialog(
+			$('#mapSettingsEditor')[0]
+		);
+	};
+
 	// Saving the map
 	window.saveMap = function() {
 		// Set that we are saving
@@ -1444,6 +1451,78 @@ $(document).ready(function() {
 		));
 	};
 
+	// Allow editing of the RAW XML (jesus)
+	window.editRawXML = function() {
+		var toEdit = window.viewEntityActive;
+
+		if(toEdit == null) {
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
+			return;
+		}
+
+		// Does this entity have XML to edit?
+		if(toEdit.rawXML == null) {
+			alertify.error(window.getTranslation(
+				'trErrorEntityNoXML',
+				'This entity has no XML to edit.'
+			));
+			return;
+		}
+
+		// Put the XML into the editor
+		$('#rawXMLInput').val(toEdit.rawXML);
+
+		alertify.genericDialog(
+			$('#rawXMLEditor')[0]
+		);
+	};
+
+	// Save updated rawXML
+	window.saveRawXML = function() {
+		var newXML = $('#rawXMLInput').val();
+
+		var toEdit = window.viewEntityActive;
+
+		if(toEdit == null) {
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
+			return;
+		}
+
+		// Does this entity have XML to edit?
+		if(toEdit.rawXML == null) {
+			alertify.error(window.getTranslation(
+				'trErrorEntityNoXML',
+				'This entity has no XML to edit.'
+			));
+			return;
+		}
+
+		// Grab the new properties
+		var newProps = window.extractEntityInfo(newXML);
+
+		// Apply them
+		for(var key in newProps) {
+			toEdit[key] = newProps[key];
+		}
+
+		// Update position
+		if(toEdit.lastContainer != null) {
+			addVisualEnt(toEdit);
+		}
+
+		// Update the properties pain
+		window.viewEntityProps(toEdit);
+
+		// Close all dialogs
+		alertify.closeAll();
+	};
+
 	window.viewEntityProps = function(props) {
 		// Remove that the old entity is active
 		if(window.viewEntityActive != null) {
@@ -1455,9 +1534,11 @@ $(document).ready(function() {
 
 		// Add that our one is active
 		if(props.lastContainer != null) {
-			props.isActive = true;
 			props.lastContainer.addClass('entityIsSelected');
 		}
+
+		// This is active
+		props.isActive = true;
 
 		var entityProps = $('#entityProps');
 		entityProps.empty();

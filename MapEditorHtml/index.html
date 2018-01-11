@@ -8,6 +8,7 @@
 	<script src="js/jqueryTranslator.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
+	<script src="js/fontawesome-all.min.js"></script>
 	<script src="js/alertify.min.js"></script>
 	<script src="js/constants.js"></script>
 	<script src="js/entitySizes.js"></script>
@@ -692,11 +693,18 @@
 		<div id="saveButtons">
 			<input type="text" id="mapNameHolder" class="form-control mapNameInput" onchange="window.updateSaveName();">
 
+			<button class="btn btn-primary" onclick="window.editMapSettings()">
+				<span data-translate="trBtnMapSettings">
+					Map Settings
+				</span>
+			</button>
+
 			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
 				<span data-translate="trBtnGenerateSaveFile">
 					Save Changes
 				</span>
 			</button>
+
 			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
 				<span data-translate="trBtnExportZXSav">
 					Export .zxsav
@@ -731,6 +739,11 @@
 			<button class="btn btn-danger" onclick="window.deleteEntityWarning();">
 				<span data-translate="trBtnEntityDelete">
 					Delete Entity
+				</span>
+			</button>
+			<button class="btn btn-primary" onclick="window.editRawXML();">
+				<span data-translate="trBtnEditRawXML">
+					Edit Raw XML
 				</span>
 			</button>
 		</div>
@@ -1058,6 +1071,40 @@
 	    <ul id="selectEntityBrushList">
 	    	<!-- auto populated -->
 	    </ul>
+	</div>
+
+	<div id="rawXMLEditor">
+		<div>
+			<textarea id="rawXMLInput" class="form-control" rows="15">
+				<!-- XML Appears Here -->
+			</textarea>
+		</div>
+		<div>
+			<div class="xmlEditorButtons">
+				<button class="btn btn-primary" onclick="window.saveRawXML();">Save</button>
+				<button class="btn btn-danger" onclick="alertify.closeAll();">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="mapSettingsEditor">
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Dropdown button
+			</button>
+
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" href="#">
+					Action
+				</a>
+				<a class="dropdown-item" href="#">
+					Another action
+				</a>
+				<a class="dropdown-item" href="#">
+					Something else here
+				</a>
+			</div>
+		</div>
 	</div>
 </div>
 
