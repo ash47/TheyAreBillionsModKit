@@ -1169,7 +1169,7 @@ $(document).ready(function() {
 					}
 					
 					if(node.__sort == 'MapProps') {
-						window.viewEntityProps(window.layerStore.MapProps);	
+						window.viewEntityProps(window.layerStore.MapProps, hiddenMapProps);	
 					}
 
 					if(node.__sort == 'ExtraEntities') {
@@ -1548,7 +1548,7 @@ $(document).ready(function() {
 		alertify.closeAll();
 	};
 
-	window.viewEntityProps = function(props) {
+	window.viewEntityProps = function(props, doNotShow) {
 		// Remove that the old entity is active
 		if(window.viewEntityActive != null) {
 			window.viewEntityActive.isActive = false;
@@ -1591,6 +1591,7 @@ $(document).ready(function() {
 
 		for(var key in props) {
 			if(hiddenFields[key]) continue;
+			if(doNotShow && doNotShow[key]) continue;
 
 			toAdd.push(key);
 		}

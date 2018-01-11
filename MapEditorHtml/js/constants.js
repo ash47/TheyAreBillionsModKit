@@ -291,6 +291,10 @@ var unitColorMap = {
 	}, 
 };
 
+var hiddenMapProps = {
+	ThemeType: true
+};
+
 var enum_toolPaint = 1;
 var enum_toolSelection = 2;
 var enum_toolEntity = 3;
