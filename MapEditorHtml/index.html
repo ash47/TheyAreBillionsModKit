@@ -766,6 +766,7 @@
 
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
+		<canvas id="mapRenderRoads" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
 		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
 		<canvas id="mousePreview"></canvas>
@@ -977,6 +978,11 @@
 								Fog
 							</span>
 						</button>
+						<button id="layerSelectionGroupSub_road" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('road');">
+							<span data-translate="trInfoBrushesSelectRoad">
+								Road
+							</span>
+						</button>
 					</div>
 				</li>
 
@@ -1091,6 +1097,28 @@
 					<button id="btn_toolFoWDisabled" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFoWDisabled')">
 						<span data-translate="trBtnBrushTypeFoWRemove">
 							Remove FoW
+						</span>
+					</button>
+				</li>
+
+				<li class="requireSubClass_road">
+					<b>
+						<span data-translate="trInfoBrushesRoad">
+							Road Layer
+						</span>
+					</b>
+				</li>
+				<li class="requireSubClass_road">
+					<button id="btn_toolRoadAdd" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolRoadAdd')">
+						<span data-translate="trBtnBrushTypeRoadAdd">
+							Add Road
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_road">
+					<button id="btn_toolRoadRemove" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolRoadRemove')">
+						<span data-translate="trBtnBrushTypeRoadRemove">
+							Remove Road
 						</span>
 					</button>
 				</li>

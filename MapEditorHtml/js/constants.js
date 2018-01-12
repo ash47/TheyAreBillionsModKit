@@ -96,6 +96,13 @@ var colorDefault = {
 	alpha: 255
 };
 
+var colorRoad = {
+	red: 25,
+	green: 25,
+	blue: 25,
+	alpha: 255
+};
+
 var colorFogOfWar = {
 	red: 0,
 	green: 0,
@@ -122,6 +129,11 @@ var colorObject = {
 	3: colorGold,
 	4: colorStone,
 	5: colorIron
+};
+
+var colorRoad = {
+	0: colorNone,
+	1: colorRoad
 };
 
 var colorTerrain = {
@@ -294,6 +306,7 @@ var unitColorMap = {
 var hiddenMapProps = {
 	ThemeType: true,
 	_mapName: true
+	
 };
 
 var enum_toolPaint = 1;

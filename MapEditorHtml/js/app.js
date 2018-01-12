@@ -9,6 +9,7 @@ window.enableEditorExtraEntities = true;
 window.enableEditorEvents = true;
 window.enableEditorMapProps = true;
 window.enableEditorInfo = true;
+window.enableEditorRoads = true;
 
 window.enableEditorFastEntities = false;
 
@@ -48,6 +49,7 @@ $(document).ready(function() {
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
 	//var ctx = mapRenderCanvas.getContext('2d');
@@ -81,6 +83,12 @@ $(document).ready(function() {
 			name: 'LayerObjects',
 			canvas: mapRenderObjectsCanvas,
 			colorMap: colorObject,
+			defaultColor: colorNone,
+		},
+		LayerRoads: {
+			name: 'LayerRoads',
+			canvas: mapRenderRoadsCanvas,
+			colorMap: colorRoad,
 			defaultColor: colorNone,
 		},
 		LayerFog: {
@@ -130,6 +138,12 @@ $(document).ready(function() {
 		setTimeout(function() {
 			if(enableEditorObjects) {
 				loadLayer('LayerObjects', true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(enableEditorRoads) {
+				loadLayer('LayerRoads', true);
 			}
 			updatePercentage();
 
@@ -238,6 +252,7 @@ $(document).ready(function() {
 		}, 1);
 		}, 1);
 		}, 1);
+		}, 1);
 	};
 
 	function setIsSaving(isSaving) {
@@ -304,7 +319,7 @@ $(document).ready(function() {
 		$('.layerSelectionGroupSub').addClass('btn-primary');
 
 		var header = 'requireSubClass_';
-		var classes = ['terrain', 'object', 'fog'];
+		var classes = ['terrain', 'object', 'fog', 'road'];
 
 		for(var i=0; i<classes.length; ++i) {
 			var fullClass = header + classes[i];
@@ -458,6 +473,18 @@ $(document).ready(function() {
 				case 'toolFoWDisabled':
 					window.setActiveLayerSelectionGroupSub('fog');
 					activeLayer = window.layerStore.LayerFog;
+					activeToolColor = 0;
+				break;
+
+				case 'toolRoadAdd':
+					window.setActiveLayerSelectionGroupSub('road');
+					activeLayer = window.layerStore.LayerRoads;
+					activeToolColor = 1;
+				break;
+
+				case 'toolRoadRemove':
+					window.setActiveLayerSelectionGroupSub('road');
+					activeLayer = window.layerStore.LayerRoads;
 					activeToolColor = 0;
 				break;
 			}
@@ -873,6 +900,11 @@ $(document).ready(function() {
 			updatePercentage();
 
 		setTimeout(function() {
+			// Load Objects
+			loadLayer('LayerRoads');
+			updatePercentage();
+
+		setTimeout(function() {
 			// Load Activity Layer
 			loadLayerSimple(
 				'LayerFog',
@@ -944,6 +976,7 @@ $(document).ready(function() {
 			$('#mainContainer').addClass('mapIsLoaded');
 
 			updatePercentage();
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -1334,6 +1367,9 @@ $(document).ready(function() {
 
 			// Render Terrain
 			renderLayer('LayerTerrain');
+
+			// Render Roads
+			renderLayer('LayerRoads');
 
 			// Render Objects
 			renderLayer('LayerObjects');
