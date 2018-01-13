@@ -70,7 +70,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.10
+				</span> | v1.11
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -317,6 +317,14 @@
 				<div class="card-block">
 					<ul>
 						<li>
+							<a href="changeme">
+								<b>(v1.11)</b>
+								<span data-translate="trTutorials_111">
+									More entities, Grid Settings, Roads
+								</span>
+							</a>
+						</li>
+						<li>
 							<a href="https://youtu.be/HLu4jYhIZLU">
 								<b>(v1.10)</b>
 								<span data-translate="trTutorials_110">
@@ -487,6 +495,31 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.11 -->
+						<li>
+							<b>(v1.11)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_01">
+										Added grid options.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_02">
+										Added roads.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_03">
+										Added additional entities to paint.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.10 -->
 						<li>
 							<b>(v1.10)</b>
@@ -1211,7 +1244,11 @@
 
 	<div id="gridConfiguration">
 		<input type="checkbox" id="checkGridEnabled" onchange="window.redrawGrid()">
-		<label for="checkGridEnabled" data-translate="trGridEnabled">Enable Grid?</label>
+		<label for="checkGridEnabled" data-translate="trGridEnabled">
+			<span data-translate="trGridEnable">
+				Enable Grid?
+			</span>
+		</label>
 
 		<div class="form-group">
 			<label for="inputGridWidth">

@@ -47,6 +47,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_111": "More entities, Grid Settings, Roads",
 	"trTutorials_110": "Map settings, Raw XML &amp; Delete All of this Entity",
 	"trTutorials_109": "Entity Tool",
 	"trTutorials_108": "Feature Toggles",
@@ -224,6 +225,7 @@
 	"trConfirmDeleteEntityAll": "Are you sure you want to delete EVERY {{entityName}}?",
 
 	"trBtnShowGridSelection": "Grid Settings",
+	"trGridEnable": "Enable Grid?",
 	"trGridWidth": "Grid Width",
 	"trGridHeight": "Grid Height",
 	"trGridOffsetX": "Grid Offset X",
@@ -236,6 +238,10 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_111_01": "Added grid options.",
+	"trChangeLogBody_111_02": "Added roads.",
+	"trChangeLogBody_111_03": "Added additional entities to paint.",
 
 	"trChangeLogBody_110_01": "Added map settings editor.",
 	"trChangeLogBody_110_02": "Added delete all of an entity type.",
