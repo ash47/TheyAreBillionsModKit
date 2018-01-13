@@ -282,6 +282,13 @@ var colorZombies = {
 	12: colorZombieUltra1
 };
 
+var colorGridLines = {
+	red: 0,
+	green: 0,
+	blue: 0,
+	alpha: 200
+};
+
 var hiddenFields = {
 	rawXML: true,
 	ID: true,

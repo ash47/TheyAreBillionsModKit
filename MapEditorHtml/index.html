@@ -770,6 +770,7 @@
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
 		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
 		<canvas id="mousePreview"></canvas>
+		<canvas id="gridCanvas" class="mapLayer"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -855,6 +856,14 @@
 							</span>
 						</label>
 					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerRoad" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerRoad">
+							<span data-translate="trInfoLayerRoads">
+								Roads
+							</span>
+						</label>
+					</li>
 				</ul>
 			</li>
 
@@ -887,6 +896,14 @@
 				<button id="btnHistoryRedo" class="btn btn-primary undoButtons" disabled="disabled" onclick="window.executeRedo();">
 					<span data-translate="trBtnRedo">
 						Redo
+					</span>
+				</button>
+			</li>
+
+			<li>
+				<button class="btn btn-primary" onclick="window.showGridSelection();">
+					<span data-translate="trBtnShowGridSelection">
+						Grid Settings
 					</span>
 				</button>
 			</li>
@@ -1157,14 +1174,14 @@
 	</div>
 
 	<div id="mapSettingsEditor">
-	<div class="form-group">
-		<label for="inputSaveFileName">
-			<span data-translate="trSettingsEditorMapName">
-				Map Name
-			</span>
-		</label>
-		<input type="text" class="form-control" id="inputSaveFileName" placeholder="Enter email">
-	</div>
+		<div class="form-group">
+			<label for="inputSaveFileName">
+				<span data-translate="trSettingsEditorMapName">
+					Map Name
+				</span>
+			</label>
+			<input type="text" class="form-control" id="inputSaveFileName" placeholder="Enter email">
+		</div>
 		<div class="form-group">
 			<label for="dropdownMapTheme">
 				<span data-translate="trSettingsEditorMapTheme">
@@ -1189,6 +1206,47 @@
 		</div>
 		<div>
 			<button class="btn btn-danger" onclick="alertify.closeAll();">Close</button>
+		</div>
+	</div>
+
+	<div id="gridConfiguration">
+		<input type="checkbox" id="checkGridEnabled" onchange="window.redrawGrid()">
+		<label for="checkGridEnabled" data-translate="trGridEnabled">Enable Grid?</label>
+
+		<div class="form-group">
+			<label for="inputGridWidth">
+				<span data-translate="trGridWidth">
+					Grid Width
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridWidth" value="1" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridHeight">
+				<span data-translate="trGridHeight">
+					Grid Height
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridHeight" value="1" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridOffsetX">
+				<span data-translate="trGridOffsetX">
+					Grid Offset X
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridOffsetX" value="0" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridOffsetY">
+				<span data-translate="trGridOffsetY">
+					Grid Offset Y
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridOffsetY" value="0" onchange="window.redrawGrid();">
 		</div>
 	</div>
 </div>

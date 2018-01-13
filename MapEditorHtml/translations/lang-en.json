@@ -223,6 +223,12 @@
 	"trConfirmDeleteEntity": "Are you sure you want to delete {{entityName}}?",
 	"trConfirmDeleteEntityAll": "Are you sure you want to delete EVERY {{entityName}}?",
 
+	"trBtnShowGridSelection": "Grid Settings",
+	"trGridWidth": "Grid Width",
+	"trGridHeight": "Grid Height",
+	"trGridOffsetX": "Grid Offset X",
+	"trGridOffsetY": "Grid Offset Y",
+
 	"trNewFeature": "New Feature",
 	"trPolish": "Polish",
 	"trBugFix": "Bug Fix",

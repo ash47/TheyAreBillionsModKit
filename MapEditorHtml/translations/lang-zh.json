@@ -224,6 +224,12 @@
 	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
 	"trConfirmDeleteEntityAll": "你确定要删除这个实体吗？ {{entityName}}",
 
+	"trBtnShowGridSelection": "网格设置",
+	"trGridWidth": "网格宽度",
+	"trGridHeight": "网格高度",
+	"trGridOffsetX": "网格偏移量X",
+	"trGridOffsetY": "网格偏移量Y",
+
 	"trNewFeature": "新功能",
 	"trPolish": "美化",
 	"trBugFix": "修复",

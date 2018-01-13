@@ -52,6 +52,7 @@ $(document).ready(function() {
 	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
+	var gridCanvas = document.getElementById('gridCanvas');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
 	window.pixelSize = 4;
@@ -96,6 +97,83 @@ $(document).ready(function() {
 			canvas: mapRenderFoWCanvas,
 			colorMap: colorFoWMap,
 			defaultColor: colorFogOfWarOff,
+		}
+	};
+
+	window.showGridSelection = function() {
+		alertify.genericDialog(
+			$('#gridConfiguration')[0]
+		);
+	};
+
+	var gridDrawInProgress = false;
+	var gridNeedsRedraw = false;
+	window.redrawGrid = function() {
+		// Is the grid enabled?
+		if(!$('#checkGridEnabled').is(':checked')) {
+			$('#gridCanvas').hide();
+			return;
+		} else {
+			$('#gridCanvas').show();
+		}
+
+		// Only allow one redraw at a time
+		if(gridDrawInProgress) {
+			gridNeedsRedraw = true;
+			return;
+		}
+		gridDrawInProgress = true;
+
+		var gridWidth = parseInt($('#inputGridWidth').val());
+		if(isNaN(gridWidth) || gridWidth < 1) gridWidth = 1;
+
+		var gridHeight = parseInt($('#inputGridHeight').val());
+		if(isNaN(gridHeight) || gridHeight < 1) gridHeight = 1;
+
+		var gridOffsetX = parseInt($('#inputGridOffsetX').val());
+		if(isNaN(gridOffsetX)) gridOffsetX = 0;
+
+		var gridOffsetY = parseInt($('#inputGridOffsetY').val());
+		if(isNaN(gridOffsetY)) gridOffsetY = 0;
+
+		var ctx = gridCanvas.getContext('2d');
+
+		// Clear the old grid
+		ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
+		var actualWidth = gridCanvas.width;
+		var actualHeight = gridCanvas.height;
+
+		// Set hte fill style
+		ctx.fillStyle = getRBG(colorGridLines);
+
+		var yIncreaseValue = window.pixelSize * gridHeight;
+		var startY = gridOffsetY * window.pixelSize;
+		startY -= Math.ceil(startY / yIncreaseValue) * yIncreaseValue;
+
+		// Add grid lines
+		for(var y=startY; y<actualHeight; y += yIncreaseValue) {
+			ctx.beginPath();
+			ctx.moveTo(0, y);
+			ctx.lineTo(actualWidth, y);
+			ctx.stroke();
+		}
+
+		var xIncreaseValue = window.pixelSize * gridWidth;
+		var startX = gridOffsetX * window.pixelSize;
+		startX -= Math.ceil(startX / xIncreaseValue) * xIncreaseValue;
+
+		for(var x=startX; x<actualWidth; x += window.pixelSize * gridWidth) {
+			ctx.beginPath();
+			ctx.moveTo(x, 0);
+			ctx.lineTo(x, actualWidth);
+			ctx.stroke();
+		}
+
+		gridDrawInProgress = false;
+		if(gridNeedsRedraw) {
+			gridNeedsRedraw = false;
+			window.redrawGrid();
 		}
 	};
 
@@ -549,10 +627,12 @@ $(document).ready(function() {
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
+		var roadVisible = $('#toggleLayerRoad').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
 		var cFoW = $(window.layerStore.LayerFog.canvas);
+		var cRoad = $(window.layerStore.LayerRoads.canvas);
 		var mainWindow = $('#mainContainer');
 
 		// Toggle terrain layer
@@ -569,6 +649,11 @@ $(document).ready(function() {
 		fogOfWarVisible ?
 			cFoW.show() :
 			cFoW.hide();
+
+		// Roads later
+		roadVisible ?
+			cRoad.show() :
+			cRoad.hide();
 
 		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
 		entityLabelsVisible ? mainWindow.removeClass('hideEntityLabels') : mainWindow.addClass('hideEntityLabels');
@@ -1371,6 +1456,9 @@ $(document).ready(function() {
 			helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
 			helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
 
+			gridCanvas.width = helperCanvas.width;
+			gridCanvas.height = helperCanvas.height;
+
 			// Render Terrain
 			renderLayer('LayerTerrain');
 
@@ -1385,6 +1473,9 @@ $(document).ready(function() {
 
 			// Render entities (oh god)
 			renderEntities();
+
+			// Render the gridlines
+			window.redrawGrid();
 
 			// We are no longer loading
 			setIsLoading(false);
