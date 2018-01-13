@@ -23,3 +23,5 @@ MapEditor/input/*
 MapEditor/working/*
 MapEditor/output/*
 node_modules/*
+MapEditorHtml/tools/Data
+MapEditorHtml/tools/allents.js
