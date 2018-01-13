@@ -228,6 +228,8 @@
 	"trGridHeight": "Grid Height",
 	"trGridOffsetX": "Grid Offset X",
 	"trGridOffsetY": "Grid Offset Y",
+	"trGridBtnUpdate": "Update Grid",
+	"trGridBtnCloseSettings": "Close Settings",
 
 	"trNewFeature": "New Feature",
 	"trPolish": "Polish",
