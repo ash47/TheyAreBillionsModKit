@@ -179,7 +179,7 @@ $(document).ready(function() {
 
 	// Shows the editor for map settings
 	window.editMapSettings = function() {
-		alertify.genericDialog(
+		alertify.mapSettingsDialog(
 			$('#mapSettingsEditor')[0]
 		);
 	};
@@ -615,7 +615,7 @@ $(document).ready(function() {
 
 	// Prompt to select which entity
 	window.promptSelectActiveTemplate = function() {
-		alertify.genericDialog(
+		alertify.entitySelectionDialog(
 			$('#selectEntityBrushMain')[0]
 		);
 	};
@@ -1686,7 +1686,7 @@ $(document).ready(function() {
 		// Put the XML into the editor
 		$('#rawXMLInput').val(toEdit.rawXML);
 
-		alertify.genericDialog(
+		alertify.rawXmlDialog(
 			$('#rawXMLEditor')[0]
 		);
 	};
