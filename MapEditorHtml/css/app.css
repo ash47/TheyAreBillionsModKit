@@ -119,6 +119,7 @@
 	height: 70px;
 	padding: 8px;
 	border-top: 1px solid #000;
+	overflow-y: scroll;
 }
 
 #entityProps {
@@ -320,4 +321,8 @@
 
 #mapSettingsEditor {
 	padding: 8px;
+}
+
+#layerSelectionGroupSub {
+	width: 140px;
 }

@@ -962,28 +962,20 @@
 				</li>
 
 				<li>
-					<div class="btn-group layerSelectionGroup" role="group">
-						<button id="layerSelectionGroupSub_terrain" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('terrain');">
-							<span data-translate="trInfoBrushesSelectTer">
-								Ter
-							</span>
-						</button>
-						<button id="layerSelectionGroupSub_object" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('object');">
-							<span data-translate="trInfoBrushesSelectObj">
-								Obj
-							</span>
-						</button>
-						<button id="layerSelectionGroupSub_fog" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('fog');">
-							<span data-translate="trInfoBrushesSelectFog">
-								Fog
-							</span>
-						</button>
-						<button id="layerSelectionGroupSub_road" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('road');">
-							<span data-translate="trInfoBrushesSelectRoad">
-								Road
-							</span>
-						</button>
-					</div>
+					<select onchange="window.setActiveLayerSelectionGroupSub();" class="form-control" id="layerSelectionGroupSub">
+						<option data-translate="trInfoBrushesSelectTer" value="terrain">
+							Terrain
+						</option>
+						<option data-translate="trInfoBrushesSelectObj" value="object">
+							Object
+						</option>
+						<option data-translate="trInfoBrushesSelectFog" value="fog">
+							Fog
+						</option>
+						<option data-translate="trInfoBrushesSelectRoad" value="road">
+							Road
+						</option>
+					</select>
 				</li>
 
 				<li class="requireSubClass_terrain">

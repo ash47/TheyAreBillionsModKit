@@ -314,6 +314,12 @@ $(document).ready(function() {
 
 	// Updates which tool brush section thing is visible
 	window.setActiveLayerSelectionGroupSub = function(newSection) {
+		if(newSection == null) {
+			newSection = $('#layerSelectionGroupSub').val();
+		} else {
+			$('#layerSelectionGroupSub').val(newSection);
+		}
+
 		// Cleanup old selections
 		$('.layerSelectionGroupSub').removeClass('btn-success');
 		$('.layerSelectionGroupSub').addClass('btn-primary');
