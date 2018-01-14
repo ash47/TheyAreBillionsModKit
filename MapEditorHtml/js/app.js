@@ -53,6 +53,7 @@ $(document).ready(function() {
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
 	var gridCanvas = document.getElementById('gridCanvas');
+	var mapOutline = document.getElementById('mapOutline');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
 	window.pixelSize = 4;
@@ -174,6 +175,126 @@ $(document).ready(function() {
 		if(gridNeedsRedraw) {
 			gridNeedsRedraw = false;
 			window.redrawGrid();
+		}
+	};
+
+	// Redraw the map outline
+	window.redrawMapOutline = function() {
+		var ctx = mapOutline.getContext('2d');
+
+		// Clear it
+		ctx.clearRect(0, 0, mapOutline.width, mapOutline.height);
+
+		var positionInfo = window.layerStore.MapProps.PlayableArea.split(';');
+
+		var x1Start = parseInt(positionInfo[0]);
+		var y1Start = parseInt(positionInfo[1]);
+
+		var x2Start = x1Start + parseInt(positionInfo[2]);
+		var y2Start = y1Start + parseInt(positionInfo[3]);
+
+		// Assume for a square map
+		var mapSize = window.layerStore.LayerTerrain.width;
+		var mapSizeReal = window.layerStore.MapProps._ncellsReal;
+
+		var mapLimitOffset = (mapSize - mapSizeReal) / 2;
+
+		// Set hte fill style
+		ctx.fillStyle = getRBG(colorGridLines);
+
+		for(var i=0; y1Start - i > mapLimitOffset; ++i) {
+			// Top middle --> Top left
+			var renderPixelAtX = mapSize - (x1Start + i) - 1;
+			var renderPixelAtY = y1Start - i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Top middle --> Top right
+			var renderPixelAtX = mapSize - (x1Start - i) - 1;
+			var renderPixelAtY = y1Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom middle --> Bottom left
+			var renderPixelAtX = mapSize - (x2Start + i) - 1;
+			var renderPixelAtY = y2Start - i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom middle --> Bottom right
+			var renderPixelAtX = mapSize - (x2Start - i) - 1;
+			var renderPixelAtY = y2Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+		}
+
+		var x3Start = x1Start + (y1Start - mapLimitOffset);
+		var y3Start = mapLimitOffset;
+
+		var x4Start = x2Start + (y1Start - mapLimitOffset);
+		var y4Start = y2Start - (y1Start - mapLimitOffset);
+
+		var x5Start = x1Start - (y1Start - mapLimitOffset);
+		var y5Start = y1Start + (y1Start - mapLimitOffset);
+
+		for(var i=0; x3Start+i<=x4Start; ++i) {
+			// Bottom left --> top left
+			var renderPixelAtX = mapSize - (x3Start + i) - 1;
+			var renderPixelAtY = y3Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom right --> top right
+			var renderPixelAtX = mapSize - (x5Start + i) - 1;
+			var renderPixelAtY = y5Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+		}
+
+		//var playableAreaPercentage = 0.75;//parseFloat(window.layerStore.MapProps.FactorPlayableArea);
+		var playableAreaOffset = 11;//Math.floor(x1Start - x1Start * playableAreaPercentage);
+
+		var xx1Start = x1Start + playableAreaOffset;
+		var yy1Start = y1Start + playableAreaOffset;
+
+		var xx2Start = x2Start - playableAreaOffset;
+		var yy2Start = y2Start - playableAreaOffset;
+
+		for(var i=0; yy1Start-i > mapLimitOffset + playableAreaOffset * 2; ++i) {
+			// Top middle --> Top left
+			var renderPixelAtX = mapSize - (xx1Start + i) - 1;
+			var renderPixelAtY = yy1Start - i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Top middle --> Top right
+			var renderPixelAtX = mapSize - (xx1Start - i) - 1;
+			var renderPixelAtY = yy1Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom middle --> Bottom left
+			var renderPixelAtX = mapSize - (xx2Start + i) - 1;
+			var renderPixelAtY = yy2Start - i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom middle --> Bottom right
+			var renderPixelAtX = mapSize - (xx2Start - i) - 1;
+			var renderPixelAtY = yy2Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+		}
+
+		var xx3Start = x3Start;// playableAreaOffset;
+		var yy3Start = y3Start + playableAreaOffset * 2;// + playableAreaOffset;
+
+		var xx4Start = x4Start - playableAreaOffset * 2;
+		var yy4Start = y4Start;// + playableAreaOffset;
+
+		var xx5Start = x5Start + playableAreaOffset * 2;
+		var yy5Start = y5Start;// - playableAreaOffset * 2;
+
+		for(var i=0; xx3Start+i<=xx4Start; ++i) {
+			// Bottom left --> top left
+			var renderPixelAtX = mapSize - (xx3Start + i) - 1;
+			var renderPixelAtY = yy3Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+
+			// Bottom right --> top right
+			var renderPixelAtX = mapSize - (xx5Start + i) - 1;
+			var renderPixelAtY = yy5Start + i;
+			ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
 		}
 	};
 
@@ -1636,6 +1757,9 @@ $(document).ready(function() {
 			gridCanvas.width = helperCanvas.width;
 			gridCanvas.height = helperCanvas.height;
 
+			mapOutline.width = helperCanvas.width;
+			mapOutline.height = helperCanvas.height;
+
 			// Render Terrain
 			renderLayer('LayerTerrain');
 
@@ -1653,6 +1777,9 @@ $(document).ready(function() {
 
 			// Render the gridlines
 			window.redrawGrid();
+
+			// Render the map outline
+			window.redrawMapOutline();
 
 			// We are no longer loading
 			setIsLoading(false);

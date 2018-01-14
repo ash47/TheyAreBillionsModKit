@@ -681,8 +681,44 @@ function loadMapProps(commitUpdate) {
 		'FactorGameDuration',
 		'FactorZombiePopulation',
 		'DifficultyType',
-		'Difficulty'
+		'Difficulty',
+		'PlayableArea',
+		'FactorPlayableArea'
 	];
+
+	// We need two cell size values:
+	/*loadSection(
+		theData,
+		'<Complex name="CurrentGeneratedLevel">',
+		'<Simple name="FactorPlayableArea"',
+		function(interestingData) {
+			loadSection(
+				interestingData,
+				'<Simple name="NCells" value="',
+				'" />',
+				function(res) {
+					storage.__ncells1 = parseInt(res);
+				}
+			);
+		}
+	);*/
+
+	// Real ncells
+	loadSection(
+		theData,
+		'<Complex name="SurvivalModeParams">',
+		'</Complex>',
+		function(theData2) {
+			loadSection(
+				theData2,
+				'<Simple name="NCells" value="',
+				'" />',
+				function(interestingData) {
+					storage._ncellsReal = parseInt(interestingData);
+				}
+			);
+		}
+	);
 
 	// Map Theme
 	if(commitUpdate) {
