@@ -243,6 +243,8 @@
 	"trGridBtnUpdate": "Update Grid",
 	"trGridBtnCloseSettings": "Close Settings",
 
+	"trRecentMapsDisabled": "We have disabled this feature or now because this feature uses a lot of RAM and local resources, as well as CPU when saving / loading maps.",
+
 	"trNewFeature": "New Feature",
 	"trPolish": "Polish",
 	"trBugFix": "Bug Fix",

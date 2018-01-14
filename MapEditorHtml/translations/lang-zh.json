@@ -241,6 +241,10 @@
 	"trGridHeight": "网格高度",
 	"trGridOffsetX": "网格偏移量X",
 	"trGridOffsetY": "网格偏移量Y",
+	"trGridBtnUpdate": "更新网格",
+	"trGridBtnCloseSettings": "关闭设置",
+
+	"trRecentMapsDisabled": "我们已经禁用了这个功能，或者现在因为这个功能在保存/加载地图的时候使用了大量的RAM和本地资源，以及CPU.",
 
 	"trNewFeature": "新功能",
 	"trPolish": "美化",

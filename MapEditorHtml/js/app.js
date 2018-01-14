@@ -45,7 +45,7 @@ $(document).ready(function() {
 	}
 
 	// update our previous maps
-	updatePastMapsList();
+	//updatePastMapsList();
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
@@ -436,7 +436,7 @@ $(document).ready(function() {
 
 		setTimeout(function() {
 			// Update our local storage
-			updateLocalStorage();
+			//updateLocalStorage();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -1126,6 +1126,9 @@ $(document).ready(function() {
 		// Ensure we have data loaded
 		if(window.activeMap.Data == null || window.activeMap.Info == null) return;
 
+		// Optimisations
+		$('.instructions').remove();
+
 		// We are loading
 		setIsLoading(true);
 		var totalParts = 15;
@@ -1140,7 +1143,7 @@ $(document).ready(function() {
 
 		setTimeout(function() {
 			// Update the local storage of maps
-			updateLocalStorage();
+			//updateLocalStorage();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -2055,13 +2058,18 @@ $(document).ready(function() {
 			ldb.set('maps', JSON.stringify(pastMaps));
 
 			// Update the list
-			updatePastMapsList();
+			//updatePastMapsList();
 		});
 	}
 
 	function updatePastMapsList() {
 		// Ensure they have local storage
 		if(typeof(localStorage) == 'undefined') return;
+
+		if(1==1) {
+			ldb.set('maps', '');
+			return;
+		}
 
 		// Do we have any past maps?
 		ldb.get('maps', function(pastMaps) {
@@ -2135,6 +2143,11 @@ $(document).ready(function() {
 	function updateLocalStorage() {
 		// Ensure they have local storage
 		if(typeof(localStorage) == 'undefined') return;
+
+		// We're no longer supporting this feature
+		if(1 == 1) {
+			return;
+		}
 
 		// Grab the stored maps
 		ldb.get('maps', function(storedMaps) {
