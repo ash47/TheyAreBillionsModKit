@@ -738,7 +738,7 @@ $(document).ready(function() {
 	};
 
 	// Set the active entity template
-	window.setActiveTemplate = function(templateName) {
+	window.setActiveTemplate = function(templateName, templateStore) {
 		// Ensure the template exists
 		if(window.entityTemplates[templateName] == null) {
 			alertify.error(window.getTranslation(
@@ -752,6 +752,7 @@ $(document).ready(function() {
 
 		// Store the new active template
 		window.activeTemplate = templateName;
+		window.activeTemplateStore = templateStore;
 
 		// Data on the currently active template
 		window.activeTemplateData = window.extractEntityInfo(
@@ -956,14 +957,22 @@ $(document).ready(function() {
 
 			var entityType = newEntity.__entityType;
 
+			var theStore = window.layerStore.entities;
+			if(window.activeTemplateStore == 'extraEnts') {
+				theStore = window.layerStore.extraEntities;
+				console.log('YES!');
+			}
+
+			console.log(window.activeTemplateStore)
+
 			// Do we have a store for this entity?
-			if(window.layerStore.entities[entityType] == null) {
-				window.layerStore.entities[entityType] = [];
+			if(theStore[entityType] == null) {
+				theStore[entityType] = [];
 			}
 
 			// Store the new entity
-			window.layerStore.entities[entityType].push(newEntity);
-			newEntity.__theStore = window.layerStore.entities[entityType];
+			theStore[entityType].push(newEntity);
+			newEntity.__theStore = theStore[entityType];
 
 			// Get the position of the entity
 			var x = (activeLayer.width - prevX - 1);
@@ -1219,7 +1228,7 @@ $(document).ready(function() {
 			window.setTool('brushType', 'setToolMapPainterSingle');
 			window.setTool('brushColor', 'toolTerrainEarth');
 
-			window.setActiveTemplate('ZX.Entities.StoneHouse');
+			window.setActiveTemplate('ZX.Entities.StoneHouse', 'standardEnts');
 
 			// Update what is displayed
 			window.updateLayerToggles();

@@ -867,44 +867,11 @@ function loadLevelExtraEntites(commitUpdate) {
 				/<Complex( type="[^"]*")?>/,
 				/<Simple name="Z_Offset" value="[^"]*" \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
 				function(theData2) {
-					var entityType = (/<Complex type="([^"]*)">/.exec(theData2) || [])[1] || 'Unknown';
+					var thisEntityStore = window.extractEntityInfo(theData2);
 
+					var entityType = thisEntityStore.__entityType;
 					theStorage[entityType] = theStorage[entityType] || [];
-
-					var thisEntityStore = {};
 					theStorage[entityType].push(thisEntityStore);
-
-					var blackListedProps = {};
-
-					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
-					var theMatch;
-					while((theMatch = propertyExtractor.exec(theData2)) != null) {
-						if(theMatch.length < 3) continue;
-
-						// Grab stuff
-						var propertyName = theMatch[1];
-						var propertyValue = theMatch[2];
-
-						// Is this blacklisted?
-						if(blackListedProps[propertyName]) continue;
-
-						// Have we already collected this prop?
-						if(thisEntityStore[propertyName] != null) {
-							// We are not touching this prop
-							delete thisEntityStore[propertyName];
-							blackListedProps[propertyName] = true;
-							continue;
-						}
-
-						// Store it
-						thisEntityStore[propertyName] = propertyValue;
-					}
-
-					// Add raw xml
-					thisEntityStore.rawXML = theData2;
-
-					// Store the entity type
-					thisEntityStore.__entityType = entityType;
 
 					// Hidden by default
 					thisEntityStore.shouldHide = true;
