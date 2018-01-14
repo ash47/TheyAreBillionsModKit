@@ -968,6 +968,81 @@ window.extractEntityInfo = function(thisItemData) {
 	return thisEntityStore;
 }
 
+// Load in the bonus entities
+function loadBonusEntities(commitUpdate) {
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Dictionary name="BonusEntityTemplates" keyType="System.UInt64, mscorlib" valueType="System.Int32, mscorlib">',
+		'</Dictionary>',
+		function(theData) {
+			if(commitUpdate) {
+				// Commit the update
+
+				var theOutput = '';
+				theOutput += '<Dictionary name="BonusEntityTemplates" keyType="System.UInt64, mscorlib" valueType="System.Int32, mscorlib">\n';
+
+				var bonusEnts = window.layerStore.bonusEntities;
+
+				if(bonusEnts.length <= 0) {
+					theOutput += '<Items />\n'
+				} else {
+					theOutput += '<Items>\n';
+
+					for(var i=0; i<bonusEnts.length; ++i) {
+						var bonusEnt = bonusEnts[i];
+
+						theOutput += '<Item>\n'
+						theOutput += '<Simple value="' + bonusEnt[0] + '" />\n'
+						theOutput += '<Simple value="' + bonusEnt[1] + '" />\n'
+						theOutput += '</Item>\n';
+					}
+
+					theOutput += '</Items>';
+				}
+
+				theOutput += '</Dictionary>\n';
+
+				return theOutput;
+			}
+
+			// Empty the layer store
+			window.layerStore.bonusEntities = [];
+
+			loadSection(
+				theData,
+				'<Item>',
+				'</Item>',
+				function(theData2) {
+					var dataParts = [];
+
+					loadSection(
+						theData2,
+						'<Simple value="',
+						'" />',
+						function(theData3) {
+							// Push the data parts;
+							dataParts.push(theData3);
+						}, true, false
+					)
+
+					// Check if this is a valid bonus entity
+					if(dataParts.length == 2) {
+						window.layerStore.bonusEntities.push(dataParts);
+					}
+				}, true, true
+			);
+
+			// Add these bonus entities into the display
+			window.rebuildBonusEntities();
+		}, false, true
+	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
+}
+
 // Allows entities in the level to be edited
 function loadLevelEntities(commitUpdate) {
 	// Find the part we need to edit

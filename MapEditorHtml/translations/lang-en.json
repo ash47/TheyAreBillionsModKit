@@ -148,6 +148,14 @@
 	"trInfoMapProperties_menu_Events": "Events",
 
 	"trBtnMapSettings": "Map Settings",
+	"trBtnBonusEntities": "Bonus Entities",
+
+	"trBtnAddBonusEntity": "Add Bonus Entity",
+	"trBonusEntityEditorHeaderName": "Entity Type",
+	"trBonusEntityEditorHeaderAmount": "Amount",
+	"trBonusEntityEditorHeaderDelete": "Delete",
+	"trBonusEntityEditorItemDelete": "Delete",
+	"trBtnCloseBonusEntity": "Close",
 
 	"trSettingsEditorMapName": "Map Name",
 	"trSettingsEditorMapTheme": "Map Theme",

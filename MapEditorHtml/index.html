@@ -777,12 +777,6 @@
 		</div>
 
 		<div id="saveButtons">
-			<button class="btn btn-primary" onclick="window.editMapSettings()">
-				<span data-translate="trBtnMapSettings">
-					Map Settings
-				</span>
-			</button>
-
 			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
 				<span data-translate="trBtnGenerateSaveFile">
 					Save Changes
@@ -846,7 +840,7 @@
 	</div>
 
 	<div id="mapTools">
-		<ul class="mapToolsList">
+		<ul id="mapToolsLeft" class="mapToolsList">
 			<li>
 				<b>
 					<span data-translate="trInfoToggleLayers">
@@ -949,6 +943,22 @@
 			</li>
 
 			<li>
+				<button class="btn btn-primary" onclick="window.editMapSettings()">
+					<span data-translate="trBtnMapSettings">
+						Map Settings
+					</span>
+				</button>
+			</li>
+
+			<li>
+				<button class="btn btn-primary" onclick="window.editBonusEntities()">
+					<span data-translate="trBtnBonusEntities">
+						Bonus Entities
+					</span>
+				</button>
+			</li>
+
+			<li>
 				<b>
 					<span data-translate="trInfoTools">
 						Tools
@@ -977,6 +987,9 @@
 					</span>
 				</button>
 			</li>
+		</ul>
+
+		<ul id="mapToolsRight" class="mapToolsList">
 			<div class="requirePaintTool">
 				<li>
 					<b>
@@ -1304,6 +1317,25 @@
 				Close Settings
 			</span>
 		</button>
+	</div>
+
+	<div id="bonusEntitiesEditor">
+		<div id="bonusEntitiesAppearHere">
+
+		</div>
+		<div>
+			<button class="btn btn-primary" onclick="window.bonusEntityAdd();">
+				<span data-translate="trBtnAddBonusEntity">
+					Add Bonus Entity
+				</span>
+			</button>
+
+			<button class="btn btn-danger" onclick="alertify.closeAll();">
+				<span data-translate="trBtnCloseBonusEntity">
+					Close
+				</span>
+			</button>
+		</div>
 	</div>
 </div>
 

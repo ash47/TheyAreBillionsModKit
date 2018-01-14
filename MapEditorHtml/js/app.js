@@ -184,12 +184,166 @@ $(document).ready(function() {
 		);
 	};
 
+	// Shows the bonus entity editor
+	window.editBonusEntities = function() {
+		alertify.editBonusEntitiesDialog(
+			$('#bonusEntitiesEditor')[0]
+		);
+	};
+
+	// Add a bonus entity
+	window.bonusEntityAdd = function() {
+		// Add a bonus entity
+		window.layerStore.bonusEntities.push([
+			11462509610414451330,
+			1
+		]);
+
+		// Rebuild the bonus entity UI
+		window.rebuildBonusEntities();
+	}
+
+	// Rebuilds the bonus entity display
+	window.rebuildBonusEntities = function() {
+		var theCon = $('#bonusEntitiesAppearHere')
+			.empty();
+
+		var bonusEnts = window.layerStore.bonusEntities;
+
+		// Create the table + headers
+		var theTable = $('<table>')
+			.appendTo(theCon)
+			.append(
+				$('<tr>')
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderName',
+								'Entity Type'
+							)
+						})
+					)
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderAmount',
+								'Amount'
+							)
+						})
+					)
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderDelete',
+								'Delete'
+							)
+						})
+					)
+			);
+
+		for(var i=0; i<bonusEnts.length; ++i) {
+			// Create a new scope
+			(function(thisBonus, itemNumber) {
+				var myRow = $('<tr>')
+					.appendTo(theTable);
+
+				// The dropdown
+				var dropDown = $('<select>', {
+					class: 'form-control',
+					change: function() {
+						var theNewType = parseInt(dropDown.val());
+						if(isNaN(theNewType)) {
+							theNewType = 11462509610414451330;
+						}
+
+						thisBonus[0] = theNewType;
+					}
+				})
+					.appendTo(
+						$('<td>')
+							.appendTo(myRow)
+					);
+
+				var failOption = $('<option>', {
+					text: '<Unknown>',
+					value: thisBonus[0]
+				}).appendTo(dropDown);
+
+				// Add possible values
+				for(var bonusType in knownBonusEntsNice) {
+					$('<option>', {
+						text: bonusType,
+						disabled: 'disabled'
+					}).appendTo(dropDown);
+
+					var bonusesThisType = knownBonusEntsNice[bonusType];
+
+					for(var unitId in bonusesThisType) {
+						var unitName = bonusesThisType[unitId];
+
+						var isSelected = null;
+						if(parseInt(unitId) == parseInt(thisBonus[0])) {
+							isSelected = 'selected';
+							failOption.remove();
+						}
+
+						$('<option>', {
+							text: unitName,
+							value: unitId,
+							selected: isSelected
+						}).appendTo(dropDown);
+					}
+				}
+
+				// The amount container
+				var amountContainer = $('<input>', {
+					value: thisBonus[1],
+					class: 'form-control',
+					change: function() {
+						var newNumber = parseInt(amountContainer.val());
+						if(isNaN(newNumber) || newNumber <= 0) {
+							newNumber = 1;
+
+							// Store the new number
+							amountContainer.val(newNumber);
+						}
+
+						// Update our bonus
+						thisBonus[1] = newNumber;
+					}
+				}).appendTo(
+					$('<td>')
+						.appendTo(myRow)
+				);
+
+				// The delete button
+				var deleteButton = $('<button>', {
+					class: 'btn btn-danger',
+					text: window.getTranslation(
+						'trBonusEntityEditorItemDelete',
+						'Delete'
+					),
+					click: function() {
+						// Remove this one
+						bonusEnts.splice(itemNumber, 1);
+
+						// Rebuild the UI
+						window.rebuildBonusEntities();
+					}
+				}).appendTo(
+					$('<td>')
+						.appendTo(myRow)
+				);
+			})(bonusEnts[i], i);
+		}
+	};
+
 	// Saving the map
 	window.saveMap = function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		var totalParts = 13;
+		var totalParts = 14;
 		var currentPart = 0;
 
 		// Update to be 0%
@@ -258,6 +412,13 @@ $(document).ready(function() {
 			updatePercentage();
 
 		setTimeout(function() {
+			if(window.enableEditorExtraEntities) {
+				// Commit updates to extra entites
+				loadBonusEntities(true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
 			// Commit updates to events
 			if(window.enableEditorEvents) {
 				loadLevelEvents(true);
@@ -319,6 +480,7 @@ $(document).ready(function() {
 					window.setMapExportUpToDate(true);
 				}, 1);
 			});
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -607,9 +769,11 @@ $(document).ready(function() {
 		// Update the mouse preview
 		window.updateMousePreview(true);
 
+		var templateNameNice = templateName.replace('ZX.Entities.', '');
+
 		$('#activeEntityGoesHere').text(window.getTranslation(
-			'trEntitySelected_' + (templateName).replace(/ /g, ''),
-			templateName
+			'trEntitySelected_' + (templateNameNice).replace(/ /g, ''),
+			templateNameNice
 		));
 	};
 
@@ -960,7 +1124,7 @@ $(document).ready(function() {
 
 		// We are loading
 		setIsLoading(true);
-		var totalParts = 14;
+		var totalParts = 15;
 		var currentPart = 0;
 
 		var updatePercentage = function() {
@@ -1006,6 +1170,11 @@ $(document).ready(function() {
 		setTimeout(function() {
 			// Read main entities chunk
 			loadLevelEntities();
+			updatePercentage();
+
+		setTimeout(function() {
+			// Read main entities chunk
+			loadBonusEntities();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -1067,6 +1236,7 @@ $(document).ready(function() {
 			$('#mainContainer').addClass('mapIsLoaded');
 
 			updatePercentage();
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
