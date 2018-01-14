@@ -14,7 +14,7 @@ Tools &amp; Research notes for modding "They Are Billions"
 
 ## Data Editors
  - Currently only `ZXRules.dat` can be edited.
- - Place `.dat` files into `DataEditor/output/` folder.
+ - Place `.dat` files into `DataEditor/input/` folder.
  - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
  - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
  - Copy the file from `output` into your game's directory
