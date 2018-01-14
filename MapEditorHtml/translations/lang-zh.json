@@ -52,7 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
-	"trTutorials_112": "奖金实体",
+	"trTutorials_112": "奖励实体",
 	"trTutorials_111": "更多的实体和网格设置和道路",
 	"trTutorials_110": "地图设置和原始XML以及删除此实体的所有内容",
 	"trTutorials_109": "实体工具",
@@ -83,7 +83,8 @@
 
 	"trBtnEntityClone": "复制实体",
 	"trBtnEntityDelete": "删除实体",
-	"trBtnEntityDeleteAll": "删除所有这个实体",
+	"trBtnEntityDeleteAll": "删除所有此类实体",
+	"trBtnEditRawXML": "编辑原始XML文件",
 
 	"trHelpEntitySelection": "选择一个实体查看它的属性.",
 
@@ -94,7 +95,8 @@
 	"trInfoLayerEntities": "实体",
 	"trInfoLayerEntityLabels": "实体标签",
 	"trInfoLayerFoW": "战争迷雾",
-
+	"trInfoLayerRoads": "道路",
+	
 	"trInfoMapZoom": "地图缩放",
 
 	"trInfoCursorPosition": "坐标:",
@@ -114,14 +116,17 @@
 	"trBtnBrushLine": "连线工具",
 
 	"trInfoBrushSize": "笔刷大小",
+	"trInfoBrushesLayerSelect": "图层",
 
 	"trInfoBrushesSelectTer": "地形",
 	"trInfoBrushesSelectObj": "对象",
 	"trInfoBrushesSelectFog": "迷雾",
+	"trInfoBrushesSelectRoad": "道路",
 
 	"trInfoBrushesTerrain": "地形层",
 	"trInfoBrushesObject": "地形层",
 	"trInfoBrushesFoW": "战争迷雾层",
+	"trInfoBrushesRoad": "道路层",
 
 	"trBtnBrushTypeEarth": "泥土",
 	"trBtnBrushTypeWater": "湖泊",
@@ -138,6 +143,9 @@
 
 	"trBtnBrushTypeFoWAdd": "增加战争迷雾",
 	"trBtnBrushTypeFoWRemove": "去除战争迷雾",
+	
+	"trBtnBrushTypeRoadAdd": "增加道路",
+	"trBtnBrushTypeRoadRemove": "移除道路",
 
 	"trInfoEntityTool": "实体工具",
 	"trBtnSelectEntity": "选择实体...",
@@ -151,14 +159,14 @@
 	"trInfoMapProperties_menu_Events": "事件",
 
 	"trBtnMapSettings": "地图设置",
-	"trBtnBonusEntities": "奖金实体",
+	"trBtnBonusEntities": "奖励实体",
 
 	"trBtnAddBonusEntity": "添加奖励实体",
 	"trBonusEntityEditorHeaderName": "实体类型",
-	"trBonusEntityEditorHeaderAmount": "量",
+	"trBonusEntityEditorHeaderAmount": "数量",
 	"trBonusEntityEditorHeaderDelete": "删除",
 	"trBonusEntityEditorItemDelete": "删除",
-	"trBtnCloseBonusEntity": "关",
+	"trBtnCloseBonusEntity": "关闭",
 
 	"trSettingsEditorMapName": "地图名称",
 	"trSettingsEditorMapTheme": "地图主题",
@@ -233,7 +241,7 @@
 
 	"trConfirmDeleteMap": "你确定你要删除 {{mapName}}?",
 	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
-	"trConfirmDeleteEntityAll": "你确定要删除这个实体吗？ {{entityName}}",
+	"trConfirmDeleteEntityAll": "你确定要删除此类实体吗？ {{entityName}}",
 
 	"trBtnShowGridSelection": "网格设置",
 	"trGridEnable": "启用网格?",
@@ -252,12 +260,12 @@
 
 	"trChangeLogHeader": "更新记录",
 
-	"trChangeLogBody_112_01": "增加奖金实体编辑器.",
-	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么被挤压.",
+	"trChangeLogBody_112_01": "增加奖励实体编辑器.",
+	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么拥挤.",
 
 	"trChangeLogBody_111_01": "添加了网格选项.",
 	"trChangeLogBody_111_02": "增加道路.",
-	"trChangeLogBody_111_03": "添加了额外的实体来绘制.",
+	"trChangeLogBody_111_03": "添加了额外的实体绘制.",
 
 	"trChangeLogBody_110_01": "增加了地图设置编辑器.",
 	"trChangeLogBody_110_02": "添加删除所有的实体类型.",
