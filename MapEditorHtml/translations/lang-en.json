@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_112": "Bonus Entities",
 	"trTutorials_111": "More entities, Grid Settings, Roads",
 	"trTutorials_110": "Map settings, Raw XML &amp; Delete All of this Entity",
 	"trTutorials_109": "Entity Tool",
@@ -247,6 +248,9 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_112_01": "Added bonus entity editor.",
+	"trChangeLogBody_112_02": "Changed the user interface on the left side so it is less squashed.",
 
 	"trChangeLogBody_111_01": "Added grid options.",
 	"trChangeLogBody_111_02": "Added roads.",

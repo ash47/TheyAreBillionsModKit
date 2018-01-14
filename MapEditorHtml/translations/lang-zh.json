@@ -52,6 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_112": "奖金实体",
 	"trTutorials_111": "更多的实体和网格设置和道路",
 	"trTutorials_110": "地图设置和原始XML以及删除此实体的所有内容",
 	"trTutorials_109": "实体工具",
@@ -152,6 +153,13 @@
 	"trBtnMapSettings": "地图设置",
 	"trBtnBonusEntities": "奖金实体",
 
+	"trBtnAddBonusEntity": "添加奖励实体",
+	"trBonusEntityEditorHeaderName": "实体类型",
+	"trBonusEntityEditorHeaderAmount": "量",
+	"trBonusEntityEditorHeaderDelete": "删除",
+	"trBonusEntityEditorItemDelete": "删除",
+	"trBtnCloseBonusEntity": "关",
+
 	"trSettingsEditorMapName": "地图名称",
 	"trSettingsEditorMapTheme": "地图主题",
 
@@ -239,6 +247,9 @@
 	"trBugFix": "修复",
 
 	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_112_01": "增加奖金实体编辑器.",
+	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么被挤压.",
 
 	"trChangeLogBody_111_01": "添加了网格选项.",
 	"trChangeLogBody_111_02": "增加道路.",
