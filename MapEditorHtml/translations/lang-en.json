@@ -236,6 +236,8 @@
 
 	"trBtnShowGridSelection": "Grid Settings",
 	"trGridEnable": "Enable Grid?",
+	"trMapBorderCameraEnable": "Enable Map Camera Border?",
+	"trMapBorderBuildingEnable": "Enable Map Building Border?",
 	"trGridWidth": "Grid Width",
 	"trGridHeight": "Grid Height",
 	"trGridOffsetX": "Grid Offset X",

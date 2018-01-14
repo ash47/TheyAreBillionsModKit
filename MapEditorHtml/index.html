@@ -841,7 +841,7 @@
 		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
 		<canvas id="mousePreview"></canvas>
 		<canvas id="gridCanvas" class="mapLayer"></canvas>
-		<canvas id="mapOutline" class="mapLayer" style="display: none;"></canvas>
+		<canvas id="mapOutline" class="mapLayer"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -1302,9 +1302,21 @@
 	<div id="gridConfiguration">
 		<input type="checkbox" id="checkGridEnabled" onchange="window.redrawGrid()">
 		<label for="checkGridEnabled" data-translate="trGridEnabled">
-			<span data-translate="trGridEnable">
-				Enable Grid?
-			</span>
+			Enable Grid?
+		</label>
+
+		<br>
+
+		<input type="checkbox" id="checkMapBorderCamera" onchange="window.redrawMapOutline()" checked="checked">
+		<label for="checkMapBorderCamera" data-translate="trMapBorderCameraEnable">
+			Enable Map Camera Border?
+		</label>
+
+		<br>
+
+		<input type="checkbox" id="checkMapBorderBuilding" onchange="window.redrawMapOutline()" checked="checked">
+		<label for="checkMapBorderBuilding" data-translate="trMapBorderBuildingEnable">
+			Enable Map Building Border?
 		</label>
 
 		<div class="form-group">

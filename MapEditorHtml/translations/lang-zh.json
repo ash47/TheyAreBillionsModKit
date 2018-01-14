@@ -245,6 +245,8 @@
 
 	"trBtnShowGridSelection": "网格设置",
 	"trGridEnable": "启用网格?",
+	"trMapBorderCameraEnable": "启用地图相机边框?",
+	"trMapBorderBuildingEnable": "启用地图建筑边框?",
 	"trGridWidth": "网格宽度",
 	"trGridHeight": "网格高度",
 	"trGridOffsetX": "网格偏移量X",
