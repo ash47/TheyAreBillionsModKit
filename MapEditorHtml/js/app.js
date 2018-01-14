@@ -195,8 +195,8 @@ $(document).ready(function() {
 	window.bonusEntityAdd = function() {
 		// Add a bonus entity
 		window.layerStore.bonusEntities.push([
-			11462509610414451330,
-			1
+			'11462509610414451330',
+			'1'
 		]);
 
 		// Rebuild the bonus entity UI
@@ -251,12 +251,7 @@ $(document).ready(function() {
 				var dropDown = $('<select>', {
 					class: 'form-control',
 					change: function() {
-						var theNewType = parseInt(dropDown.val());
-						if(isNaN(theNewType)) {
-							theNewType = 11462509610414451330;
-						}
-
-						thisBonus[0] = theNewType;
+						thisBonus[0] = dropDown.val();
 					}
 				})
 					.appendTo(
@@ -282,7 +277,7 @@ $(document).ready(function() {
 						var unitName = bonusesThisType[unitId];
 
 						var isSelected = null;
-						if(parseInt(unitId) == parseInt(thisBonus[0])) {
+						if(unitId == thisBonus[0]) {
 							isSelected = 'selected';
 							failOption.remove();
 						}

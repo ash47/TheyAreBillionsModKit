@@ -997,10 +997,10 @@ function loadBonusEntities(commitUpdate) {
 						theOutput += '</Item>\n';
 					}
 
-					theOutput += '</Items>';
+					theOutput += '</Items>\n';
 				}
 
-				theOutput += '</Dictionary>\n';
+				theOutput += '</Dictionary>';
 
 				return theOutput;
 			}
