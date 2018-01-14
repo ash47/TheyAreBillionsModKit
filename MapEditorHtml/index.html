@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112407139-1"></script>
+
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-112407139-1');
+	</script>
+
 	<title data-translate="trTitle">They Are Billions | Map Editor</title>
 	<script src="js/jszip.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/jqueryTranslator.min.js"></script>
+	<script src="js/tether.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
+	<script src="js/fontawesome-all.min.js"></script>
 	<script src="js/alertify.min.js"></script>
 	<script src="js/constants.js"></script>
 	<script src="js/entitySizes.js"></script>
 	<script src="js/helpers.js"></script>
+	<script src="js/util.js"></script>
 	<script src="js/buffer.js"></script>
 	<script src="js/FileSaver.min.js"></script>
 	<script src="js/localStorageDB.min.js"></script>
 	<script src="js/editabletable.js"></script>
 	<script src="js/clipboard.min.js"></script>
 	<script src="js/translate.js"></script>
+	<script src="js/allents.js"></script>
 	<script src="js/app.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
 	<link rel="stylesheet" href="css/alertify.bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="css/tether.min.css"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/app.css"/>
 </head>
@@ -54,7 +70,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.08
+				</span> | v1.12
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -97,15 +113,15 @@
 				</p>
 			</div>
 
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trExplainWhatHeader">
 							What is this?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trExplainWhatBody1">
@@ -121,15 +137,15 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trExplainHowHeader">
 							How do I use this?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trExplainHowBody1">
@@ -157,15 +173,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trFeatureToggleHeader">
 							Select Features
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li data-translate="trFeatureToggleInfo1">
 							The devs of the game have once again broken the level editor. (likely on purpose)
@@ -180,49 +196,49 @@
 							<input type="checkbox" id="featureToggleTerrain" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleTerrain" data-translate="featureToggleTerrain">Allow Terrain Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleObject" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleObject" data-translate="featureToggleObject">Allow Object Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleFog" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleFog" data-translate="featureToggleFog">Allow Fog?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleEntities" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleEntities" data-translate="featureToggleEntities">Allow Entity Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleExtraEntities" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleExtraEntities" data-translate="featureToggleExtraEntities">Allow Oil Source Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleEventsEditor" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleEventsEditor" data-translate="featureToggleEventsEditor">Allow Events Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<li>
 							<input type="checkbox" id="featureToggleMapProps" onchange="window.updateSelectedFeatures()" checked="checked">
 							<label for="featureToggleMapProps" data-translate="featureToggleMapProps">Allow Map Props Editing?</label>
 							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>
 						<!--<li>
 							<input type="checkbox" id="featureToggleMapInfo" onchange="window.updateSelectedFeatures()">
 							<label for="featureToggleMapInfo" data-translate="featureToggleMapInfo">Allow Map Info Editing?</label>
 							<span data-translate="trBrokenAsOf">Broken as of</span>
-							<span>2017/01/09</span>
+							<span>2018/01/09</span>
 						</li>-->
 					</ul>
 				</div>
@@ -238,16 +254,23 @@
 
 		<div class="instructions">
 			<br>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trTemplateMapsHeader">
 							Template Maps
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('256x256');">
+								<span data-translate="trTemplate256">
+									256x256 Template
+								</span>
+							</button>
+						</li>
 						<li>
 							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
 								<span data-translate="trTemplate384">
@@ -266,16 +289,19 @@
 				</div>
 			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trRecentMapsHeader">
 							Recently Edited Maps
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
-					<span data-translate="trRecentMapsLimit">
+				<div class="card-block">
+					<span data-translate="trRecentMapsDisabled">
+						We have disabled this feature or now because this feature uses a lot of RAM and local resources, as well as CPU when saving / loading maps.
+					</span>
+					<!--<span data-translate="trRecentMapsLimit">
 						<b>Note:</b> There is a limit of 50MB.
 					</span>
 					<ul id="previousMapStore">
@@ -284,22 +310,54 @@
 								None
 							</span>
 						</li>
-					</ul>
+					</ul>-->
 				</div>
 			</div>
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trTutorialsHeader">
 							Tutorials / Dev VLogs:
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
+						<li>
+							<a href="https://www.youtube.com/watch?v=acnPJ8WZ60k&feature=youtu.be">
+								<b>(v1.12)</b>
+								<span data-translate="trTutorials_112">
+									Bonus Entities
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/c1qFjezkguQ">
+								<b>(v1.11)</b>
+								<span data-translate="trTutorials_111">
+									More entities, Grid Settings, Roads
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/HLu4jYhIZLU">
+								<b>(v1.10)</b>
+								<span data-translate="trTutorials_110">
+									Map settings, Raw XML &amp; Delete All of this Entity
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/k4tsmJbuqRs">
+								<b>(v1.09)</b>
+								<span data-translate="trTutorials_109">
+									Entity Tool
+								</span>
+							</a>
+						</li>
 						<li>
 							<a href="https://youtu.be/BW833qNArPY">
 								<b>(v1.08)</b>
@@ -378,15 +436,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trHelpHeader">
 							Is there somewhere I can ask questions, or share my mods?
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trHelpBody1">
@@ -404,15 +462,15 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trHelpTranslations">
 							Translations
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
 						<li>
 							<span data-translate="trHelpTranslations_01">
@@ -445,22 +503,110 @@
 		</div>
 
 		<div class="instructions">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trChangeLogHeader">
 							Change Log
 						</span>
 					</h3>
 				</div>
-				<div class="panel-body">
+				<div class="card-block">
 					<ul>
+						<!-- v1.12 -->
+						<li>
+							<b>(v1.12)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_112_01">
+										Added bonus entity editor.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
+									<span data-translate="trChangeLogBody_112_02">
+										Changed the user interface on the left side so it is less squashed.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_03">
+										Added additional entities to paint.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.11 -->
+						<li>
+							<b>(v1.11)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_01">
+										Added grid options.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_02">
+										Added roads.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_111_03">
+										Added additional entities to paint.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.10 -->
+						<li>
+							<b>(v1.10)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_01">
+										Added map settings editor.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_02">
+										Added delete all of an entity type.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_110_03">
+										Added raw XML editor option.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.09 -->
+						<li>
+							<b>(v1.09)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_109_01">
+										Added entity tool which lets you add new entities onto the map.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.08 -->
 						<li>
 							<b>(v1.08)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_108_01">
 										Added feature toggles.
 									</span>
@@ -473,19 +619,19 @@
 							<b>(v1.07)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_107_01">
 										Added Fog of War Editor.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_107_02">
 										Changed layout of brushes into seperate sections to save space.
 									</span>
 								</li>
 								<li>
-									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
 									<span data-translate="trChangeLogBody_107_03">
 										Fixed issues with oil entity editor.
 									</span>
@@ -498,25 +644,25 @@
 							<b>(v1.06)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_106_01">
 										Added Chinese translations files.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_106_02">
 										Made UI more pretty.
 									</span>
 								</li>
 								<li>
-									<span class="label label-info" data-translate="trPolish">Polish</span>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
 									<span data-translate="trChangeLogBody_106_03">
 										Improved accuracy and size of entities.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_106_04">
 										Added toggle option for entity labels.
 									</span>
@@ -529,7 +675,7 @@
 							<b>(v1.05)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_105_01">
 										Added oil source editing.
 									</span>
@@ -542,37 +688,37 @@
 							<b>(v1.04)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_01">
 										Added 512x512 template map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_02">
 										Added map properties editor.
 									</span>
 								</li>
 								<li>
-									<span class="label label-danger" data-translate="trBugFix">Bug Fix</span>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
 									<span data-translate="trChangeLogBody_104_03">
 										Fixed entity menu closing when deleting / cloning entities.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_04">
 										Added selection tool.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_05">
 										Added line tool.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_104_06">
 										Added undo &amp; redo for layers.
 									</span>
@@ -585,13 +731,13 @@
 							<b>(v1.03)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_103_01">
 										Added entity Cloning and Deleting.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_103_02">
 										Added Wave Editor to change how waves spawn.
 									</span>
@@ -604,7 +750,7 @@
 							<b>(v1.02)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_102_01">
 										Added visual entity display.
 									</span>
@@ -617,7 +763,7 @@
 							<b>(v1.01)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_101_01">
 										Added entity editor.
 									</span>
@@ -630,31 +776,31 @@
 							<b>(v1.00)</b>
 							<ul>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_01">
 										Added previous maps list.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_02">
 										Updated editor to be more useable (zooming, brush size, scrolling).
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_03">
 										Added the ability to export the map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_04">
 										Added the ability to edit the terrain and resources on a map.
 									</span>
 								</li>
 								<li>
-									<span class="label label-success" data-translate="trNewFeature">New Feature</span>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
 									<span data-translate="trChangeLogBody_100_05">
 										Added the ability to load save files.
 									</span>
@@ -667,13 +813,12 @@
 		</div>
 
 		<div id="saveButtons">
-			<input type="text" id="mapNameHolder" class="form-control mapNameInput" onchange="window.updateSaveName();">
-
 			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
 				<span data-translate="trBtnGenerateSaveFile">
 					Save Changes
 				</span>
 			</button>
+
 			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
 				<span data-translate="trBtnExportZXSav">
 					Export .zxsav
@@ -691,9 +836,11 @@
 
 	<div id="mapDisplayHolder">
 		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
+		<canvas id="mapRenderRoads" class="mapLayer"></canvas>
 		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
 		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
-		<canvas id="mousePreview" class="requirePaintTool"></canvas>
+		<canvas id="mousePreview"></canvas>
+		<canvas id="gridCanvas" class="mapLayer"></canvas>
 		<canvas id="helperLayer" class="mapLayer"></canvas>
 	</div>
 
@@ -710,6 +857,16 @@
 					Delete Entity
 				</span>
 			</button>
+			<button class="btn btn-danger" onclick="window.deleteEntityWarning(true);">
+				<span data-translate="trBtnEntityDeleteAll">
+					Delete all of this Entity
+				</span>
+			</button>
+			<button class="btn btn-primary" onclick="window.editRawXML();">
+				<span data-translate="trBtnEditRawXML">
+					Edit Raw XML
+				</span>
+			</button>
 		</div>
 		<div id="entityProps">
 			<span data-translate="trHelpEntitySelection">
@@ -719,7 +876,7 @@
 	</div>
 
 	<div id="mapTools">
-		<ul class="mapToolsList">
+		<ul id="mapToolsLeft" class="mapToolsList">
 			<li>
 				<b>
 					<span data-translate="trInfoToggleLayers">
@@ -769,6 +926,14 @@
 							</span>
 						</label>
 					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerRoad" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerRoad">
+							<span data-translate="trInfoLayerRoads">
+								Roads
+							</span>
+						</label>
+					</li>
 				</ul>
 			</li>
 
@@ -806,6 +971,30 @@
 			</li>
 
 			<li>
+				<button class="btn btn-primary" onclick="window.showGridSelection();">
+					<span data-translate="trBtnShowGridSelection">
+						Grid Settings
+					</span>
+				</button>
+			</li>
+
+			<li>
+				<button class="btn btn-primary" onclick="window.editMapSettings()">
+					<span data-translate="trBtnMapSettings">
+						Map Settings
+					</span>
+				</button>
+			</li>
+
+			<li>
+				<button class="btn btn-primary" onclick="window.editBonusEntities()">
+					<span data-translate="trBtnBonusEntities">
+						Bonus Entities
+					</span>
+				</button>
+			</li>
+
+			<li>
 				<b>
 					<span data-translate="trInfoTools">
 						Tools
@@ -827,6 +1016,16 @@
 					</span>
 				</button>
 			</li>
+			<li>
+				<button id="btn_setToolEntity" class="btn btn-primary btnSelectTool" onclick="window.setTool('primaryTool', 'setToolEntity')">
+					<span data-translate="trBtnToolEntity">
+						Entity Tool
+					</span>
+				</button>
+			</li>
+		</ul>
+
+		<ul id="mapToolsRight" class="mapToolsList">
 			<div class="requirePaintTool">
 				<li>
 					<b>
@@ -869,23 +1068,20 @@
 				</li>
 
 				<li>
-					<div class="btn-group layerSelectionGroup" role="group">
-						<button id="layerSelectionGroupSub_terrain" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('terrain');">
-							<span data-translate="trInfoBrushesSelectTer">
-								Ter
-							</span>
-						</button>
-						<button id="layerSelectionGroupSub_object" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('object');">
-							<span data-translate="trInfoBrushesSelectObj">
-								Obj
-							</span>
-						</button>
-						<button id="layerSelectionGroupSub_fog" type="button" class="btn btn-primary layerSelectionGroupSub" onclick="window.setActiveLayerSelectionGroupSub('fog');">
-							<span data-translate="trInfoBrushesSelectFog">
-								Fog
-							</span>
-						</button>
-					</div>
+					<select onchange="window.setActiveLayerSelectionGroupSub();" class="form-control" id="layerSelectionGroupSub">
+						<option data-translate="trInfoBrushesSelectTer" value="terrain">
+							Terrain
+						</option>
+						<option data-translate="trInfoBrushesSelectObj" value="object">
+							Object
+						</option>
+						<option data-translate="trInfoBrushesSelectFog" value="fog">
+							Fog
+						</option>
+						<option data-translate="trInfoBrushesSelectRoad" value="road">
+							Road
+						</option>
+					</select>
 				</li>
 
 				<li class="requireSubClass_terrain">
@@ -1002,8 +1198,180 @@
 						</span>
 					</button>
 				</li>
+
+				<li class="requireSubClass_road">
+					<b>
+						<span data-translate="trInfoBrushesRoad">
+							Road Layer
+						</span>
+					</b>
+				</li>
+				<li class="requireSubClass_road">
+					<button id="btn_toolRoadAdd" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolRoadAdd')">
+						<span data-translate="trBtnBrushTypeRoadAdd">
+							Add Road
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_road">
+					<button id="btn_toolRoadRemove" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolRoadRemove')">
+						<span data-translate="trBtnBrushTypeRoadRemove">
+							Remove Road
+						</span>
+					</button>
+				</li>
+			</div>
+			<div class="requireEntityTool">
+				<li>
+					<b>
+						<span data-translate="trInfoEntityTool">
+							Entity Tool
+						</span>
+					</b>
+				</li>
+				<li>
+					<button class="btn btn-primary" onclick="window.promptSelectActiveTemplate();">
+						<span id="activeEntityGoesHere" data-translate="trBtnSelectEntity">
+							Select Entity...
+						</span>
+					</button>
+				</li>
 			</div>
 		</ul>
+	</div>
+</div>
+
+<div style="display: none;">
+	<div id="selectEntityBrushMain">
+	    <ul id="selectEntityBrushList">
+	    	<!-- auto populated -->
+	    </ul>
+	</div>
+
+	<div id="rawXMLEditor">
+		<div>
+			<textarea id="rawXMLInput" class="form-control" rows="15">
+				<!-- XML Appears Here -->
+			</textarea>
+		</div>
+		<div>
+			<div class="xmlEditorButtons">
+				<button class="btn btn-primary" onclick="window.saveRawXML();">Save</button>
+				<button class="btn btn-danger" onclick="alertify.closeAll();">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="mapSettingsEditor">
+		<div class="form-group">
+			<label for="inputSaveFileName">
+				<span data-translate="trSettingsEditorMapName">
+					Map Name
+				</span>
+			</label>
+			<input type="text" class="form-control" id="inputSaveFileName" placeholder="Enter email">
+		</div>
+		<div class="form-group">
+			<label for="dropdownMapTheme">
+				<span data-translate="trSettingsEditorMapTheme">
+					Map Theme
+				</span>
+			</label>
+
+			<select class="form-control" id="dropdownMapTheme">
+				<option value="BR" data-translate="trThemeTheDarkMoorland">
+					The Dark Moorland
+				</option>
+				<option value="TM" data-translate="trThemeThePeacefulLowlands">
+					The Peaceful Lowlands
+				</option>
+				<option value="AL" data-translate="trThemeTheFrozenHighlands">
+					The Frozen Highlands
+				</option>
+				<option value="DS" data-translate="trThemeTheDesolatedWasteland">
+					The Desolated Wasteland
+				</option>
+			</select>
+		</div>
+		<div>
+			<button class="btn btn-danger" onclick="alertify.closeAll();">Close</button>
+		</div>
+	</div>
+
+	<div id="gridConfiguration">
+		<input type="checkbox" id="checkGridEnabled" onchange="window.redrawGrid()">
+		<label for="checkGridEnabled" data-translate="trGridEnabled">
+			<span data-translate="trGridEnable">
+				Enable Grid?
+			</span>
+		</label>
+
+		<div class="form-group">
+			<label for="inputGridWidth">
+				<span data-translate="trGridWidth">
+					Grid Width
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridWidth" value="1" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridHeight">
+				<span data-translate="trGridHeight">
+					Grid Height
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridHeight" value="1" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridOffsetX">
+				<span data-translate="trGridOffsetX">
+					Grid Offset X
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridOffsetX" value="0" onchange="window.redrawGrid();">
+		</div>
+
+		<div class="form-group">
+			<label for="inputGridOffsetY">
+				<span data-translate="trGridOffsetY">
+					Grid Offset Y
+				</span>
+			</label>
+			<input type="number" class="form-control" id="inputGridOffsetY" value="0" onchange="window.redrawGrid();">
+		</div>
+
+		<button class="btn btn-primary" onclick="window.redrawGrid();">
+			<span data-translate="trGridBtnUpdate">
+				Update Grid
+			</span>
+		</button>
+
+		<button class="btn btn-danger" onclick="alertify.closeAll();">
+			<span data-translate="trGridBtnCloseSettings">
+				Close Settings
+			</span>
+		</button>
+	</div>
+
+	<div id="bonusEntitiesEditor">
+		<div id="bonusEntitiesAppearHere">
+
+		</div>
+		<div>
+			<button class="btn btn-primary" onclick="window.bonusEntityAdd();">
+				<span data-translate="trBtnAddBonusEntity">
+					Add Bonus Entity
+				</span>
+			</button>
+
+			<button class="btn btn-danger" onclick="alertify.closeAll();">
+				<span data-translate="trBtnCloseBonusEntity">
+					Close
+				</span>
+			</button>
+		</div>
 	</div>
 </div>
 

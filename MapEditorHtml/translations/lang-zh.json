@@ -43,6 +43,7 @@
 	"trBrokenAsOf": "破碎的",
 
 	"trTemplateMapsHeader": "模板地图",
+	"trTemplate256": "256x256 模板",
 	"trTemplate384": "384x384 模板",
 	"trTemplate512": "512x512 模板",
 
@@ -51,6 +52,10 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_112": "奖金实体",
+	"trTutorials_111": "更多的实体和网格设置和道路",
+	"trTutorials_110": "地图设置和原始XML以及删除此实体的所有内容",
+	"trTutorials_109": "实体工具",
 	"trTutorials_108": "功能切换",
 	"trTutorials_107": "战争迷雾",
 	"trTutorials_106": "中文翻译与准确实体",
@@ -78,6 +83,7 @@
 
 	"trBtnEntityClone": "复制实体",
 	"trBtnEntityDelete": "删除实体",
+	"trBtnEntityDeleteAll": "删除所有这个实体",
 
 	"trHelpEntitySelection": "选择一个实体查看它的属性.",
 
@@ -100,6 +106,7 @@
 
 	"trBtnToolPaint": "绘画工具",
 	"trBtnToolSelection": "选择工具",
+	"trBtnToolEntity": "实体工具",
 
 	"trInfoBrushes": "刷子",
 
@@ -132,6 +139,9 @@
 	"trBtnBrushTypeFoWAdd": "增加战争迷雾",
 	"trBtnBrushTypeFoWRemove": "去除战争迷雾",
 
+	"trInfoEntityTool": "实体工具",
+	"trBtnSelectEntity": "选择实体...",
+
 	"trBtnOldSaveLoad": "载入",
 	"trBtnOldSaveDelete": "删除",
 
@@ -139,6 +149,24 @@
 	"trInfoMapProperties_menu_Entities": "实体",
 	"trInfoMapProperties_menu_ExtraEntities": "额外实体",
 	"trInfoMapProperties_menu_Events": "事件",
+
+	"trBtnMapSettings": "地图设置",
+	"trBtnBonusEntities": "奖金实体",
+
+	"trBtnAddBonusEntity": "添加奖励实体",
+	"trBonusEntityEditorHeaderName": "实体类型",
+	"trBonusEntityEditorHeaderAmount": "量",
+	"trBonusEntityEditorHeaderDelete": "删除",
+	"trBonusEntityEditorItemDelete": "删除",
+	"trBtnCloseBonusEntity": "关",
+
+	"trSettingsEditorMapName": "地图名称",
+	"trSettingsEditorMapTheme": "地图主题",
+
+	"trThemeTheDarkMoorland": "黑暗的荒野",
+	"trThemeThePeacefulLowlands": "和平的低地",
+	"trThemeTheFrozenHighlands": "冻结的高地",
+	"trThemeTheDesolatedWasteland": "荒废荒地",
 
 	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "军队食物消耗",
 	"trInfoMapProperties_key_ArmyGoldCost": "军队维持费用",
@@ -198,16 +226,44 @@
 	"trErrorNoEntitySelected": "请选择一个实体.",
 	"trErrorNoEntityReference": "无法获得对实体的引用!",
 
-	"trSuccessEntityCloned": "实体被成功克隆!",
-	"trSuccessEntityDeleted": "实体已成功移除.",
+	"trSuccessEntityCloned": "实体被成功克隆! {{entityName}}",
+	"trSuccessEntityDeleted": "实体已成功移除. {{entityName}}",
+	"trSuccessEntityDeletedAll": "实体已成功移除. {{entityName}}",
 	"trSuccessEntityPropertyUpdated": "变 \"{{propertyName}}\" 至 \"{{newValue}}\"",
 
 	"trConfirmDeleteMap": "你确定你要删除 {{mapName}}?",
-	"trConfirmDeleteEntity": "你确定要删除这个实体吗？",
+	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
+	"trConfirmDeleteEntityAll": "你确定要删除这个实体吗？ {{entityName}}",
+
+	"trBtnShowGridSelection": "网格设置",
+	"trGridEnable": "启用网格?",
+	"trGridWidth": "网格宽度",
+	"trGridHeight": "网格高度",
+	"trGridOffsetX": "网格偏移量X",
+	"trGridOffsetY": "网格偏移量Y",
+	"trGridBtnUpdate": "更新网格",
+	"trGridBtnCloseSettings": "关闭设置",
+
+	"trRecentMapsDisabled": "我们已经禁用了这个功能，或者现在因为这个功能在保存/加载地图的时候使用了大量的RAM和本地资源，以及CPU.",
 
 	"trNewFeature": "新功能",
 	"trPolish": "美化",
 	"trBugFix": "修复",
+
+	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_112_01": "增加奖金实体编辑器.",
+	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么被挤压.",
+
+	"trChangeLogBody_111_01": "添加了网格选项.",
+	"trChangeLogBody_111_02": "增加道路.",
+	"trChangeLogBody_111_03": "添加了额外的实体来绘制.",
+
+	"trChangeLogBody_110_01": "增加了地图设置编辑器.",
+	"trChangeLogBody_110_02": "添加删除所有的实体类型.",
+	"trChangeLogBody_110_03": "添加了原始XML编辑器选项.",
+
+	"trChangeLogBody_109_01": "增加了实体工具，可以让你添加新的实体到地图上.",
 	
 	"trChangeLogBody_108_01": "增加了功能的开关.",
 	
@@ -220,7 +276,6 @@
 	"trChangeLogBody_106_03": "提高了实体的准确性和大小.",
 	"trChangeLogBody_106_04": "添加了实体标签的切换选项.",
 
-	"trChangeLogHeader": "更新记录",
 	"trChangeLogBody_105_01": "添加油源编辑.",
 
 	"trChangeLogBody_104_01": "增加512x512模板地图.",

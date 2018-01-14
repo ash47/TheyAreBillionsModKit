@@ -9,6 +9,7 @@ window.enableEditorExtraEntities = true;
 window.enableEditorEvents = true;
 window.enableEditorMapProps = true;
 window.enableEditorInfo = true;
+window.enableEditorRoads = true;
 
 window.enableEditorFastEntities = false;
 
@@ -44,12 +45,14 @@ $(document).ready(function() {
 	}
 
 	// update our previous maps
-	updatePastMapsList();
+	//updatePastMapsList();
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
+	var gridCanvas = document.getElementById('gridCanvas');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
 	window.pixelSize = 4;
@@ -83,6 +86,12 @@ $(document).ready(function() {
 			colorMap: colorObject,
 			defaultColor: colorNone,
 		},
+		LayerRoads: {
+			name: 'LayerRoads',
+			canvas: mapRenderRoadsCanvas,
+			colorMap: colorRoad,
+			defaultColor: colorNone,
+		},
 		LayerFog: {
 			name: 'LayerFog',
 			canvas: mapRenderFoWCanvas,
@@ -91,10 +100,237 @@ $(document).ready(function() {
 		}
 	};
 
-	// Updating the map title
-	window.updateSaveName = function() {
-		// Store the new title
-		window.mapInfo.title = $('#mapNameHolder').val();
+	window.showGridSelection = function() {
+		alertify.genericDialog(
+			$('#gridConfiguration')[0]
+		);
+	};
+
+	var gridDrawInProgress = false;
+	var gridNeedsRedraw = false;
+	window.redrawGrid = function() {
+		// Is the grid enabled?
+		if(!$('#checkGridEnabled').is(':checked')) {
+			$('#gridCanvas').hide();
+			return;
+		} else {
+			$('#gridCanvas').show();
+		}
+
+		// Only allow one redraw at a time
+		if(gridDrawInProgress) {
+			gridNeedsRedraw = true;
+			return;
+		}
+		gridDrawInProgress = true;
+
+		var gridWidth = parseInt($('#inputGridWidth').val());
+		if(isNaN(gridWidth) || gridWidth < 1) gridWidth = 1;
+
+		var gridHeight = parseInt($('#inputGridHeight').val());
+		if(isNaN(gridHeight) || gridHeight < 1) gridHeight = 1;
+
+		var gridOffsetX = parseInt($('#inputGridOffsetX').val());
+		if(isNaN(gridOffsetX)) gridOffsetX = 0;
+
+		var gridOffsetY = parseInt($('#inputGridOffsetY').val());
+		if(isNaN(gridOffsetY)) gridOffsetY = 0;
+
+		var ctx = gridCanvas.getContext('2d');
+
+		// Clear the old grid
+		ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
+		var actualWidth = gridCanvas.width;
+		var actualHeight = gridCanvas.height;
+
+		// Set hte fill style
+		ctx.fillStyle = getRBG(colorGridLines);
+
+		var yIncreaseValue = window.pixelSize * gridHeight;
+		var startY = gridOffsetY * window.pixelSize;
+		startY -= Math.ceil(startY / yIncreaseValue) * yIncreaseValue;
+
+		// Add grid lines
+		for(var y=startY; y<actualHeight; y += yIncreaseValue) {
+			ctx.beginPath();
+			ctx.moveTo(0, y);
+			ctx.lineTo(actualWidth, y);
+			ctx.stroke();
+		}
+
+		var xIncreaseValue = window.pixelSize * gridWidth;
+		var startX = gridOffsetX * window.pixelSize;
+		startX -= Math.ceil(startX / xIncreaseValue) * xIncreaseValue;
+
+		for(var x=startX; x<actualWidth; x += window.pixelSize * gridWidth) {
+			ctx.beginPath();
+			ctx.moveTo(x, 0);
+			ctx.lineTo(x, actualWidth);
+			ctx.stroke();
+		}
+
+		gridDrawInProgress = false;
+		if(gridNeedsRedraw) {
+			gridNeedsRedraw = false;
+			window.redrawGrid();
+		}
+	};
+
+	// Shows the editor for map settings
+	window.editMapSettings = function() {
+		alertify.mapSettingsDialog(
+			$('#mapSettingsEditor')[0]
+		);
+	};
+
+	// Shows the bonus entity editor
+	window.editBonusEntities = function() {
+		alertify.editBonusEntitiesDialog(
+			$('#bonusEntitiesEditor')[0]
+		);
+	};
+
+	// Add a bonus entity
+	window.bonusEntityAdd = function() {
+		// Add a bonus entity
+		window.layerStore.bonusEntities.push([
+			'11462509610414451330',
+			'1'
+		]);
+
+		// Rebuild the bonus entity UI
+		window.rebuildBonusEntities();
+	}
+
+	// Rebuilds the bonus entity display
+	window.rebuildBonusEntities = function() {
+		var theCon = $('#bonusEntitiesAppearHere')
+			.empty();
+
+		var bonusEnts = window.layerStore.bonusEntities;
+
+		// Create the table + headers
+		var theTable = $('<table>')
+			.appendTo(theCon)
+			.append(
+				$('<tr>')
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderName',
+								'Entity Type'
+							)
+						})
+					)
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderAmount',
+								'Amount'
+							)
+						})
+					)
+					.append(
+						$('<th>', {
+							text: window.getTranslation(
+								'trBonusEntityEditorHeaderDelete',
+								'Delete'
+							)
+						})
+					)
+			);
+
+		for(var i=0; i<bonusEnts.length; ++i) {
+			// Create a new scope
+			(function(thisBonus, itemNumber) {
+				var myRow = $('<tr>')
+					.appendTo(theTable);
+
+				// The dropdown
+				var dropDown = $('<select>', {
+					class: 'form-control',
+					change: function() {
+						thisBonus[0] = dropDown.val();
+					}
+				})
+					.appendTo(
+						$('<td>')
+							.appendTo(myRow)
+					);
+
+				var failOption = $('<option>', {
+					text: '<Unknown>',
+					value: thisBonus[0]
+				}).appendTo(dropDown);
+
+				// Add possible values
+				for(var bonusType in knownBonusEntsNice) {
+					$('<option>', {
+						text: bonusType,
+						disabled: 'disabled'
+					}).appendTo(dropDown);
+
+					var bonusesThisType = knownBonusEntsNice[bonusType];
+
+					for(var unitId in bonusesThisType) {
+						var unitName = bonusesThisType[unitId];
+
+						var isSelected = null;
+						if(unitId == thisBonus[0]) {
+							isSelected = 'selected';
+							failOption.remove();
+						}
+
+						$('<option>', {
+							text: unitName,
+							value: unitId,
+							selected: isSelected
+						}).appendTo(dropDown);
+					}
+				}
+
+				// The amount container
+				var amountContainer = $('<input>', {
+					value: thisBonus[1],
+					class: 'form-control',
+					change: function() {
+						var newNumber = parseInt(amountContainer.val());
+						if(isNaN(newNumber) || newNumber <= 0) {
+							newNumber = 1;
+
+							// Store the new number
+							amountContainer.val(newNumber);
+						}
+
+						// Update our bonus
+						thisBonus[1] = newNumber;
+					}
+				}).appendTo(
+					$('<td>')
+						.appendTo(myRow)
+				);
+
+				// The delete button
+				var deleteButton = $('<button>', {
+					class: 'btn btn-danger',
+					text: window.getTranslation(
+						'trBonusEntityEditorItemDelete',
+						'Delete'
+					),
+					click: function() {
+						// Remove this one
+						bonusEnts.splice(itemNumber, 1);
+
+						// Rebuild the UI
+						window.rebuildBonusEntities();
+					}
+				}).appendTo(
+					$('<td>')
+						.appendTo(myRow)
+				);
+			})(bonusEnts[i], i);
+		}
 	};
 
 	// Saving the map
@@ -102,7 +338,7 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		var totalParts = 13;
+		var totalParts = 14;
 		var currentPart = 0;
 
 		// Update to be 0%
@@ -129,6 +365,12 @@ $(document).ready(function() {
 		setTimeout(function() {
 			if(enableEditorObjects) {
 				loadLayer('LayerObjects', true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(enableEditorRoads) {
+				loadLayer('LayerRoads', true);
 			}
 			updatePercentage();
 
@@ -165,6 +407,13 @@ $(document).ready(function() {
 			updatePercentage();
 
 		setTimeout(function() {
+			if(window.enableEditorExtraEntities) {
+				// Commit updates to extra entites
+				loadBonusEntities(true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
 			// Commit updates to events
 			if(window.enableEditorEvents) {
 				loadLevelEvents(true);
@@ -187,7 +436,7 @@ $(document).ready(function() {
 
 		setTimeout(function() {
 			// Update our local storage
-			updateLocalStorage();
+			//updateLocalStorage();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -226,6 +475,8 @@ $(document).ready(function() {
 					window.setMapExportUpToDate(true);
 				}, 1);
 			});
+		}, 1);
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -284,7 +535,7 @@ $(document).ready(function() {
 	// Downloading the zxsav
 	window.downloadZXSave = function() {
 		// Do the save
-		saveAs(window.activeMap.downloadableZip, window.activeMap.name);
+		saveAs(window.activeMap.downloadableZip, window.layerStore.MapProps._mapName + '.zxsav');
 	};
 
 	// Download the checksum
@@ -292,18 +543,24 @@ $(document).ready(function() {
 		// Do the saveas
 		saveAs(
 			new Blob([window.activeMap.checksum], {type : 'text/plain'}),
-			window.activeMap.name.replace('.zxsav', '.zxcheck')
+			window.layerStore.MapProps._mapName + '.zxcheck'
 		);
 	};
 
 	// Updates which tool brush section thing is visible
 	window.setActiveLayerSelectionGroupSub = function(newSection) {
+		if(newSection == null) {
+			newSection = $('#layerSelectionGroupSub').val();
+		} else {
+			$('#layerSelectionGroupSub').val(newSection);
+		}
+
 		// Cleanup old selections
 		$('.layerSelectionGroupSub').removeClass('btn-success');
 		$('.layerSelectionGroupSub').addClass('btn-primary');
 
 		var header = 'requireSubClass_';
-		var classes = ['terrain', 'object', 'fog'];
+		var classes = ['terrain', 'object', 'fog', 'road'];
 
 		for(var i=0; i<classes.length; ++i) {
 			var fullClass = header + classes[i];
@@ -331,6 +588,7 @@ $(document).ready(function() {
 			// Remove classes
 			$('#mainContainer').removeClass('paintToolActivated');
 			$('#mainContainer').removeClass('selectionToolActivated');
+			$('#mainContainer').removeClass('entityToolActivated');
 
 			switch(toolName) {
 				case 'setToolMapPainter':
@@ -341,6 +599,11 @@ $(document).ready(function() {
 				case 'setToolSelection':
 					activePrimaryTool = enum_toolSelection;
 					$('#mainContainer').addClass('selectionToolActivated');
+				break;
+
+				case 'setToolEntity':
+					activePrimaryTool = enum_toolEntity;
+					$('#mainContainer').addClass('entityToolActivated');
 				break;
 			}
 		}
@@ -453,6 +716,18 @@ $(document).ready(function() {
 					activeLayer = window.layerStore.LayerFog;
 					activeToolColor = 0;
 				break;
+
+				case 'toolRoadAdd':
+					window.setActiveLayerSelectionGroupSub('road');
+					activeLayer = window.layerStore.LayerRoads;
+					activeToolColor = 1;
+				break;
+
+				case 'toolRoadRemove':
+					window.setActiveLayerSelectionGroupSub('road');
+					activeLayer = window.layerStore.LayerRoads;
+					activeToolColor = 0;
+				break;
 			}
 		}
 
@@ -462,6 +737,49 @@ $(document).ready(function() {
 		updateMousePreview(true);
 	};
 
+	// Set the active entity template
+	window.setActiveTemplate = function(templateName, templateStore) {
+		// Ensure the template exists
+		if(window.entityTemplates[templateName] == null) {
+			alertify.error(window.getTranslation(
+				'trErrorInvalidTemplate',
+				'Unknown template: {{template}}', {
+					template: templateName
+				}
+			));
+			return;
+		}
+
+		// Store the new active template
+		window.activeTemplate = templateName;
+		window.activeTemplateStore = templateStore;
+
+		// Data on the currently active template
+		window.activeTemplateData = window.extractEntityInfo(
+			window.entityTemplates[templateName]
+		);
+
+		// Calculate offsets
+		window.activeTemplateSizeInfo = getEntityOffsets(window.activeTemplateData);
+
+		// Update the mouse preview
+		window.updateMousePreview(true);
+
+		var templateNameNice = templateName.replace('ZX.Entities.', '');
+
+		$('#activeEntityGoesHere').text(window.getTranslation(
+			'trEntitySelected_' + (templateNameNice).replace(/ /g, ''),
+			templateNameNice
+		));
+	};
+
+	// Prompt to select which entity
+	window.promptSelectActiveTemplate = function() {
+		alertify.entitySelectionDialog(
+			$('#selectEntityBrushMain')[0]
+		);
+	};
+
 	// Updates which layers are visible
 	window.updateLayerToggles = function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
@@ -469,10 +787,12 @@ $(document).ready(function() {
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
+		var roadVisible = $('#toggleLayerRoad').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
 		var cFoW = $(window.layerStore.LayerFog.canvas);
+		var cRoad = $(window.layerStore.LayerRoads.canvas);
 		var mainWindow = $('#mainContainer');
 
 		// Toggle terrain layer
@@ -490,6 +810,11 @@ $(document).ready(function() {
 			cFoW.show() :
 			cFoW.hide();
 
+		// Roads later
+		roadVisible ?
+			cRoad.show() :
+			cRoad.hide();
+
 		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
 		entityLabelsVisible ? mainWindow.removeClass('hideEntityLabels') : mainWindow.addClass('hideEntityLabels');
 	};
@@ -506,8 +831,33 @@ $(document).ready(function() {
 		// Update brush size
 		window.updateBrushSize(true);
 
+		var mapZoomContainer = $('#mapDisplayHolder');
+
+		// Grab the current percentage
+		var currentScrollLeft = mapZoomContainer.scrollLeft();
+		var currentScrollTop = mapZoomContainer.scrollTop();
+
+		var currentScrollWidth = mapZoomContainer.prop('scrollWidth');
+		var currentScrollHeight = mapZoomContainer.prop('scrollHeight');
+
 		// Perform a full re-render
 		mapFullRender();
+
+		setTimeout(function () {
+			// Calculate new scroll height
+			var newScrollWidth = mapZoomContainer.prop('scrollWidth');
+			var newScrollHeight = mapZoomContainer.prop('scrollHeight');
+
+			console.log(currentScrollWidth, newScrollWidth)
+
+			mapZoomContainer.scrollLeft(
+				(currentScrollLeft / currentScrollWidth) * newScrollWidth
+			);
+
+			mapZoomContainer.scrollTop(
+				(currentScrollTop / currentScrollHeight) * newScrollHeight
+			);
+		}, 2);
 	};
 
 	// Update brush sizes
@@ -529,17 +879,33 @@ $(document).ready(function() {
 	window.updateMousePreview = function(updateSize) {
 		var previewCon = $('#mousePreview');
 
-		if(updateSize) {
-			var theSize = window.brushSize * window.pixelSize;
+		var theOffsetX = 0;
+		var theOffsetY = 0;
 
-			previewCon.width(theSize);
-			previewCon.height(theSize);
+		if(activePrimaryTool == enum_toolPaint) {
+			theOffsetX = Math.floor( (window.brushSize - 1) / 2);
+			theOffsetY = theOffsetX;
+
+			if(updateSize) {
+				var theSize = window.brushSize * window.pixelSize;
+
+				previewCon.width(theSize);
+				previewCon.height(theSize);
+			}
 		}
 
-		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+		if(activePrimaryTool == enum_toolEntity) {
+			if(updateSize) {
+				previewCon.width(window.activeTemplateSizeInfo.width * window.pixelSize);
+				previewCon.height(window.activeTemplateSizeInfo.height * window.pixelSize);
+			}
+
+			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
+			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
+		}
 		
-		previewCon.css('left', (prevX - theOffset) * window.pixelSize);
-		previewCon.css('top', (prevY - theOffset) * window.pixelSize);
+		previewCon.css('left', (prevX - theOffsetX) * window.pixelSize);
+		previewCon.css('top', (prevY - theOffsetY) * window.pixelSize);
 
 		// Update the position text
 		if(prevX != null && prevY != null) {
@@ -578,6 +944,52 @@ $(document).ready(function() {
   				// Run the callback
 				clickPixel(mouseX, mouseY);
   			}
+  		}
+
+  		// Entiy placement
+  		if(activePrimaryTool == enum_toolEntity) {
+  			var templateName = window.activeTemplate;
+
+  			// Create the new entity
+  			var newEntity = window.extractEntityInfo(
+				window.entityTemplates[templateName]
+			);
+
+			var entityType = newEntity.__entityType;
+
+			var theStore = window.layerStore.entities;
+			if(window.activeTemplateStore == 'extraEnts') {
+				theStore = window.layerStore.extraEntities;
+				console.log('YES!');
+			}
+
+			console.log(window.activeTemplateStore)
+
+			// Do we have a store for this entity?
+			if(theStore[entityType] == null) {
+				theStore[entityType] = [];
+			}
+
+			// Store the new entity
+			theStore[entityType].push(newEntity);
+			newEntity.__theStore = theStore[entityType];
+
+			// Get the position of the entity
+			var x = (activeLayer.width - prevX - 1);
+  			var entPos = '' + prevY + ';' + x;
+  			newEntity.Position = entPos;
+
+  			// We should show this entity
+  			newEntity.shouldHide = false;
+
+  			// Visually create it
+  			addVisualEnt(newEntity);
+
+  			// View this entity
+  			window.viewEntityProps(newEntity);
+
+  			// Update entity menu
+  			window.updateEntityMenu();
   		}
 	}).mouseup(function(e) {
 		// Mouse is no longer down
@@ -714,9 +1126,12 @@ $(document).ready(function() {
 		// Ensure we have data loaded
 		if(window.activeMap.Data == null || window.activeMap.Info == null) return;
 
+		// Optimisations
+		$('.instructions').remove();
+
 		// We are loading
 		setIsLoading(true);
-		var totalParts = 14;
+		var totalParts = 15;
 		var currentPart = 0;
 
 		var updatePercentage = function() {
@@ -728,7 +1143,7 @@ $(document).ready(function() {
 
 		setTimeout(function() {
 			// Update the local storage of maps
-			updateLocalStorage();
+			//updateLocalStorage();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -747,6 +1162,11 @@ $(document).ready(function() {
 			updatePercentage();
 
 		setTimeout(function() {
+			// Load Objects
+			loadLayer('LayerRoads');
+			updatePercentage();
+
+		setTimeout(function() {
 			// Load Activity Layer
 			loadLayerSimple(
 				'LayerFog',
@@ -757,6 +1177,11 @@ $(document).ready(function() {
 		setTimeout(function() {
 			// Read main entities chunk
 			loadLevelEntities();
+			updatePercentage();
+
+		setTimeout(function() {
+			// Read main entities chunk
+			loadBonusEntities();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -806,6 +1231,8 @@ $(document).ready(function() {
 			window.setTool('brushType', 'setToolMapPainterSingle');
 			window.setTool('brushColor', 'toolTerrainEarth');
 
+			window.setActiveTemplate('ZX.Entities.StoneHouse', 'standardEnts');
+
 			// Update what is displayed
 			window.updateLayerToggles();
 
@@ -816,6 +1243,8 @@ $(document).ready(function() {
 			$('#mainContainer').addClass('mapIsLoaded');
 
 			updatePercentage();
+		}, 1);
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -912,23 +1341,25 @@ $(document).ready(function() {
 				}
 			});
 
-			if(entityName == 'addDirect') {
-				// All of these sit directly in the main one
-				for(var i=0; i<thisEntityList.length; ++i) {
-					entityData.push(thisEntityList[i]);
+			if(thisEntityList.length > 0) {
+				if(entityName == 'addDirect') {
+					// All of these sit directly in the main one
+					for(var i=0; i<thisEntityList.length; ++i) {
+						entityData.push(thisEntityList[i]);
+					}
+				} else {
+					// Store it
+					entityData.push({
+						text: entityName,
+						selectable: false,
+						nodes: thisEntityList,
+						state: {
+							checked: childrenAreChecked,
+							expanded: shouldExpand1
+						},
+						path: [entityText, entityName]
+					});
 				}
-			} else {
-				// Store it
-				entityData.push({
-					text: entityName,
-					selectable: false,
-					nodes: thisEntityList,
-					state: {
-						checked: childrenAreChecked,
-						expanded: shouldExpand1
-					},
-					path: [entityText, entityName]
-				});
 			}
 		}
 
@@ -1035,7 +1466,7 @@ $(document).ready(function() {
 					}
 					
 					if(node.__sort == 'MapProps') {
-						window.viewEntityProps(window.layerStore.MapProps);	
+						window.viewEntityProps(window.layerStore.MapProps, hiddenMapProps);	
 					}
 
 					if(node.__sort == 'ExtraEntities') {
@@ -1202,8 +1633,14 @@ $(document).ready(function() {
 			helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
 			helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
 
+			gridCanvas.width = helperCanvas.width;
+			gridCanvas.height = helperCanvas.height;
+
 			// Render Terrain
 			renderLayer('LayerTerrain');
+
+			// Render Roads
+			renderLayer('LayerRoads');
 
 			// Render Objects
 			renderLayer('LayerObjects');
@@ -1213,6 +1650,9 @@ $(document).ready(function() {
 
 			// Render entities (oh god)
 			renderEntities();
+
+			// Render the gridlines
+			window.redrawGrid();
 
 			// We are no longer loading
 			setIsLoading(false);
@@ -1268,12 +1708,14 @@ $(document).ready(function() {
 		// Tell the user it was cloned
 		alertify.success(window.getTranslation(
 			'trSuccessEntityCloned',
-			'Entity was successfully cloned!'
+			'{{entityName}} was successfully cloned!', {
+				entityName: (toClone.__entityType || 'Unknown').split(',')[0]
+			}
 		));
 	};
 
 	// Asks if the user really wants to delete the entity
-	window.deleteEntityWarning = function() {
+	window.deleteEntityWarning = function(deleteAll) {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
@@ -1284,19 +1726,33 @@ $(document).ready(function() {
 			return;
 		}
 
-		alertify.confirm(window.getTranslation(
-			'trConfirmDeleteEntity',
-			'Are you sure you want to delete this entity?'
-		), function() {
+		var msg;
+		if(deleteAll) {
+			msg = window.getTranslation(
+				'trConfirmDeleteEntityAll',
+				'Are you sure you want to delete EVERY {{entityName}}?', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			)
+		} else {
+			msg = window.getTranslation(
+				'trConfirmDeleteEntity',
+				'Are you sure you want to delete {{entityName}}?', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			)
+		}
+
+		alertify.confirm(msg, function() {
 			// Actually delete the entity
-			window.deleteEntity();
+			window.deleteEntity(deleteAll);
 		}, function() {
 			// Do nothing
 		});
 	};
 
 	// Actually deletes an entity
-	window.deleteEntity = function() {
+	window.deleteEntity = function(deleteAll) {
 		var toDelete = window.viewEntityActive;
 
 		if(toDelete == null) {
@@ -1309,29 +1765,70 @@ $(document).ready(function() {
 
 		var store = toDelete.__theStore;
 
-		for(var i=0; i<store.length; ++i) {
-			if(store[i] == toDelete) {
-				// Remove the entity
-				store.splice(i, 1);
-
-				// We no longer have an active entity
-				window.viewEntityActive = null;
+		if(deleteAll) {
+			for(var i=0; i<store.length; ++i) {
+				var toDeleteNew = store[i];
 
 				// Delete the drag and drop prop
-				if(toDelete.lastContainer != null) {
-					toDelete.lastContainer.remove();
+				if(toDeleteNew.lastContainer != null) {
+					toDeleteNew.lastContainer.remove();
 				}
+			}
 
-				// Update the display
-				window.updateEntityMenu();
+			// Remove every item from the store
+			store.length = 0;
 
-				// Notify Success
-				alertify.success(window.getTranslation(
-					'trSuccessEntityDeleted',
-					'Entity was successfully removed.'
-				));
+			// We no longer have an active entity
+			window.viewEntityActive = null;
 
-				return;
+			// No table of props anymore
+			var entityProps = $('#entityProps');
+			entityProps.empty();
+
+			// Update the display
+			window.updateEntityMenu();
+
+			// Notify Success
+			alertify.success(window.getTranslation(
+				'trSuccessEntityDeletedAll',
+				'Every {{entityName}} was removed.', {
+					entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+				}
+			));
+
+			// All good
+			return;
+		} else {
+			for(var i=0; i<store.length; ++i) {
+				if(store[i] == toDelete) {
+					// Remove the entity
+					store.splice(i, 1);
+
+					// We no longer have an active entity
+					window.viewEntityActive = null;
+
+					// No table of props anymore
+					var entityProps = $('#entityProps');
+					entityProps.empty();
+
+					// Delete the drag and drop prop
+					if(toDelete.lastContainer != null) {
+						toDelete.lastContainer.remove();
+					}
+
+					// Update the display
+					window.updateEntityMenu();
+
+					// Notify Success
+					alertify.success(window.getTranslation(
+						'trSuccessEntityDeleted',
+						'{{entityName}} was successfully removed.', {
+							entityName: (toDelete.__entityType || 'Unknown').split(',')[0]
+						}
+					));
+
+					return;
+				}
 			}
 		}
 
@@ -1342,7 +1839,79 @@ $(document).ready(function() {
 		));
 	};
 
-	window.viewEntityProps = function(props) {
+	// Allow editing of the RAW XML (jesus)
+	window.editRawXML = function() {
+		var toEdit = window.viewEntityActive;
+
+		if(toEdit == null) {
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
+			return;
+		}
+
+		// Does this entity have XML to edit?
+		if(toEdit.rawXML == null) {
+			alertify.error(window.getTranslation(
+				'trErrorEntityNoXML',
+				'This entity has no XML to edit.'
+			));
+			return;
+		}
+
+		// Put the XML into the editor
+		$('#rawXMLInput').val(toEdit.rawXML);
+
+		alertify.rawXmlDialog(
+			$('#rawXMLEditor')[0]
+		);
+	};
+
+	// Save updated rawXML
+	window.saveRawXML = function() {
+		var newXML = $('#rawXMLInput').val();
+
+		var toEdit = window.viewEntityActive;
+
+		if(toEdit == null) {
+			alertify.error(window.getTranslation(
+				'trErrorNoEntitySelected',
+				'Please select an entity.'
+			));
+			return;
+		}
+
+		// Does this entity have XML to edit?
+		if(toEdit.rawXML == null) {
+			alertify.error(window.getTranslation(
+				'trErrorEntityNoXML',
+				'This entity has no XML to edit.'
+			));
+			return;
+		}
+
+		// Grab the new properties
+		var newProps = window.extractEntityInfo(newXML);
+
+		// Apply them
+		for(var key in newProps) {
+			toEdit[key] = newProps[key];
+		}
+
+		// Update position
+		if(toEdit.lastContainer != null) {
+			addVisualEnt(toEdit);
+		}
+
+		// Update the properties pain
+		window.viewEntityProps(toEdit);
+
+		// Close all dialogs
+		alertify.closeAll();
+	};
+
+	window.viewEntityProps = function(props, doNotShow) {
 		// Remove that the old entity is active
 		if(window.viewEntityActive != null) {
 			window.viewEntityActive.isActive = false;
@@ -1353,9 +1922,11 @@ $(document).ready(function() {
 
 		// Add that our one is active
 		if(props.lastContainer != null) {
-			props.isActive = true;
 			props.lastContainer.addClass('entityIsSelected');
 		}
+
+		// This is active
+		props.isActive = true;
 
 		var entityProps = $('#entityProps');
 		entityProps.empty();
@@ -1383,6 +1954,7 @@ $(document).ready(function() {
 
 		for(var key in props) {
 			if(hiddenFields[key]) continue;
+			if(doNotShow && doNotShow[key]) continue;
 
 			toAdd.push(key);
 		}
@@ -1486,13 +2058,18 @@ $(document).ready(function() {
 			ldb.set('maps', JSON.stringify(pastMaps));
 
 			// Update the list
-			updatePastMapsList();
+			//updatePastMapsList();
 		});
 	}
 
 	function updatePastMapsList() {
 		// Ensure they have local storage
 		if(typeof(localStorage) == 'undefined') return;
+
+		if(1==1) {
+			ldb.set('maps', '');
+			return;
+		}
 
 		// Do we have any past maps?
 		ldb.get('maps', function(pastMaps) {
@@ -1566,6 +2143,11 @@ $(document).ready(function() {
 	function updateLocalStorage() {
 		// Ensure they have local storage
 		if(typeof(localStorage) == 'undefined') return;
+
+		// We're no longer supporting this feature
+		if(1 == 1) {
+			return;
+		}
 
 		// Grab the stored maps
 		ldb.get('maps', function(storedMaps) {

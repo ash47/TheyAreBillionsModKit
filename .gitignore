@@ -1,9 +1,19 @@
+Broken Stuff/MethodInjector/obj/*
+Broken Stuff/MethodInjector/bin/*
 MethodInjector/obj/*
 MethodInjector/bin/*
 DataEditor/input/*
 DataEditor/working/*
 DataEditor/output/*
 DataEditor/node_modules/*
+Broken Stuff/MapEditor/node_modules/*
+Broken Stuff/MapEditor/test.png
+Broken Stuff/MapEditor/map2.png
+Broken Stuff/MapEditor/input.txt
+Broken Stuff/MapEditor/custommap.txt
+Broken Stuff/MapEditor/input/*
+Broken Stuff/MapEditor/working/*
+Broken Stuff/MapEditor/output/*
 MapEditor/node_modules/*
 MapEditor/test.png
 MapEditor/map2.png
@@ -13,3 +23,5 @@ MapEditor/input/*
 MapEditor/working/*
 MapEditor/output/*
 node_modules/*
+MapEditorHtml/tools/Data
+MapEditorHtml/tools/allents.js

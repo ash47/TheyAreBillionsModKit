@@ -398,6 +398,10 @@ function getEntityOffsets(ent) {
 				break;
 			}
 
+			if(ent.__entityType == 'ZX.Components.CUnitGenerator') {
+				
+			}
+
 			return {
 				width: scaleWidth,
 				height: scaleHeight,
@@ -430,9 +434,17 @@ function addVisualEnt(ent) {
 		ent.lastContainer.remove();
 	}
 
+	var entName = (ent.__entityType || 'unknown').split(',')[0];
+
 	var red = Math.floor(Math.random() * 255);
 	var green = Math.floor(Math.random() * 255);
 	var blue = Math.floor(Math.random() * 255);
+
+	if(unitColorMap[entName] != null) {
+		red = unitColorMap[entName].red;
+		green = unitColorMap[entName].green;
+		blue = unitColorMap[entName].blue;
+	}
 
 	var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
 	var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
@@ -467,8 +479,12 @@ function addVisualEnt(ent) {
 		.appendTo($('#mapDisplayHolder'))
 		.append($('<span>', {
 			class: 'mapEntityText',
-			text: (ent.__entityType || 'unknown').split(',')[0]
+			text: entName
 		}));
+
+	if(entName == 'ZX.Components.CUnitGenerator') {
+		ent.lastContainer.addClass('rotateEntity');
+	}
 
 	// Should we hide it?
 	if(ent.shouldHide) {
@@ -668,13 +684,49 @@ function loadMapProps(commitUpdate) {
 		'Difficulty'
 	];
 
+	// Map Theme
+	if(commitUpdate) {
+		storage.ThemeType = $('#dropdownMapTheme').val();
+	}
+
 	for(var i=0; i<toExtract.length; ++i) {
 		theData = extractOrReplaceMapProp(theData, toExtract[i], storage, commitUpdate);
+	}
+
+	// Map Name
+	var fieldName = '<Simple name="Name" value="';
+	var fieldNamePos = theData.lastIndexOf(fieldName);
+	if(fieldNamePos != -1) {
+		fieldNamePos += fieldName.length;
+
+		var endFieldPos = theData.indexOf('"', fieldNamePos);
+
+		if(commitUpdate) {
+			// Read in the new map name
+			storage._mapName = $('#inputSaveFileName').val();
+
+			if(storage._mapName != null && storage._mapName.length > 0) {
+				theData = theData.substring(0, fieldNamePos) +
+					storage._mapName +
+					theData.substring(endFieldPos);
+			}
+		} else {
+			var mapName = theData.substring(fieldNamePos, endFieldPos);
+			storage._mapName = mapName;	
+
+			// Put it into the element
+			$('#inputSaveFileName').val(mapName);
+		}
 	}
 	
 	// Do we commit?
 	if(commitUpdate) {
 		window.activeMap.Data = theData;
+	} else {
+		// We need to store stuff back into the UI
+
+		// Map Theme
+		$('#dropdownMapTheme').val(storage['ThemeType']);
 	}
 };
 
@@ -815,44 +867,11 @@ function loadLevelExtraEntites(commitUpdate) {
 				/<Complex( type="[^"]*")?>/,
 				/<Simple name="Z_Offset" value="[^"]*" \/>[\n\r ]*<\/Properties>[\n\r ]*<\/Complex>/,
 				function(theData2) {
-					var entityType = (/<Complex type="([^"]*)">/.exec(theData2) || [])[1] || 'Unknown';
+					var thisEntityStore = window.extractEntityInfo(theData2);
 
+					var entityType = thisEntityStore.__entityType;
 					theStorage[entityType] = theStorage[entityType] || [];
-
-					var thisEntityStore = {};
 					theStorage[entityType].push(thisEntityStore);
-
-					var blackListedProps = {};
-
-					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
-					var theMatch;
-					while((theMatch = propertyExtractor.exec(theData2)) != null) {
-						if(theMatch.length < 3) continue;
-
-						// Grab stuff
-						var propertyName = theMatch[1];
-						var propertyValue = theMatch[2];
-
-						// Is this blacklisted?
-						if(blackListedProps[propertyName]) continue;
-
-						// Have we already collected this prop?
-						if(thisEntityStore[propertyName] != null) {
-							// We are not touching this prop
-							delete thisEntityStore[propertyName];
-							blackListedProps[propertyName] = true;
-							continue;
-						}
-
-						// Store it
-						thisEntityStore[propertyName] = propertyValue;
-					}
-
-					// Add raw xml
-					thisEntityStore.rawXML = theData2;
-
-					// Store the entity type
-					thisEntityStore.__entityType = entityType;
 
 					// Hidden by default
 					thisEntityStore.shouldHide = true;
@@ -865,6 +884,128 @@ function loadLevelExtraEntites(commitUpdate) {
 	);
 
 	if(commitUpdate && res != null) {
+		window.activeMap.Data = res;
+	}
+}
+
+// Extracts the info from an entity
+window.extractEntityInfo = function(thisItemData) {
+	var entityType = (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1] || 'Unknown';
+
+	/*var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
+	var possibleEntityId = findEntityId.exec(thisItemData);
+	if(possibleEntityId == null || possibleEntityId.length != 2) return;
+	var entityId = possibleEntityId[1];*/
+
+	var thisEntityStore = {};
+
+	var blackListedProps = {};
+
+	var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
+	var theMatch;
+	while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
+		if(theMatch.length < 3) continue;
+
+		// Grab stuff
+		var propertyName = theMatch[1];
+		var propertyValue = theMatch[2];
+
+		// Is this blacklisted?
+		if(blackListedProps[propertyName]) continue;
+
+		// Have we already collected this prop?
+		if(thisEntityStore[propertyName] != null) {
+			// We are not touching this prop
+			delete thisEntityStore[propertyName];
+			blackListedProps[propertyName] = true;
+			continue;
+		}
+
+		// Store it
+		thisEntityStore[propertyName] = propertyValue;
+	}
+
+	// Add raw xml
+	thisEntityStore.rawXML = thisItemData;
+
+	// Store the entity type
+	thisEntityStore.__entityType = entityType;
+
+	// Return it
+	return thisEntityStore;
+}
+
+// Load in the bonus entities
+function loadBonusEntities(commitUpdate) {
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Dictionary name="BonusEntityTemplates" keyType="System.UInt64, mscorlib" valueType="System.Int32, mscorlib">',
+		'</Dictionary>',
+		function(theData) {
+			if(commitUpdate) {
+				// Commit the update
+
+				var theOutput = '';
+				theOutput += '<Dictionary name="BonusEntityTemplates" keyType="System.UInt64, mscorlib" valueType="System.Int32, mscorlib">\n';
+
+				var bonusEnts = window.layerStore.bonusEntities;
+
+				if(bonusEnts.length <= 0) {
+					theOutput += '<Items />\n'
+				} else {
+					theOutput += '<Items>\n';
+
+					for(var i=0; i<bonusEnts.length; ++i) {
+						var bonusEnt = bonusEnts[i];
+
+						theOutput += '<Item>\n'
+						theOutput += '<Simple value="' + bonusEnt[0] + '" />\n'
+						theOutput += '<Simple value="' + bonusEnt[1] + '" />\n'
+						theOutput += '</Item>\n';
+					}
+
+					theOutput += '</Items>\n';
+				}
+
+				theOutput += '</Dictionary>';
+
+				return theOutput;
+			}
+
+			// Empty the layer store
+			window.layerStore.bonusEntities = [];
+
+			loadSection(
+				theData,
+				'<Item>',
+				'</Item>',
+				function(theData2) {
+					var dataParts = [];
+
+					loadSection(
+						theData2,
+						'<Simple value="',
+						'" />',
+						function(theData3) {
+							// Push the data parts;
+							dataParts.push(theData3);
+						}, true, false
+					)
+
+					// Check if this is a valid bonus entity
+					if(dataParts.length == 2) {
+						window.layerStore.bonusEntities.push(dataParts);
+					}
+				}, true, true
+			);
+
+			// Add these bonus entities into the display
+			window.rebuildBonusEntities();
+		}, false, true
+	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
 		window.activeMap.Data = res;
 	}
 }
@@ -953,49 +1094,11 @@ function loadLevelEntities(commitUpdate) {
 				function(thisItemData) {
 					// Return an empty string from here to delete the entity!
 
-					var entityType = (/<Complex type="([^"]*)">/.exec(thisItemData) || [])[1] || 'Unknown';
+					var thisEntityStore = window.extractEntityInfo(thisItemData);
 
+					var entityType = thisEntityStore.__entityType;
 					allEntities[entityType] = allEntities[entityType] || [];
-
-					/*var findEntityId = /<Simple[ ]*value="([^"]*)"[ ]*\/>/;
-					var possibleEntityId = findEntityId.exec(thisItemData);
-					if(possibleEntityId == null || possibleEntityId.length != 2) return;
-					var entityId = possibleEntityId[1];*/
-
-					var thisEntityStore = {};
 					allEntities[entityType].push(thisEntityStore);
-
-					var blackListedProps = {};
-
-					var propertyExtractor = /<Simple name="([^"]*)" value="([^"]*)" \/>/g;
-					var theMatch;
-					while((theMatch = propertyExtractor.exec(thisItemData)) != null) {
-						if(theMatch.length < 3) continue;
-
-						// Grab stuff
-						var propertyName = theMatch[1];
-						var propertyValue = theMatch[2];
-
-						// Is this blacklisted?
-						if(blackListedProps[propertyName]) continue;
-
-						// Have we already collected this prop?
-						if(thisEntityStore[propertyName] != null) {
-							// We are not touching this prop
-							delete thisEntityStore[propertyName];
-							blackListedProps[propertyName] = true;
-							continue;
-						}
-
-						// Store it
-						thisEntityStore[propertyName] = propertyValue;
-					}
-
-					// Add raw xml
-					thisEntityStore.rawXML = thisItemData;
-
-					// Store the entity type
-					thisEntityStore.__entityType = entityType;
 
 					// Hidden by default
 					thisEntityStore.shouldHide = true;

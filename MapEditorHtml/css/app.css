@@ -78,9 +78,9 @@
 	display: none;
 	position: absolute;
 	top: 54px;
-	left: 160px;
+	left: 320px;
 
-	width: calc(70% - 160px);
+	width: calc(70% - 320px);
 	height: calc(100% - 60px);
 	overflow: auto;
 }
@@ -119,6 +119,7 @@
 	height: 70px;
 	padding: 8px;
 	border-top: 1px solid #000;
+	overflow-y: scroll;
 }
 
 #entityProps {
@@ -163,9 +164,17 @@
 	display: block;
 }
 
+#mapToolsSettings {
+	padding: 4px;
+	display: none;
+}
+
 .mapToolsList {
 	list-style-type: none;
 	padding-left: 0px;
+	width: 160px;
+	display: inline-block;
+	vertical-align: top;
 }
 
 #mapTools button {
@@ -196,6 +205,15 @@
 	border: 1px solid #000;
 	border-radius: 1px;
 	position: absolute;
+	display: none;
+}
+
+.paintToolActivated #mousePreview {
+	display: block;
+}
+
+.entityToolActivated #mousePreview {
+	display: block;
 }
 
 #brushSize, #mapZoom {
@@ -255,6 +273,14 @@
 	display: block;
 }
 
+.requireEntityTool {
+	display: none;
+}
+
+.entityToolActivated .requireEntityTool {
+	display: block;
+}
+
 .mapNameInput {
 	display: none;
 	/*display: inline-block;*/
@@ -269,4 +295,46 @@
 	width: auto !important;
 	padding-left: 2px !important;
 	padding-right: 2px !important;
+}
+
+#selectEntityBrushMain {
+	height: 480px;
+	overflow-y: scroll;
+}
+
+#selectEntityBrushMain ul {
+	list-style-type: none;
+}
+
+#selectEntityBrushMain li {
+	margin-bottom: 4px;
+}
+
+.rotateEntity {
+	/*transform: rotate(45deg);*/
+}
+
+.centerAlignDiv {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.xmlEditorButtons {
+	padding: 8px;
+}
+
+.node-entityTree .fa-square, .node-entityTree .fa-check-square {
+	margin-right: 8px;
+}
+
+#mapSettingsEditor {
+	padding: 8px;
+}
+
+#layerSelectionGroupSub {
+	width: 140px;
+}
+
+#gridConfiguration {
+	padding: 8px;
 }
