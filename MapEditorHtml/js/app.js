@@ -1,5 +1,14 @@
 "use strict";
 
+/*
+
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.msImageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
+
+*/
+
 window.enableEditorTerrain = true;
 window.enableEditorObjects = true;
 window.enableEditorFog = true;
@@ -56,7 +65,8 @@ $(document).ready(function() {
 	var mapOutline = document.getElementById('mapOutline');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
-	window.pixelSize = 4;
+	window.zoomFactor = 4;
+	window.pixelSize = 1;
 	var activeMap = null;
 	var isMouseDown = false;
 
@@ -148,8 +158,8 @@ $(document).ready(function() {
 		// Set hte fill style
 		ctx.fillStyle = getRBG(colorGridLines);
 
-		var yIncreaseValue = window.pixelSize * gridHeight;
-		var startY = gridOffsetY * window.pixelSize;
+		var yIncreaseValue = window.zoomFactor * gridHeight;
+		var startY = gridOffsetY * window.zoomFactor;
 		startY -= Math.ceil(startY / yIncreaseValue) * yIncreaseValue;
 
 		// Add grid lines
@@ -160,11 +170,11 @@ $(document).ready(function() {
 			ctx.stroke();
 		}
 
-		var xIncreaseValue = window.pixelSize * gridWidth;
-		var startX = gridOffsetX * window.pixelSize;
+		var xIncreaseValue = window.zoomFactor * gridWidth;
+		var startX = gridOffsetX * window.zoomFactor;
 		startX -= Math.ceil(startX / xIncreaseValue) * xIncreaseValue;
 
-		for(var x=startX; x<actualWidth; x += window.pixelSize * gridWidth) {
+		for(var x=startX; x<actualWidth; x += window.zoomFactor * gridWidth) {
 			ctx.beginPath();
 			ctx.moveTo(x, 0);
 			ctx.lineTo(x, actualWidth);
@@ -210,22 +220,22 @@ $(document).ready(function() {
 				// Top middle --> Top left
 				var renderPixelAtX = mapSize - (x1Start + i) - 1;
 				var renderPixelAtY = y1Start - i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Top middle --> Top right
 				var renderPixelAtX = mapSize - (x1Start - i) - 1;
 				var renderPixelAtY = y1Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom middle --> Bottom left
 				var renderPixelAtX = mapSize - (x2Start + i) - 1;
 				var renderPixelAtY = y2Start - i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom middle --> Bottom right
 				var renderPixelAtX = mapSize - (x2Start - i) - 1;
 				var renderPixelAtY = y2Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 			}
 		}
 
@@ -243,12 +253,12 @@ $(document).ready(function() {
 				// Bottom left --> top left
 				var renderPixelAtX = mapSize - (x3Start + i) - 1;
 				var renderPixelAtY = y3Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom right --> top right
 				var renderPixelAtX = mapSize - (x5Start + i) - 1;
 				var renderPixelAtY = y5Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 			}
 		}
 
@@ -266,22 +276,22 @@ $(document).ready(function() {
 				// Top middle --> Top left
 				var renderPixelAtX = mapSize - (xx1Start + i) - 1;
 				var renderPixelAtY = yy1Start - i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Top middle --> Top right
 				var renderPixelAtX = mapSize - (xx1Start - i) - 1;
 				var renderPixelAtY = yy1Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom middle --> Bottom left
 				var renderPixelAtX = mapSize - (xx2Start + i) - 1;
 				var renderPixelAtY = yy2Start - i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom middle --> Bottom right
 				var renderPixelAtX = mapSize - (xx2Start - i) - 1;
 				var renderPixelAtY = yy2Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 			}
 		}
 
@@ -299,12 +309,12 @@ $(document).ready(function() {
 				// Bottom left --> top left
 				var renderPixelAtX = mapSize - (xx3Start + i) - 1;
 				var renderPixelAtY = yy3Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 
 				// Bottom right --> top right
 				var renderPixelAtX = mapSize - (xx5Start + i) - 1;
 				var renderPixelAtY = yy5Start + i;
-				ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
 			}
 		}
 	};
@@ -954,16 +964,28 @@ $(document).ready(function() {
 	// Updates the map zoom
 	window.updateMapZoom = function() {
 		var conMapZoom = $('#mapZoom');
-		var possibleNewZoomSize = parseInt(conMapZoom.val());
+		var possibleNewZoomSize = parseFloat(conMapZoom.val());
 		possibleNewZoomSize = Math.floor(Math.max(possibleNewZoomSize, 1));
 
 		// Store the new pixel size
-		window.pixelSize = possibleNewZoomSize;
+		window.zoomFactor = possibleNewZoomSize;
 
 		// Update brush size
 		window.updateBrushSize(true);
 
-		var mapZoomContainer = $('#mapDisplayHolder');
+		$('#mapScaler').css('transform', 'scale(' + window.zoomFactor + ')');
+
+		// Update the helper stuff
+		updateHelperStuff();
+
+		//var realWidth = window.layerStore.LayerTerrain.width * window.zoomFactor;
+		//var realHeight = window.layerStore.LayerTerrain.height * window.zoomFactor;
+
+		// Update all the controlled elements
+		//$('.mapSizeControlled').css('width', realWidth + 'px');
+		//$('.mapSizeControlled').css('height', realHeight + 'px');
+
+		/*var mapZoomContainer = $('#mapDisplayHolder');
 
 		// Grab the current percentage
 		var currentScrollLeft = mapZoomContainer.scrollLeft();
@@ -989,7 +1011,7 @@ $(document).ready(function() {
 			mapZoomContainer.scrollTop(
 				(currentScrollTop / currentScrollHeight) * newScrollHeight
 			);
-		}, 2);
+		}, 2);*/
 	};
 
 	// Update brush sizes
@@ -1019,7 +1041,7 @@ $(document).ready(function() {
 			theOffsetY = theOffsetX;
 
 			if(updateSize) {
-				var theSize = window.brushSize * window.pixelSize;
+				var theSize = window.brushSize * window.zoomFactor;
 
 				previewCon.width(theSize);
 				previewCon.height(theSize);
@@ -1028,16 +1050,16 @@ $(document).ready(function() {
 
 		if(activePrimaryTool == enum_toolEntity) {
 			if(updateSize) {
-				previewCon.width(window.activeTemplateSizeInfo.width * window.pixelSize);
-				previewCon.height(window.activeTemplateSizeInfo.height * window.pixelSize);
+				previewCon.width(window.activeTemplateSizeInfo.width * window.zoomFactor);
+				previewCon.height(window.activeTemplateSizeInfo.height * window.zoomFactor);
 			}
 
 			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
 			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
 		}
 		
-		previewCon.css('left', (prevX - theOffsetX) * window.pixelSize);
-		previewCon.css('top', (prevY - theOffsetY) * window.pixelSize);
+		previewCon.css('left', ((prevX - theOffsetX) * window.zoomFactor - 1) + 'px');
+		previewCon.css('top', ((prevY - theOffsetY) * window.zoomFactor - 1) + 'px');
 
 		// Update the position text
 		if(prevX != null && prevY != null) {
@@ -1057,8 +1079,8 @@ $(document).ready(function() {
 		var offset = $(this).offset();
 
 		// Calculate mouseX
-		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+		var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
   		// Mouse is down
   		isMouseDown = true;
@@ -1139,8 +1161,8 @@ $(document).ready(function() {
 				var offset = $(this).offset();
 
 				// Calculate mouseX
-				var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-		  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+				var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+		  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
 		  		// Calculate the max number of pixels the mouse travelled
 		  		var xDist = mouseX - startX;
@@ -1171,8 +1193,8 @@ $(document).ready(function() {
 		var offset = $(this).offset();
 
 		// Calculate mouseX
-		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+		var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
 		if(isMouseDown) {
 			if(activePrimaryTool == enum_toolPaint) {
@@ -1756,21 +1778,35 @@ $(document).ready(function() {
 		});
 	}
 
+	function updateHelperStuff() {
+		// Update the helper's canvas size
+		helperCanvas.width = window.zoomFactor * window.layerStore.LayerTerrain.width;
+		helperCanvas.height = window.zoomFactor * window.layerStore.LayerTerrain.height;
+
+		gridCanvas.width = helperCanvas.width;
+		gridCanvas.height = helperCanvas.height;
+
+		mapOutline.width = helperCanvas.width;
+		mapOutline.height = helperCanvas.height;
+
+		$('#mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
+		$('#mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
+
+		// Render the gridlines
+		window.redrawGrid();
+
+		// Render the map outline
+		window.redrawMapOutline();
+
+		// Update entity positions
+		renderEntities(true);
+	}
+
 	function mapFullRender() {
 		// We are loading
 		setIsLoading(true);
 
 		setTimeout(function() {
-			// Update the helper's canvas size
-			helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
-			helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
-
-			gridCanvas.width = helperCanvas.width;
-			gridCanvas.height = helperCanvas.height;
-
-			mapOutline.width = helperCanvas.width;
-			mapOutline.height = helperCanvas.height;
-
 			// Render Terrain
 			renderLayer('LayerTerrain');
 
@@ -1786,11 +1822,8 @@ $(document).ready(function() {
 			// Render entities (oh god)
 			renderEntities();
 
-			// Render the gridlines
-			window.redrawGrid();
-
-			// Render the map outline
-			window.redrawMapOutline();
+			// Update zoom factor
+			window.updateMapZoom();
 
 			// We are no longer loading
 			setIsLoading(false);

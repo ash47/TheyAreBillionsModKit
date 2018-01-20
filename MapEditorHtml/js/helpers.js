@@ -302,7 +302,7 @@ function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	}
 }
 
-function renderEntitiesLayer(entities) {
+function renderEntitiesLayer(entities, onlyUpdatePositions) {
 	if(entities == null) return;
 
 	for(var entityType in entities) {
@@ -311,24 +311,38 @@ function renderEntitiesLayer(entities) {
 		for(var i=0; i<entList.length; ++i) {
 			var theEnt = entList[i];
 
-			// Last entity is null
-			theEnt.lastContainer = null;
+			if(onlyUpdatePositions) {
+				if(theEnt.lastContainer != null && theEnt.__posInfo != null) {
+					// Calculate offsets
 
-			// Should we draw it?
-			if(!theEnt.shouldHide) {
-				// Add the visual ent
-				addVisualEnt(entList[i]);
+					// Move the ent / resize it
+					theEnt.lastContainer.css('width', newWidth);
+					theEnt.lastContainer.css('height', newHeight);
+					theEnt.lastContainer.css('left', newX);
+					theEnt.lastContainer.css('top', newY);
+				}
+			} else {
+				// Last entity is null
+				theEnt.lastContainer = null;
+
+				// Should we draw it?
+				if(!theEnt.shouldHide) {
+					// Add the visual ent
+					addVisualEnt(entList[i]);
+				}
 			}
 		}
 	}
 }
 
-function renderEntities() {
-	// Remove past entities
-	$('.mapEntity').remove();
+function renderEntities(onlyUpdatePositions) {
+	if(!onlyUpdatePositions) {
+		// Remove past entities
+		$('.mapEntity').remove();
+	}
 
-	renderEntitiesLayer(window.layerStore.entities);
-	renderEntitiesLayer(window.layerStore.extraEntities);
+	renderEntitiesLayer(window.layerStore.entities, onlyUpdatePositions);
+	renderEntitiesLayer(window.layerStore.extraEntities, onlyUpdatePositions);
 }
 
 function getEntityOffsets(ent) {
@@ -454,9 +468,17 @@ function addVisualEnt(ent) {
 	posX += offsets.offsetX;
 	posY += offsets.offsetY;
 
+	// Store vars onto it
+	ent.__posInfo = {
+		posX: posX,
+		posY: posY,
+		width: offsets.width,
+		height: offsets.height
+	};
+
 	// Update position to reflect the actual drawing
-	posX = posX * window.pixelSize;
-	posY = posY * window.pixelSize;
+	posX = posX * window.zoomFactor;
+	posY = posY * window.zoomFactor;
 
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
@@ -469,8 +491,8 @@ function addVisualEnt(ent) {
 			}
 		}
 	})
-		.css('width', (window.pixelSize * offsets.width) + 'px')
-		.css('height', (window.pixelSize * offsets.height) + 'px')
+		.css('width', (offsets.width * window.zoomFactor) + 'px')
+		.css('height', (offsets.height * window.zoomFactor) + 'px')
 		.css('background-color', cssColor)
 		.css('border', '1px solid ' + cssColor2)
 		.css('position', 'absolute')
@@ -501,10 +523,10 @@ function addVisualEnt(ent) {
 		// Not allowed out of terrain area
 		containment: $('#mapRenderTerrain'),
 		stack: '.mapEntity',
-		grid: [window.pixelSize, window.pixelSize],
+		grid: [1, 1],
 		stop: function(event, ui) {
-			var xNice = ui.position.left / window.pixelSize;
-			var yNice = ui.position.top / window.pixelSize;
+			var xNice = ui.position.left;
+			var yNice = ui.position.top;
 
 			xNice -= offsets.offsetX;
 			yNice -= offsets.offsetY;

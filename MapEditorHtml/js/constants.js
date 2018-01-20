@@ -298,7 +298,8 @@ var hiddenFields = {
 	isActive: true,
 	__entityType: true,
 	shouldHide: true,
-	__theStore: true
+	__theStore: true,
+	__posInfo: true
 };
 
 // Allow custom colors to be defined

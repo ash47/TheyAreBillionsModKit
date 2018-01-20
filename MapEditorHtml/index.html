@@ -33,6 +33,7 @@
 	<script src="js/clipboard.min.js"></script>
 	<script src="js/translate.js"></script>
 	<script src="js/allents.js"></script>
+	<script src="js/mapRender.js"></script>
 	<script src="js/app.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
@@ -835,14 +836,17 @@
 	</div>
 
 	<div id="mapDisplayHolder">
-		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
-		<canvas id="mapRenderRoads" class="mapLayer"></canvas>
-		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
-		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
-		<canvas id="mousePreview"></canvas>
-		<canvas id="gridCanvas" class="mapLayer"></canvas>
-		<canvas id="mapOutline" class="mapLayer"></canvas>
-		<canvas id="helperLayer" class="mapLayer"></canvas>
+		<div id="mapScaler">
+			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		</div>
+
+		<div id="mousePreview" class="scalePixelated"></div>
+		<canvas id="gridCanvas" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		<canvas id="mapOutline" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		<canvas id="helperLayer" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 	</div>
 
 	<div id="entityBrowser">
