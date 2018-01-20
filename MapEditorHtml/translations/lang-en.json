@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_113": "Custom Map Tutorial",
 	"trTutorials_112": "Bonus Entities",
 	"trTutorials_111": "More entities, Grid Settings, Roads",
 	"trTutorials_110": "Map settings, Raw XML &amp; Delete All of this Entity",
@@ -261,6 +262,9 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_113_01": "Added options to delete all hidden zombies and entities via map settings menu.",
+	"trChangeLogBody_113_02": "Started to improve performance of editor.",
 
 	"trChangeLogBody_112_01": "Added bonus entity editor.",
 	"trChangeLogBody_112_02": "Changed the user interface on the left side so it is less squashed.",

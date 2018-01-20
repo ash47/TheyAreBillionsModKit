@@ -52,6 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_113": "自定义地图教程",
 	"trTutorials_112": "奖励实体",
 	"trTutorials_111": "更多的实体和网格设置和道路",
 	"trTutorials_110": "地图设置和原始XML以及删除此实体的所有内容",
@@ -270,6 +271,9 @@
 	"trBugFix": "修复",
 
 	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_113_01": "增加了选项，通过地图设置菜单删除所有隐藏的僵尸和实体.",
+	"trChangeLogBody_113_02": "开始提高编辑的性能.",
 
 	"trChangeLogBody_112_01": "增加奖励实体编辑器.",
 	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么拥挤.",
