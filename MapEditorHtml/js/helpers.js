@@ -525,7 +525,7 @@ function addVisualEnt(ent) {
 	// Make it dragable
 	ent.lastContainer.draggable({
 		// Not allowed out of terrain area
-		containment: $('#mapRenderTerrain'),
+		containment: $('#helperLayer'),
 		stack: '.mapEntity',
 		grid: [1, 1],
 		stop: function(event, ui) {
@@ -534,6 +534,9 @@ function addVisualEnt(ent) {
 
 			xNice -= offsets.offsetX;
 			yNice -= offsets.offsetY;
+
+			xNice = xNice / window.zoomFactor;
+			yNice = yNice / window.zoomFactor;
 
 			var x = (width - xNice - 1).toFixed(0);
 			var y = yNice.toFixed(0);
