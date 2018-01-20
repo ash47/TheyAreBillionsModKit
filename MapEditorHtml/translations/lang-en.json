@@ -234,6 +234,15 @@
 	"trConfirmDeleteEntity": "Are you sure you want to delete {{entityName}}?",
 	"trConfirmDeleteEntityAll": "Are you sure you want to delete EVERY {{entityName}}?",
 
+	"trCloseMapSettings": "Close",
+	"trDeleteAllHiddenZombies": "Delete All Hidden Zombies",
+	"trConfirmDeleteAllZombies": "Are you sure you want to delete EVERY hidden zombie?",
+	"trSuccessRemoveEveryZombie": "Every hidden zombie has been removed.",
+
+	"trDeleteAllEntities": "Delete All Entities",
+	"trConfirmDeleteAllEntities": "Are you sure you want to delete EVERY entity? Note: Unit generators and the command centre will remain.",
+	"trSuccessRemoveEveryEntities": "Every entity except command centre and unit generators was removed.",
+
 	"trBtnShowGridSelection": "Grid Settings",
 	"trGridEnable": "Enable Grid?",
 	"trMapBorderCameraEnable": "Enable Map Camera Border?",

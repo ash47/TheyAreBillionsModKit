@@ -243,6 +243,15 @@
 	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
 	"trConfirmDeleteEntityAll": "你确定要删除此类实体吗？ {{entityName}}",
 
+	"trCloseMapSettings": "关",
+	"trDeleteAllHiddenZombies": "删除所有隐藏的僵尸",
+	"trConfirmDeleteAllZombies": "你确定要删除每一个隐藏的僵尸吗?",
+	"trSuccessRemoveEveryZombie": "每一个隐藏的僵尸已被删除",
+
+	"trDeleteAllEntities": "删除所有实体",
+	"trConfirmDeleteAllEntities": "你确定要删除每个实体吗？ 注意：单位发电机和指挥中心将继续。",
+	"trSuccessRemoveEveryEntities": "除了指挥中心和单位发电机以外的每个实体都被移除",
+
 	"trBtnShowGridSelection": "网格设置",
 	"trGridEnable": "启用网格?",
 	"trMapBorderCameraEnable": "启用地图相机边框?",

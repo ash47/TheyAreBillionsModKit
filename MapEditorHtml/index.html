@@ -173,6 +173,76 @@
 			</div>
 		</div>
 
+		<input type="file" id="file" name="file" accept=".zxsav" />
+		<button class="btn btn-primary" onclick="$('#file').click();">
+			<span data-translate="trBtnLoadSaveFile">
+				Load Save File
+			</span>
+		</button>
+
+		<div class="instructions">
+			<br>
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<span data-translate="trTemplateMapsHeader">
+							Template Maps
+						</span>
+					</h3>
+				</div>
+				<div class="card-block">
+					<ul>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('256x256');">
+								<span data-translate="trTemplate256">
+									256x256 Template
+								</span>
+							</button>
+						</li>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
+								<span data-translate="trTemplate384">
+									384x384 Template
+								</span>
+							</button>
+						</li>
+						<li>
+							<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">
+								<span data-translate="trTemplate512">
+									512x512 Template
+								</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<span data-translate="trRecentMapsHeader">
+							Recently Edited Maps
+						</span>
+					</h3>
+				</div>
+				<div class="card-block">
+					<span data-translate="trRecentMapsDisabled">
+						We have disabled this feature or now because this feature uses a lot of RAM and local resources, as well as CPU when saving / loading maps.
+					</span>
+					<!--<span data-translate="trRecentMapsLimit">
+						<b>Note:</b> There is a limit of 50MB.
+					</span>
+					<ul id="previousMapStore">
+						<li>
+							<span data-translate="trRecentMapsEmpty">
+								None
+							</span>
+						</li>
+					</ul>-->
+				</div>
+			</div>
+		</div>
+
 		<div class="instructions">
 			<div class="card">
 				<div class="card-header">
@@ -242,76 +312,6 @@
 							<span>2018/01/09</span>
 						</li>-->
 					</ul>
-				</div>
-			</div>
-		</div>
-
-		<input type="file" id="file" name="file" accept=".zxsav" />
-		<button class="btn btn-primary" onclick="$('#file').click();">
-			<span data-translate="trBtnLoadSaveFile">
-				Load Save File
-			</span>
-		</button>
-
-		<div class="instructions">
-			<br>
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">
-						<span data-translate="trTemplateMapsHeader">
-							Template Maps
-						</span>
-					</h3>
-				</div>
-				<div class="card-block">
-					<ul>
-						<li>
-							<button class="btn btn-primary" onclick="window.loadTemplateSave('256x256');">
-								<span data-translate="trTemplate256">
-									256x256 Template
-								</span>
-							</button>
-						</li>
-						<li>
-							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
-								<span data-translate="trTemplate384">
-									384x384 Template
-								</span>
-							</button>
-						</li>
-						<li>
-							<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">
-								<span data-translate="trTemplate512">
-									512x512 Template
-								</span>
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">
-						<span data-translate="trRecentMapsHeader">
-							Recently Edited Maps
-						</span>
-					</h3>
-				</div>
-				<div class="card-block">
-					<span data-translate="trRecentMapsDisabled">
-						We have disabled this feature or now because this feature uses a lot of RAM and local resources, as well as CPU when saving / loading maps.
-					</span>
-					<!--<span data-translate="trRecentMapsLimit">
-						<b>Note:</b> There is a limit of 50MB.
-					</span>
-					<ul id="previousMapStore">
-						<li>
-							<span data-translate="trRecentMapsEmpty">
-								None
-							</span>
-						</li>
-					</ul>-->
 				</div>
 			</div>
 		</div>
@@ -1299,7 +1299,11 @@
 			</select>
 		</div>
 		<div>
-			<button class="btn btn-danger" onclick="alertify.closeAll();">Close</button>
+			<button class="btn btn-danger" onclick="alertify.closeAll();" data-translate="trCloseMapSettings">Close</button>
+
+			<button class="btn btn-danger" onclick="window.deleteAllHiddenZombies();" data-translate="trDeleteAllHiddenZombies">Delete All Hidden Zombies</button>
+
+			<button class="btn btn-danger" onclick="window.deleteAllEntities();" data-translate="trDeleteAllEntities">Delete All Entities</button>
 		</div>
 	</div>
 

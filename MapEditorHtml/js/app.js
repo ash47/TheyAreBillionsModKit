@@ -20,7 +20,7 @@ window.enableEditorMapProps = true;
 window.enableEditorInfo = true;
 window.enableEditorRoads = true;
 
-window.enableEditorFastEntities = false;
+window.enableEditorFastEntities = true;
 
 // Turn features on and off, what a sad world that we have to even have this
 window.updateSelectedFeatures = function() {
@@ -115,6 +115,76 @@ $(document).ready(function() {
 		alertify.genericDialog(
 			$('#gridConfiguration')[0]
 		);
+	};
+
+	// Deletes all hidden zombies from the map
+	window.deleteAllHiddenZombies = function() {
+		alertify.confirm(window.getTranslation(
+			'trConfirmDeleteAllZombies',
+			'Are you sure you want to delete EVERY hidden zombie?'
+		), function() {
+			// Just clean out the fast entities laterstore
+			window.layerStore.fastEntities = {};
+
+			// Confirm that it was a success
+			alertify.success(window.getTranslation(
+				'trSuccessRemoveEveryZombie',
+				'Every hidden zombie has been removed!'
+			));
+		}, function() {
+			// Do nothing if cancelled
+		});
+	};
+
+	window.fullyCleanStore = function(ents) {
+		for(var entityType in ents) {
+			if(entityType == 'ZX.Entities.CommandCenter, TheyAreBillions') continue;
+			if(entityType == 'ZX.Components.CUnitGenerator, TheyAreBillions') continue;
+
+			var store = ents[entityType];
+			for(var i=0; i<store.length; ++i) {
+				var toDeleteNew = store[i];
+
+				// Delete the drag and drop prop
+				if(toDeleteNew.lastContainer != null) {
+					toDeleteNew.lastContainer.remove();
+				}
+			}
+
+			// Remove every item from the store
+			store.length = 0;
+			delete ents[entityType];
+		}
+	};
+
+	// Deletes all entities except command centre and unit generators
+	window.deleteAllEntities = function() {
+		alertify.confirm(window.getTranslation(
+			'trConfirmDeleteAllEntities',
+			'Are you sure you want to delete EVERY entity? Note: Unit generators and the command centre will remain.'
+		), function() {
+			// clean out the entities and extra entities layer stores
+			fullyCleanStore(window.layerStore.entities);
+			fullyCleanStore(window.layerStore.extraEntities);
+
+			// We no longer have an active entity
+			window.viewEntityActive = null;
+
+			// No table of props anymore
+			var entityProps = $('#entityProps');
+			entityProps.empty();
+
+			// Update the display
+			window.updateEntityMenu();
+
+			// Confirm that it was a success
+			alertify.success(window.getTranslation(
+				'trSuccessRemoveEveryEntities',
+				'Every entity except command centre and unit generators was removed.'
+			));
+		}, function() {
+			// Do nothing if cancelled
+		});
 	};
 
 	var gridDrawInProgress = false;
@@ -480,7 +550,7 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		var totalParts = 14;
+		var totalParts = 15;
 		var currentPart = 0;
 
 		// Update to be 0%
@@ -545,6 +615,13 @@ $(document).ready(function() {
 			if(window.enableEditorExtraEntities) {
 				// Commit updates to extra entites
 				loadLevelExtraEntites(true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(window.enableEditorFastEntities) {
+				// Commit updates to extra entites
+				loadFastEntities(true);
 			}
 			updatePercentage();
 
@@ -617,6 +694,7 @@ $(document).ready(function() {
 					window.setMapExportUpToDate(true);
 				}, 1);
 			});
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -1114,7 +1192,6 @@ $(document).ready(function() {
 			var theStore = window.layerStore.entities;
 			if(window.activeTemplateStore == 'extraEnts') {
 				theStore = window.layerStore.extraEntities;
-				console.log('YES!');
 			}
 
 			console.log(window.activeTemplateStore)
@@ -1556,8 +1633,8 @@ $(document).ready(function() {
 		var treeEnts = generateEntityMenu('Entities', window.layerStore.entities);
 		if(treeEnts != null) theNodeTree.push(treeEnts);
 
-		var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
-		if(treeEnts != null) theNodeTree.push(treeEnts);
+		//var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
+		//if(treeEnts != null) theNodeTree.push(treeEnts);
 
 		var treeEnts = generateEntityMenu('ExtraEntities', window.layerStore.extraEntities);
 		if(treeEnts != null) theNodeTree.push(treeEnts);

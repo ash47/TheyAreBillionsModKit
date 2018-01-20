@@ -314,6 +314,10 @@ function renderEntitiesLayer(entities, onlyUpdatePositions) {
 			if(onlyUpdatePositions) {
 				if(theEnt.lastContainer != null && theEnt.__posInfo != null) {
 					// Calculate offsets
+					var newWidth = theEnt.__posInfo.width * window.zoomFactor + 'px';
+					var newHeight = theEnt.__posInfo.height * window.zoomFactor + 'px';
+					var newX = theEnt.__posInfo.posX * window.zoomFactor + 'px';
+					var newY = theEnt.__posInfo.posY * window.zoomFactor + 'px';
 
 					// Move the ent / resize it
 					theEnt.lastContainer.css('width', newWidth);
@@ -1303,9 +1307,11 @@ function loadLevelEvents(commitUpdate) {
 }
 
 function loadFastEntities(commitUpdate) {
-	if(!window.enableEditorFastEntities) return;
-
 	var fastEnts = {};
+
+	if(commitUpdate) {
+		fastEnts = window.layerStore.fastEntities;
+	}
 
 	// Find the part we need to edit
 	var res = loadSection(
@@ -1316,6 +1322,49 @@ function loadFastEntities(commitUpdate) {
 			if(commitUpdate) {
 				// TODO: Commit the update
 
+				var theOutput = '';
+				theOutput += '<Dictionary name="LevelFastSerializedEntities" keyType="System.UInt64, mscorlib" valueType="System.Collections.Generic.List`1[[DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision]], mscorlib">\n';
+				theOutput += '<Items>\n';
+
+				for(var entType in fastEnts) {
+					var theseEnts = fastEnts[entType];
+
+					if(theseEnts.length > 0) {
+						theOutput += '<Item>\n';
+						theOutput += '<Simple value="' + entType + '" />\n';
+						theOutput += '<Collection elementType="DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision">\n';
+
+						theOutput += '<Properties>\n';
+						theOutput += '<Simple name="Capacity" value="' + theseEnts.length + '" />';
+						theOutput += '</Properties>\n';
+
+						theOutput += '<Items>';
+
+						for(var i=0; i<theseEnts.length; ++i) {
+							var thisEnt = theseEnts[i];
+
+							var newEntityId = ++window.totalEntities;
+
+							theOutput += '<Complex>';
+							theOutput += '<Properties>';
+
+							theOutput += '<Simple name="A" value="' + newEntityId + '" />';
+							theOutput += '<Simple name="B" value="' + thisEnt.Position + '" />';
+
+							theOutput += '</Properties>';
+							theOutput += '</Complex>';							
+						}
+
+						theOutput += '</Items>';
+						theOutput += '</Collection>\n';
+						theOutput += '</Item>\n';
+					}
+				}
+
+				theOutput += '</Items>\n';
+				theOutput += '</Dictionary>\n';
+
+				return theOutput;
 			}
 
 			// We need to break this into individual entities
