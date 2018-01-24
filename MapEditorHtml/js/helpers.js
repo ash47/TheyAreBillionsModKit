@@ -1338,27 +1338,27 @@ function loadFastEntities(commitUpdate) {
 						theOutput += '<Collection elementType="DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision">\n';
 
 						theOutput += '<Properties>\n';
-						theOutput += '<Simple name="Capacity" value="' + theseEnts.length + '" />';
+						theOutput += '<Simple name="Capacity" value="' + theseEnts.length + '" />\n';
 						theOutput += '</Properties>\n';
 
-						theOutput += '<Items>';
+						theOutput += '<Items>\n';
 
 						for(var i=0; i<theseEnts.length; ++i) {
 							var thisEnt = theseEnts[i];
 
 							var newEntityId = ++window.totalEntities;
 
-							theOutput += '<Complex>';
-							theOutput += '<Properties>';
+							theOutput += '<Complex>\n';
+							theOutput += '<Properties>\n';
 
-							theOutput += '<Simple name="A" value="' + newEntityId + '" />';
-							theOutput += '<Simple name="B" value="' + thisEnt.Position + '" />';
+							theOutput += '<Simple name="A" value="' + newEntityId + '" />\n';
+							theOutput += '<Simple name="B" value="' + thisEnt.Position + '" />\n';
 
-							theOutput += '</Properties>';
-							theOutput += '</Complex>';							
+							theOutput += '</Properties>\n';
+							theOutput += '</Complex>\n';							
 						}
 
-						theOutput += '</Items>';
+						theOutput += '</Items>\n';
 						theOutput += '</Collection>\n';
 						theOutput += '</Item>\n';
 					}
@@ -1411,5 +1411,90 @@ function loadFastEntities(commitUpdate) {
 	if(commitUpdate && res != null) {
 		// Update the res
 		window.activeMap.Data = res;
+	}
+}
+
+// Generates a map from the fast entities
+function generateFastEntitiesMap(reverse) {
+	// If it's reverse, it means we're converting from a map to fastEntities
+	if(reverse) {
+		window.layerStore.fastEntities = {};
+		var fastEnts = window.layerStore.fastEntities;
+
+		var zombieLayer = window.layerStore.LayerZombies;
+		var width = zombieLayer.width;
+		var height = zombieLayer.height;
+
+		var theData = zombieLayer.data;
+
+		for(var yy=0; yy<height; ++yy) {
+			for(var xx=0; xx<width; ++xx) {
+				var mapPos = width * yy + xx;
+
+				var entType = theData[mapPos];
+
+				// We don't write null zombies back into fast ents
+				if(entType == 0) continue;
+
+				// Ensure we have an array to store the new ent into
+				fastEnts[entType] = fastEnts[entType] || [];
+
+				// Add this entity
+				fastEnts[entType].push({
+					Position: '' + yy + ';' + xx
+				});
+			}
+		}
+
+		return;
+	}
+
+	// We are converting from fast entities to a map
+
+	var width = window.layerStore.LayerTerrain.width;
+	var height = window.layerStore.LayerTerrain.height;
+
+	// Grab the zombie later, update it
+	var zombieLayer = window.layerStore.LayerZombies;
+	zombieLayer.width = width;
+	zombieLayer.height = height;
+
+	// Create an array with one slot for each square
+	var dataArray = new Array(width * height);
+	zombieLayer.data = dataArray;
+
+	// Fill with 0s
+	dataArray.fill(0);
+
+	// Grab the fast entities store
+	var fastEnts = window.layerStore.fastEntities;
+
+	for(var entType in fastEnts) {
+		var theseEnts = fastEnts[entType];
+
+		// Ensure there are some ents to play with
+		if(theseEnts == null || theseEnts.length <= 0) continue;
+
+		// Loop over all the ents
+		for(var i=0; i<theseEnts.length; ++i) {
+			var thisEnt = theseEnts[i];
+
+			var pos = thisEnt.Position.split(';');
+			if(pos.length != 2) continue;
+
+			var posX = Math.round(parseFloat(pos[1]));
+			var posY = Math.round(parseFloat(pos[0]));
+
+			// Sanity checking
+			if(isNaN(posX) || isNaN(posY)) continue;
+			if(posX < 0 || posY < 0) continue;
+			if(posX >= width || posY >= height) continue;
+
+			// Convert to a map pos
+			var mapPos = width * posY + posX;
+
+			// Store the data
+			dataArray[mapPos] = entType;
+		}
 	}
 }

@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_114": "Visual Zombie Editor",
 	"trTutorials_113": "Custom Map Tutorial",
 	"trTutorials_112": "Bonus Entities",
 	"trTutorials_111": "More entities, Grid Settings, Roads",
@@ -90,6 +91,7 @@
 
 	"trInfoLayerTerrain": "Terrain",
 	"trInfoLayerObjects": "Objects",
+	"trInfoLayerZombies": "Zombies",
 	"trInfoLayerEntities": "Entities",
 	"trInfoLayerEntityLabels": "Entity Labels",
 	"trInfoLayerFoW": "Fog of War",
@@ -116,11 +118,13 @@
 
 	"trInfoBrushesSelectTer": "Terrain",
 	"trInfoBrushesSelectObj": "Objects",
+	"trInfoBrushesSelectZombie": "Zombies",
 	"trInfoBrushesSelectFog": "Fog",
 	"trInfoBrushesSelectRoad": "Road",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
+	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
 
 	"trBtnBrushTypeEarth": "Earth",
@@ -262,6 +266,8 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_114_01": "Added a visual zombie editor so that zombies within the fog of war can be edited.",
 
 	"trChangeLogBody_113_01": "Added options to delete all hidden zombies and entities via map settings menu.",
 	"trChangeLogBody_113_02": "Started to improve performance of editor.",

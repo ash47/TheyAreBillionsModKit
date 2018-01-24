@@ -58,6 +58,7 @@ $(document).ready(function() {
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var mapRenderZombiesCanvas = document.getElementById('mapRenderZombies');
 	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
@@ -108,6 +109,12 @@ $(document).ready(function() {
 			canvas: mapRenderFoWCanvas,
 			colorMap: colorFoWMap,
 			defaultColor: colorFogOfWarOff,
+		},
+		LayerZombies: {
+			name: 'LayerZombies',
+			canvas: mapRenderZombies,
+			colorMap: colorZombies,
+			defaultColor: colorZombieNone
 		}
 	};
 
@@ -125,6 +132,12 @@ $(document).ready(function() {
 		), function() {
 			// Just clean out the fast entities laterstore
 			window.layerStore.fastEntities = {};
+
+			// Update the map fast entities
+			generateFastEntitiesMap();
+
+			// Render the zombie layer again
+			renderLayer('LayerZombies');
 
 			// Confirm that it was a success
 			alertify.success(window.getTranslation(
@@ -620,7 +633,10 @@ $(document).ready(function() {
 
 		setTimeout(function() {
 			if(window.enableEditorFastEntities) {
-				// Commit updates to extra entites
+				// Convert fast entites map back into data format
+				generateFastEntitiesMap(true);
+
+				// Commit updates to fast entities
 				loadFastEntities(true);
 			}
 			updatePercentage();
@@ -780,7 +796,7 @@ $(document).ready(function() {
 		$('.layerSelectionGroupSub').addClass('btn-primary');
 
 		var header = 'requireSubClass_';
-		var classes = ['terrain', 'object', 'fog', 'road'];
+		var classes = ['terrain', 'object', 'zombie', 'fog', 'road'];
 
 		for(var i=0; i<classes.length; ++i) {
 			var fullClass = header + classes[i];
@@ -951,8 +967,6 @@ $(document).ready(function() {
 			}
 		}
 
-		
-
 		// Update the preview
 		updateMousePreview(true);
 	};
@@ -1004,6 +1018,7 @@ $(document).ready(function() {
 	window.updateLayerToggles = function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
 		var objectsVisible = $('#toggleLayerObjects').is(':checked');
+		var zombiesVisible = $('#toggleLayerZombies').is(':checked');
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
@@ -1011,6 +1026,7 @@ $(document).ready(function() {
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
+		var cZombies = $(window.layerStore.LayerZombies.canvas);
 		var cFoW = $(window.layerStore.LayerFog.canvas);
 		var cRoad = $(window.layerStore.LayerRoads.canvas);
 		var mainWindow = $('#mainContainer');
@@ -1024,6 +1040,11 @@ $(document).ready(function() {
 		objectsVisible ?
 			cObjects.show() : 
 			cObjects.hide();
+
+		// Toggle zombies layer
+		zombiesVisible ?
+			cZombies.show() : 
+			cZombies.hide();
 
 		// Toggle fog of war layer
 		fogOfWarVisible ?
@@ -1423,6 +1444,7 @@ $(document).ready(function() {
 		setTimeout(function() {
 			// Read fast entities
 			loadFastEntities();
+			generateFastEntitiesMap();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -1892,6 +1914,9 @@ $(document).ready(function() {
 
 			// Render Objects
 			renderLayer('LayerObjects');
+
+			// Render Zombies
+			renderLayer('LayerZombies');
 
 			// Render Fog of War
 			renderLayer('LayerFog');
@@ -2713,5 +2738,48 @@ $(document).ready(function() {
 				true
 			);
 		}
+	}
+
+	// When one of these change zombie type buttons is clicked
+	function onClickChangeZombieType() {
+		// Unselect other buttons
+		$('.zombieBrushButtons').removeClass('btn-success');
+		$('.zombieBrushButtons').addClass('btn-primary');
+
+		// Select this button
+		var _this = $(this);
+		_this.removeClass('btn-primary');
+		_this.addClass('btn-success');
+
+		// Update map
+		window.setActiveLayerSelectionGroupSub('zombie');
+		activeLayer = window.layerStore.LayerZombies;
+		activeToolColor = _this.attr('zombieId');
+	}
+
+	// Grab the container we are going to push into
+	var zombieBrushContainer = $('#conZombieBrushButtons');
+
+	// Update the zombies brushes
+	for(var zombieId in colorZombies) {
+		var zombieInfo = colorZombies[zombieId];
+
+		// Don't show hidden zombies
+		if(zombieInfo.hidden) continue;
+
+		var zombieName = zombieInfo.name || 'Unknown';
+
+		$('<button>', {
+			class: 'btn btn-primary zombieBrushButtons',
+			text: window.getTranslation(
+				'trZombieName_' + zombieName,
+				zombieName
+			),
+			click: onClickChangeZombieType,
+			zombieId: zombieId,
+		}).appendTo(
+			$('<li>')
+				.appendTo(zombieBrushContainer)
+		);
 	}
 });

@@ -71,7 +71,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.13
+				</span> | v1.14
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -328,6 +328,14 @@
 				<div class="card-block">
 					<ul>
 						<li>
+							<a href="changeme">
+								<b>(v1.14)</b>
+								<span data-translate="trTutorials_114">
+									Visual Zombie Editor
+								</span>
+							</a>
+						</li>
+						<li>
 							<a href="https://www.youtube.com/watch?v=3dSlfWLbtqo">
 								<b>(v1.13)</b>
 								<span data-translate="trTutorials_113">
@@ -526,6 +534,19 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.14 -->
+						<li>
+							<b>(v1.14)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_114_01">
+										Added a visual zombie editor so that zombies within the fog of war can be edited.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.13 -->
 						<li>
 							<b>(v1.13)</b>
@@ -871,6 +892,7 @@
 			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderZombies" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		</div>
 
@@ -935,6 +957,14 @@
 						<label for="toggleLayerObjects">
 							<span data-translate="trInfoLayerObjects">
 								Objects
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerZombies" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerZombies">
+							<span data-translate="trInfoLayerZombies">
+								Zombies
 							</span>
 						</label>
 					</li>
@@ -1111,6 +1141,9 @@
 						<option data-translate="trInfoBrushesSelectObj" value="object">
 							Object
 						</option>
+						<option data-translate="trInfoBrushesSelectZombie" value="zombie">
+							Zombies
+						</option>
 						<option data-translate="trInfoBrushesSelectFog" value="fog">
 							Fog
 						</option>
@@ -1212,6 +1245,18 @@
 						</span>
 					</button>
 				</li>
+
+				<div class="requireSubClass_zombie">
+					<li>
+						<b>
+							<span data-translate="trInfoBrushesZombie">
+								Zombies
+							</span>
+						</b>
+					</li>
+
+					<div id="conZombieBrushButtons"></div>
+				</div>
 
 				<li class="requireSubClass_fog">
 					<b>

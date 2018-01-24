@@ -176,6 +176,7 @@ var colorSerTerrain = {
 };
 
 var colorZombieNone = {
+	name: 'ZombieNone',
 	red: 255,
 	green: 255,
 	blue: 255,
@@ -217,7 +218,7 @@ var colorZombieMedium2 = {	// Yellow
 	alpha: 255
 };
 
-var colorZombieMedium3 = {	// Yellow
+var colorZombieMedium3 = {	// Dark Yellow
 	red: 204,
 	green: 204,
 	blue: 0,
@@ -266,7 +267,7 @@ var colorZombieUltra1 = {	// Dark Red
 	alpha: 255
 };
 
-var colorZombies = {
+/*var colorZombies = {
 	0: colorZombieNone,
 	1: colorZombieWeak1,
 	2: colorZombieWeak2,
@@ -280,6 +281,109 @@ var colorZombies = {
 	10: colorZombiePowerful1,
 	11: colorZombiePowerful2,
 	12: colorZombieUltra1
+};*/
+
+var colorZombies = {
+	0: colorZombieNone,
+
+	'17464596434855839240': /* ZombieWorkerA*/ {	// Very Light green
+		name: 'ZombieWorkerA',
+		red: 184,
+		green: 238,
+		blue: 184,
+		alpha: 255
+	},
+	'10676594063526581': /* ZombieWorkerB*/ {	// Very Very Light green
+		name: 'ZombieWorkerB',
+		red: 224,
+		green: 255,
+		blue: 224,
+		alpha: 255
+	},
+
+	'13102967879573781082': /* ZombieWeakA */ {	// Light green
+		name: 'ZombieWeakA',
+		red: 144,
+		green: 238,
+		blue: 144,
+		alpha: 255
+	},
+	'11373321006229815036': /* ZombieWeakB */ {	// Lime
+		name: 'ZombieWeakB',
+		red: 0,
+		green: 255,
+		blue: 0,
+		alpha: 255
+	},
+	'4497312170973781002': /* ZombieWeakC */ {	// Green
+		name: 'ZombieWeakC',
+		red: 0,
+		green: 128,
+		blue: 0,
+		alpha: 255
+	},
+
+	'3569719832138441992': /* ZombieMediumA */ {	// Light Yellow
+		name: 'ZombieMediumA',
+		red: 255,
+		green: 255,
+		blue: 153,
+		alpha: 255
+	},
+	'12882220683103625178': /* ZombieMediumB */ {	// Yellow
+		name: 'ZombieMediumB',
+		red: 255,
+		green: 255,
+		blue: 0,
+		alpha: 255
+	},
+	'8945324363763426993': /* ZombieDressedA */ {	// Dark Yellow
+		name: 'ZombieDressedA',
+		red: 204,
+		green: 204,
+		blue: 0,
+		alpha: 255
+	},
+
+	'1214272082232025268': /* ZombieHarpy */ {	// Red
+		name: 'ZombieHarpy',
+		red: 255,
+		green: 0,
+		blue: 0,
+		alpha: 255
+	},
+	'12658363830661735733': /* ZombieVenom */ {	// Crimson
+		name: 'ZombieVenom',
+		red: 220,
+		green: 20,
+		blue: 60,
+		alpha: 255
+	},
+
+	'6498716987293858679': /* ZombieStrongA */ {	// Orange
+		name: 'ZombieStrongA',
+		red: 255,
+		green: 165,
+		blue: 0,
+		alpha: 255
+	},
+	'6179780658058987152': /* ZombieGiant */ {	// Coral
+		name: 'ZombieGiant',
+		hidden: true,
+		red: 255,
+		green: 127,
+		blue: 80,
+		alpha: 255
+	},
+	
+	'4885015758634569309': /* ZombieLeader */ {	// Dark Red
+		name: 'ZombieLeader',
+		hidden: true,
+		red: 139,
+		green: 0,
+		blue: 0,
+		alpha: 255
+	},
 };
 
 var colorGridLines = {
