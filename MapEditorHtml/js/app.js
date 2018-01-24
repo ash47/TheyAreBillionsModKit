@@ -2782,4 +2782,9 @@ $(document).ready(function() {
 				.appendTo(zombieBrushContainer)
 		);
 	}
+
+	// Prevent leaving
+	window.onbeforeunload = function() {
+	    return true;
+	};
 });
