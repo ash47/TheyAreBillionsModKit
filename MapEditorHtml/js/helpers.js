@@ -324,6 +324,9 @@ function renderEntitiesLayer(entities, onlyUpdatePositions) {
 					theEnt.lastContainer.css('height', newHeight);
 					theEnt.lastContainer.css('left', newX);
 					theEnt.lastContainer.css('top', newY);
+
+					// Update draggable grid
+					theEnt.lastContainer.draggable('option', 'grid', [window.zoomFactor, window.zoomFactor] );
 				}
 			} else {
 				// Last entity is null
@@ -527,7 +530,7 @@ function addVisualEnt(ent) {
 		// Not allowed out of terrain area
 		containment: $('#helperLayer'),
 		stack: '.mapEntity',
-		grid: [1, 1],
+		grid: [window.zoomFactor, window.zoomFactor],
 		stop: function(event, ui) {
 			var xNice = ui.position.left;
 			var yNice = ui.position.top;
