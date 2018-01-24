@@ -69,9 +69,9 @@ var colorWood = {
 };
 
 var colorMountain = {
-	red: 0,
-	green: 0,
-	blue: 0,
+	red: 139,
+	green: 69,
+	blue: 19,
 	alpha: 255
 };
 
