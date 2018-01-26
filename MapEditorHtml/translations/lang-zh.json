@@ -52,7 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
-	"trTutorials_114": "视觉僵尸编辑器",
+	"trTutorials_114": "可视化僵尸编辑器",
 	"trTutorials_113": "自定义地图教程",
 	"trTutorials_112": "奖励实体",
 	"trTutorials_111": "更多的实体和网格设置和道路",
@@ -94,7 +94,7 @@
 
 	"trInfoLayerTerrain": "地形",
 	"trInfoLayerObjects": "对象",
-	"trInfoLayerZombies": "植物大战僵尸",
+	"trInfoLayerZombies": "僵尸",
 	"trInfoLayerEntities": "实体",
 	"trInfoLayerEntityLabels": "实体标签",
 	"trInfoLayerFoW": "战争迷雾",
@@ -123,13 +123,13 @@
 
 	"trInfoBrushesSelectTer": "地形",
 	"trInfoBrushesSelectObj": "对象",
-	"trInfoBrushesSelectZombie": "植物大战僵尸",
+	"trInfoBrushesSelectZombie": "僵尸",
 	"trInfoBrushesSelectFog": "迷雾",
 	"trInfoBrushesSelectRoad": "道路",
 
 	"trInfoBrushesTerrain": "地形层",
 	"trInfoBrushesObject": "地形层",
-	"trInfoBrushesZombie": "植物大战僵尸",
+	"trInfoBrushesZombie": "僵尸层",
 	"trInfoBrushesFoW": "战争迷雾层",
 	"trInfoBrushesRoad": "道路层",
 
@@ -145,6 +145,8 @@
 	"trBtnBrushTypeGold": "黄金",
 	"trBtnBrushTypeStone": "石头",
 	"trBtnBrushTypeIron": "铁矿",
+	
+	"trZombieName_ZombieNone": "清除僵尸",
 
 	"trBtnBrushTypeFoWAdd": "增加战争迷雾",
 	"trBtnBrushTypeFoWRemove": "去除战争迷雾",
@@ -276,7 +278,7 @@
 
 	"trChangeLogHeader": "更新记录",
 
-	"trChangeLogBody_114_01": "增加了一个视觉僵尸编辑器，以便在战争迷雾中的僵尸可以编辑.",
+	"trChangeLogBody_114_01": "增加了一个可视化僵尸编辑器，以便编辑在战争迷雾中的僵尸.",
 
 	"trChangeLogBody_113_01": "增加了选项，通过地图设置菜单删除所有隐藏的僵尸和实体.",
 	"trChangeLogBody_113_02": "开始提高编辑的性能.",
