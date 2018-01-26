@@ -48,6 +48,8 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_114": "Visual Zombie Editor",
+	"trTutorials_113": "Custom Map Tutorial",
 	"trTutorials_112": "Bonus Entities",
 	"trTutorials_111": "More entities, Grid Settings, Roads",
 	"trTutorials_110": "Map settings, Raw XML &amp; Delete All of this Entity",
@@ -89,6 +91,7 @@
 
 	"trInfoLayerTerrain": "Terrain",
 	"trInfoLayerObjects": "Objects",
+	"trInfoLayerZombies": "Zombies",
 	"trInfoLayerEntities": "Entities",
 	"trInfoLayerEntityLabels": "Entity Labels",
 	"trInfoLayerFoW": "Fog of War",
@@ -115,11 +118,13 @@
 
 	"trInfoBrushesSelectTer": "Terrain",
 	"trInfoBrushesSelectObj": "Objects",
+	"trInfoBrushesSelectZombie": "Zombies",
 	"trInfoBrushesSelectFog": "Fog",
 	"trInfoBrushesSelectRoad": "Road",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
+	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
 
 	"trBtnBrushTypeEarth": "Earth",
@@ -234,8 +239,19 @@
 	"trConfirmDeleteEntity": "Are you sure you want to delete {{entityName}}?",
 	"trConfirmDeleteEntityAll": "Are you sure you want to delete EVERY {{entityName}}?",
 
+	"trCloseMapSettings": "Close",
+	"trDeleteAllHiddenZombies": "Delete All Hidden Zombies",
+	"trConfirmDeleteAllZombies": "Are you sure you want to delete EVERY hidden zombie?",
+	"trSuccessRemoveEveryZombie": "Every hidden zombie has been removed.",
+
+	"trDeleteAllEntities": "Delete All Entities",
+	"trConfirmDeleteAllEntities": "Are you sure you want to delete EVERY entity? Note: Unit generators and the command centre will remain.",
+	"trSuccessRemoveEveryEntities": "Every entity except command centre and unit generators was removed.",
+
 	"trBtnShowGridSelection": "Grid Settings",
 	"trGridEnable": "Enable Grid?",
+	"trMapBorderCameraEnable": "Enable Map Camera Border?",
+	"trMapBorderBuildingEnable": "Enable Map Building Border?",
 	"trGridWidth": "Grid Width",
 	"trGridHeight": "Grid Height",
 	"trGridOffsetX": "Grid Offset X",
@@ -250,6 +266,11 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_114_01": "Added a visual zombie editor so that zombies within the fog of war can be edited.",
+
+	"trChangeLogBody_113_01": "Added options to delete all hidden zombies and entities via map settings menu.",
+	"trChangeLogBody_113_02": "Started to improve performance of editor.",
 
 	"trChangeLogBody_112_01": "Added bonus entity editor.",
 	"trChangeLogBody_112_02": "Changed the user interface on the left side so it is less squashed.",

@@ -1,5 +1,14 @@
 "use strict";
 
+/*
+
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.msImageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
+
+*/
+
 window.enableEditorTerrain = true;
 window.enableEditorObjects = true;
 window.enableEditorFog = true;
@@ -11,7 +20,7 @@ window.enableEditorMapProps = true;
 window.enableEditorInfo = true;
 window.enableEditorRoads = true;
 
-window.enableEditorFastEntities = false;
+window.enableEditorFastEntities = true;
 
 // Turn features on and off, what a sad world that we have to even have this
 window.updateSelectedFeatures = function() {
@@ -49,13 +58,16 @@ $(document).ready(function() {
 
 	var mapRenderTerrainCanvas = document.getElementById('mapRenderTerrain');
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
+	var mapRenderZombiesCanvas = document.getElementById('mapRenderZombies');
 	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
 	var gridCanvas = document.getElementById('gridCanvas');
+	var mapOutline = document.getElementById('mapOutline');
 	//var ctx = mapRenderCanvas.getContext('2d');
 
-	window.pixelSize = 4;
+	window.zoomFactor = 4;
+	window.pixelSize = 1;
 	var activeMap = null;
 	var isMouseDown = false;
 
@@ -97,6 +109,12 @@ $(document).ready(function() {
 			canvas: mapRenderFoWCanvas,
 			colorMap: colorFoWMap,
 			defaultColor: colorFogOfWarOff,
+		},
+		LayerZombies: {
+			name: 'LayerZombies',
+			canvas: mapRenderZombies,
+			colorMap: colorZombies,
+			defaultColor: colorZombieNone
 		}
 	};
 
@@ -104,6 +122,82 @@ $(document).ready(function() {
 		alertify.genericDialog(
 			$('#gridConfiguration')[0]
 		);
+	};
+
+	// Deletes all hidden zombies from the map
+	window.deleteAllHiddenZombies = function() {
+		alertify.confirm(window.getTranslation(
+			'trConfirmDeleteAllZombies',
+			'Are you sure you want to delete EVERY hidden zombie?'
+		), function() {
+			// Just clean out the fast entities laterstore
+			window.layerStore.fastEntities = {};
+
+			// Update the map fast entities
+			generateFastEntitiesMap();
+
+			// Render the zombie layer again
+			renderLayer('LayerZombies');
+
+			// Confirm that it was a success
+			alertify.success(window.getTranslation(
+				'trSuccessRemoveEveryZombie',
+				'Every hidden zombie has been removed!'
+			));
+		}, function() {
+			// Do nothing if cancelled
+		});
+	};
+
+	window.fullyCleanStore = function(ents) {
+		for(var entityType in ents) {
+			if(entityType == 'ZX.Entities.CommandCenter, TheyAreBillions') continue;
+			if(entityType == 'ZX.Components.CUnitGenerator, TheyAreBillions') continue;
+
+			var store = ents[entityType];
+			for(var i=0; i<store.length; ++i) {
+				var toDeleteNew = store[i];
+
+				// Delete the drag and drop prop
+				if(toDeleteNew.lastContainer != null) {
+					toDeleteNew.lastContainer.remove();
+				}
+			}
+
+			// Remove every item from the store
+			store.length = 0;
+			delete ents[entityType];
+		}
+	};
+
+	// Deletes all entities except command centre and unit generators
+	window.deleteAllEntities = function() {
+		alertify.confirm(window.getTranslation(
+			'trConfirmDeleteAllEntities',
+			'Are you sure you want to delete EVERY entity? Note: Unit generators and the command centre will remain.'
+		), function() {
+			// clean out the entities and extra entities layer stores
+			fullyCleanStore(window.layerStore.entities);
+			fullyCleanStore(window.layerStore.extraEntities);
+
+			// We no longer have an active entity
+			window.viewEntityActive = null;
+
+			// No table of props anymore
+			var entityProps = $('#entityProps');
+			entityProps.empty();
+
+			// Update the display
+			window.updateEntityMenu();
+
+			// Confirm that it was a success
+			alertify.success(window.getTranslation(
+				'trSuccessRemoveEveryEntities',
+				'Every entity except command centre and unit generators was removed.'
+			));
+		}, function() {
+			// Do nothing if cancelled
+		});
 	};
 
 	var gridDrawInProgress = false;
@@ -147,8 +241,8 @@ $(document).ready(function() {
 		// Set hte fill style
 		ctx.fillStyle = getRBG(colorGridLines);
 
-		var yIncreaseValue = window.pixelSize * gridHeight;
-		var startY = gridOffsetY * window.pixelSize;
+		var yIncreaseValue = window.zoomFactor * gridHeight;
+		var startY = gridOffsetY * window.zoomFactor;
 		startY -= Math.ceil(startY / yIncreaseValue) * yIncreaseValue;
 
 		// Add grid lines
@@ -159,11 +253,11 @@ $(document).ready(function() {
 			ctx.stroke();
 		}
 
-		var xIncreaseValue = window.pixelSize * gridWidth;
-		var startX = gridOffsetX * window.pixelSize;
+		var xIncreaseValue = window.zoomFactor * gridWidth;
+		var startX = gridOffsetX * window.zoomFactor;
 		startX -= Math.ceil(startX / xIncreaseValue) * xIncreaseValue;
 
-		for(var x=startX; x<actualWidth; x += window.pixelSize * gridWidth) {
+		for(var x=startX; x<actualWidth; x += window.zoomFactor * gridWidth) {
 			ctx.beginPath();
 			ctx.moveTo(x, 0);
 			ctx.lineTo(x, actualWidth);
@@ -174,6 +268,137 @@ $(document).ready(function() {
 		if(gridNeedsRedraw) {
 			gridNeedsRedraw = false;
 			window.redrawGrid();
+		}
+	};
+
+	// Redraw the map outline
+	window.redrawMapOutline = function() {
+		var ctx = mapOutline.getContext('2d');
+
+		// Clear it
+		ctx.clearRect(0, 0, mapOutline.width, mapOutline.height);
+
+		var positionInfo = window.layerStore.MapProps.PlayableArea.split(';');
+
+		var x1Start = parseInt(positionInfo[0]);
+		var y1Start = parseInt(positionInfo[1]) - 1;
+
+		var x2Start = x1Start + parseInt(positionInfo[2]);
+		var y2Start = y1Start + parseInt(positionInfo[3]);
+
+		// Assume for a square map
+		var mapSize = window.layerStore.LayerTerrain.width;
+		var mapSizeReal = window.layerStore.MapProps._ncellsReal;
+
+		var mapLimitOffset = (mapSize - mapSizeReal) / 2;
+
+		// Set hte fill style
+		ctx.fillStyle = getRBG(colorGridLines);
+
+		var enableCameraBorder = $('#checkMapBorderCamera').is(':checked');
+		var enableBuildingBorder = $('#checkMapBorderBuilding').is(':checked');
+
+		if(enableCameraBorder) {
+			for(var i=0; y1Start - i > mapLimitOffset+1; ++i) {
+				// Top middle --> Top left
+				var renderPixelAtX = mapSize - (x1Start + i) - 1;
+				var renderPixelAtY = y1Start - i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Top middle --> Top right
+				var renderPixelAtX = mapSize - (x1Start - i) - 1;
+				var renderPixelAtY = y1Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom middle --> Bottom left
+				var renderPixelAtX = mapSize - (x2Start + i) - 1;
+				var renderPixelAtY = y2Start - i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom middle --> Bottom right
+				var renderPixelAtX = mapSize - (x2Start - i) - 1;
+				var renderPixelAtY = y2Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+			}
+		}
+
+		var x3Start = x1Start + (y1Start - mapLimitOffset) - 1;
+		var y3Start = mapLimitOffset + 1;
+
+		var x4Start = x2Start + (y1Start - mapLimitOffset);
+		var y4Start = y2Start - (y1Start - mapLimitOffset);
+
+		var x5Start = x1Start - (y1Start - mapLimitOffset);
+		var y5Start = y1Start + (y1Start - mapLimitOffset);
+
+		if(enableCameraBorder) {
+			for(var i=0; x3Start+i<x4Start; ++i) {
+				// Bottom left --> top left
+				var renderPixelAtX = mapSize - (x3Start + i) - 1;
+				var renderPixelAtY = y3Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom right --> top right
+				var renderPixelAtX = mapSize - (x5Start + i) - 1;
+				var renderPixelAtY = y5Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+			}
+		}
+
+		//var playableAreaPercentage = 0.75;//parseFloat(window.layerStore.MapProps.FactorPlayableArea);
+		var playableAreaOffset = 12;//Math.floor(x1Start - x1Start * playableAreaPercentage);
+
+		var xx1Start = x1Start + playableAreaOffset - 1;
+		var yy1Start = y1Start + playableAreaOffset;
+
+		var xx2Start = x2Start - playableAreaOffset;
+		var yy2Start = y2Start - playableAreaOffset;
+
+		if(enableBuildingBorder) {
+			for(var i=0; yy1Start-i >= mapLimitOffset + (playableAreaOffset - 1) * 2; ++i) {
+				// Top middle --> Top left
+				var renderPixelAtX = mapSize - (xx1Start + i) - 1;
+				var renderPixelAtY = yy1Start - i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Top middle --> Top right
+				var renderPixelAtX = mapSize - (xx1Start - i) - 1;
+				var renderPixelAtY = yy1Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom middle --> Bottom left
+				var renderPixelAtX = mapSize - (xx2Start + i) - 1;
+				var renderPixelAtY = yy2Start - i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom middle --> Bottom right
+				var renderPixelAtX = mapSize - (xx2Start - i) - 1;
+				var renderPixelAtY = yy2Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+			}
+		}
+
+		var xx3Start = x3Start + 3;// playableAreaOffset;
+		var yy3Start = y3Start - 4 + playableAreaOffset * 2;// + playableAreaOffset;
+
+		var xx4Start = x4Start - playableAreaOffset * 2;
+		var yy4Start = y4Start;// + playableAreaOffset;
+
+		var xx5Start = x5Start - 3 + playableAreaOffset * 2;
+		var yy5Start = y5Start + 4;// - playableAreaOffset * 2;
+
+		if(enableBuildingBorder) {
+			for(var i=0; xx3Start+i<=xx4Start+1; ++i) {
+				// Bottom left --> top left
+				var renderPixelAtX = mapSize - (xx3Start + i) - 1;
+				var renderPixelAtY = yy3Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+
+				// Bottom right --> top right
+				var renderPixelAtX = mapSize - (xx5Start + i) - 1;
+				var renderPixelAtY = yy5Start + i;
+				ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+			}
 		}
 	};
 
@@ -338,7 +563,7 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		var totalParts = 14;
+		var totalParts = 15;
 		var currentPart = 0;
 
 		// Update to be 0%
@@ -403,6 +628,16 @@ $(document).ready(function() {
 			if(window.enableEditorExtraEntities) {
 				// Commit updates to extra entites
 				loadLevelExtraEntites(true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(window.enableEditorFastEntities) {
+				// Convert fast entites map back into data format
+				generateFastEntitiesMap(true);
+
+				// Commit updates to fast entities
+				loadFastEntities(true);
 			}
 			updatePercentage();
 
@@ -488,6 +723,7 @@ $(document).ready(function() {
 		}, 1);
 		}, 1);
 		}, 1);
+		}, 1);
 	};
 
 	function setIsSaving(isSaving) {
@@ -560,7 +796,7 @@ $(document).ready(function() {
 		$('.layerSelectionGroupSub').addClass('btn-primary');
 
 		var header = 'requireSubClass_';
-		var classes = ['terrain', 'object', 'fog', 'road'];
+		var classes = ['terrain', 'object', 'zombie', 'fog', 'road'];
 
 		for(var i=0; i<classes.length; ++i) {
 			var fullClass = header + classes[i];
@@ -731,8 +967,6 @@ $(document).ready(function() {
 			}
 		}
 
-		
-
 		// Update the preview
 		updateMousePreview(true);
 	};
@@ -784,6 +1018,7 @@ $(document).ready(function() {
 	window.updateLayerToggles = function() {
 		var terrainVisible = $('#toggleLayerTerrain').is(':checked');
 		var objectsVisible = $('#toggleLayerObjects').is(':checked');
+		var zombiesVisible = $('#toggleLayerZombies').is(':checked');
 		var entitiesVisible = $('#toggleLayerEntities').is(':checked');
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
@@ -791,6 +1026,7 @@ $(document).ready(function() {
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
+		var cZombies = $(window.layerStore.LayerZombies.canvas);
 		var cFoW = $(window.layerStore.LayerFog.canvas);
 		var cRoad = $(window.layerStore.LayerRoads.canvas);
 		var mainWindow = $('#mainContainer');
@@ -804,6 +1040,11 @@ $(document).ready(function() {
 		objectsVisible ?
 			cObjects.show() : 
 			cObjects.hide();
+
+		// Toggle zombies layer
+		zombiesVisible ?
+			cZombies.show() : 
+			cZombies.hide();
 
 		// Toggle fog of war layer
 		fogOfWarVisible ?
@@ -822,16 +1063,28 @@ $(document).ready(function() {
 	// Updates the map zoom
 	window.updateMapZoom = function() {
 		var conMapZoom = $('#mapZoom');
-		var possibleNewZoomSize = parseInt(conMapZoom.val());
+		var possibleNewZoomSize = parseFloat(conMapZoom.val());
 		possibleNewZoomSize = Math.floor(Math.max(possibleNewZoomSize, 1));
 
 		// Store the new pixel size
-		window.pixelSize = possibleNewZoomSize;
+		window.zoomFactor = possibleNewZoomSize;
 
 		// Update brush size
 		window.updateBrushSize(true);
 
-		var mapZoomContainer = $('#mapDisplayHolder');
+		$('#mapScaler').css('transform', 'scale(' + window.zoomFactor + ')');
+
+		// Update the helper stuff
+		updateHelperStuff();
+
+		//var realWidth = window.layerStore.LayerTerrain.width * window.zoomFactor;
+		//var realHeight = window.layerStore.LayerTerrain.height * window.zoomFactor;
+
+		// Update all the controlled elements
+		//$('.mapSizeControlled').css('width', realWidth + 'px');
+		//$('.mapSizeControlled').css('height', realHeight + 'px');
+
+		/*var mapZoomContainer = $('#mapDisplayHolder');
 
 		// Grab the current percentage
 		var currentScrollLeft = mapZoomContainer.scrollLeft();
@@ -857,7 +1110,7 @@ $(document).ready(function() {
 			mapZoomContainer.scrollTop(
 				(currentScrollTop / currentScrollHeight) * newScrollHeight
 			);
-		}, 2);
+		}, 2);*/
 	};
 
 	// Update brush sizes
@@ -887,7 +1140,7 @@ $(document).ready(function() {
 			theOffsetY = theOffsetX;
 
 			if(updateSize) {
-				var theSize = window.brushSize * window.pixelSize;
+				var theSize = window.brushSize * window.zoomFactor;
 
 				previewCon.width(theSize);
 				previewCon.height(theSize);
@@ -896,16 +1149,16 @@ $(document).ready(function() {
 
 		if(activePrimaryTool == enum_toolEntity) {
 			if(updateSize) {
-				previewCon.width(window.activeTemplateSizeInfo.width * window.pixelSize);
-				previewCon.height(window.activeTemplateSizeInfo.height * window.pixelSize);
+				previewCon.width(window.activeTemplateSizeInfo.width * window.zoomFactor);
+				previewCon.height(window.activeTemplateSizeInfo.height * window.zoomFactor);
 			}
 
 			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
 			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
 		}
 		
-		previewCon.css('left', (prevX - theOffsetX) * window.pixelSize);
-		previewCon.css('top', (prevY - theOffsetY) * window.pixelSize);
+		previewCon.css('left', ((prevX - theOffsetX) * window.zoomFactor - 1) + 'px');
+		previewCon.css('top', ((prevY - theOffsetY) * window.zoomFactor - 1) + 'px');
 
 		// Update the position text
 		if(prevX != null && prevY != null) {
@@ -925,8 +1178,8 @@ $(document).ready(function() {
 		var offset = $(this).offset();
 
 		// Calculate mouseX
-		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+		var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
   		// Mouse is down
   		isMouseDown = true;
@@ -960,7 +1213,6 @@ $(document).ready(function() {
 			var theStore = window.layerStore.entities;
 			if(window.activeTemplateStore == 'extraEnts') {
 				theStore = window.layerStore.extraEntities;
-				console.log('YES!');
 			}
 
 			console.log(window.activeTemplateStore)
@@ -1007,8 +1259,8 @@ $(document).ready(function() {
 				var offset = $(this).offset();
 
 				// Calculate mouseX
-				var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-		  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+				var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+		  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
 		  		// Calculate the max number of pixels the mouse travelled
 		  		var xDist = mouseX - startX;
@@ -1039,8 +1291,8 @@ $(document).ready(function() {
 		var offset = $(this).offset();
 
 		// Calculate mouseX
-		var mouseX = Math.floor((e.pageX - offset.left) / window.pixelSize);
-  		var mouseY = Math.floor((e.pageY - offset.top) / window.pixelSize);
+		var mouseX = Math.floor((e.pageX - offset.left) / window.zoomFactor);
+  		var mouseY = Math.floor((e.pageY - offset.top) / window.zoomFactor);
 
 		if(isMouseDown) {
 			if(activePrimaryTool == enum_toolPaint) {
@@ -1192,6 +1444,7 @@ $(document).ready(function() {
 		setTimeout(function() {
 			// Read fast entities
 			loadFastEntities();
+			generateFastEntitiesMap();
 			updatePercentage();
 
 		setTimeout(function() {
@@ -1402,8 +1655,8 @@ $(document).ready(function() {
 		var treeEnts = generateEntityMenu('Entities', window.layerStore.entities);
 		if(treeEnts != null) theNodeTree.push(treeEnts);
 
-		var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
-		if(treeEnts != null) theNodeTree.push(treeEnts);
+		//var treeEnts = generateEntityMenu('FastEntities', window.layerStore.fastEntities);
+		//if(treeEnts != null) theNodeTree.push(treeEnts);
 
 		var treeEnts = generateEntityMenu('ExtraEntities', window.layerStore.extraEntities);
 		if(treeEnts != null) theNodeTree.push(treeEnts);
@@ -1624,18 +1877,35 @@ $(document).ready(function() {
 		});
 	}
 
+	function updateHelperStuff() {
+		// Update the helper's canvas size
+		helperCanvas.width = window.zoomFactor * window.layerStore.LayerTerrain.width;
+		helperCanvas.height = window.zoomFactor * window.layerStore.LayerTerrain.height;
+
+		gridCanvas.width = helperCanvas.width;
+		gridCanvas.height = helperCanvas.height;
+
+		mapOutline.width = helperCanvas.width;
+		mapOutline.height = helperCanvas.height;
+
+		$('#mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
+		$('#mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
+
+		// Render the gridlines
+		window.redrawGrid();
+
+		// Render the map outline
+		window.redrawMapOutline();
+
+		// Update entity positions
+		renderEntities(true);
+	}
+
 	function mapFullRender() {
 		// We are loading
 		setIsLoading(true);
 
 		setTimeout(function() {
-			// Update the helper's canvas size
-			helperCanvas.width = window.pixelSize * window.layerStore.LayerTerrain.width;
-			helperCanvas.height = window.pixelSize * window.layerStore.LayerTerrain.height;
-
-			gridCanvas.width = helperCanvas.width;
-			gridCanvas.height = helperCanvas.height;
-
 			// Render Terrain
 			renderLayer('LayerTerrain');
 
@@ -1645,14 +1915,17 @@ $(document).ready(function() {
 			// Render Objects
 			renderLayer('LayerObjects');
 
+			// Render Zombies
+			renderLayer('LayerZombies');
+
 			// Render Fog of War
 			renderLayer('LayerFog');
 
 			// Render entities (oh god)
 			renderEntities();
 
-			// Render the gridlines
-			window.redrawGrid();
+			// Update zoom factor
+			window.updateMapZoom();
 
 			// We are no longer loading
 			setIsLoading(false);
@@ -2466,4 +2739,52 @@ $(document).ready(function() {
 			);
 		}
 	}
+
+	// When one of these change zombie type buttons is clicked
+	function onClickChangeZombieType() {
+		// Unselect other buttons
+		$('.zombieBrushButtons').removeClass('btn-success');
+		$('.zombieBrushButtons').addClass('btn-primary');
+
+		// Select this button
+		var _this = $(this);
+		_this.removeClass('btn-primary');
+		_this.addClass('btn-success');
+
+		// Update map
+		window.setActiveLayerSelectionGroupSub('zombie');
+		activeLayer = window.layerStore.LayerZombies;
+		activeToolColor = _this.attr('zombieId');
+	}
+
+	// Grab the container we are going to push into
+	var zombieBrushContainer = $('#conZombieBrushButtons');
+
+	// Update the zombies brushes
+	for(var zombieId in colorZombies) {
+		var zombieInfo = colorZombies[zombieId];
+
+		// Don't show hidden zombies
+		if(zombieInfo.hidden) continue;
+
+		var zombieName = zombieInfo.name || 'Unknown';
+
+		$('<button>', {
+			class: 'btn btn-primary zombieBrushButtons',
+			text: window.getTranslation(
+				'trZombieName_' + zombieName,
+				zombieName
+			),
+			click: onClickChangeZombieType,
+			zombieId: zombieId,
+		}).appendTo(
+			$('<li>')
+				.appendTo(zombieBrushContainer)
+		);
+	}
+
+	// Prevent leaving
+	window.onbeforeunload = function() {
+	    return true;
+	};
 });

@@ -302,7 +302,7 @@ function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
 	}
 }
 
-function renderEntitiesLayer(entities) {
+function renderEntitiesLayer(entities, onlyUpdatePositions) {
 	if(entities == null) return;
 
 	for(var entityType in entities) {
@@ -311,24 +311,45 @@ function renderEntitiesLayer(entities) {
 		for(var i=0; i<entList.length; ++i) {
 			var theEnt = entList[i];
 
-			// Last entity is null
-			theEnt.lastContainer = null;
+			if(onlyUpdatePositions) {
+				if(theEnt.lastContainer != null && theEnt.__posInfo != null) {
+					// Calculate offsets
+					var newWidth = theEnt.__posInfo.width * window.zoomFactor + 'px';
+					var newHeight = theEnt.__posInfo.height * window.zoomFactor + 'px';
+					var newX = theEnt.__posInfo.posX * window.zoomFactor + 'px';
+					var newY = theEnt.__posInfo.posY * window.zoomFactor + 'px';
 
-			// Should we draw it?
-			if(!theEnt.shouldHide) {
-				// Add the visual ent
-				addVisualEnt(entList[i]);
+					// Move the ent / resize it
+					theEnt.lastContainer.css('width', newWidth);
+					theEnt.lastContainer.css('height', newHeight);
+					theEnt.lastContainer.css('left', newX);
+					theEnt.lastContainer.css('top', newY);
+
+					// Update draggable grid
+					theEnt.lastContainer.draggable('option', 'grid', [window.zoomFactor, window.zoomFactor] );
+				}
+			} else {
+				// Last entity is null
+				theEnt.lastContainer = null;
+
+				// Should we draw it?
+				if(!theEnt.shouldHide) {
+					// Add the visual ent
+					addVisualEnt(entList[i]);
+				}
 			}
 		}
 	}
 }
 
-function renderEntities() {
-	// Remove past entities
-	$('.mapEntity').remove();
+function renderEntities(onlyUpdatePositions) {
+	if(!onlyUpdatePositions) {
+		// Remove past entities
+		$('.mapEntity').remove();
+	}
 
-	renderEntitiesLayer(window.layerStore.entities);
-	renderEntitiesLayer(window.layerStore.extraEntities);
+	renderEntitiesLayer(window.layerStore.entities, onlyUpdatePositions);
+	renderEntitiesLayer(window.layerStore.extraEntities, onlyUpdatePositions);
 }
 
 function getEntityOffsets(ent) {
@@ -454,9 +475,17 @@ function addVisualEnt(ent) {
 	posX += offsets.offsetX;
 	posY += offsets.offsetY;
 
+	// Store vars onto it
+	ent.__posInfo = {
+		posX: posX,
+		posY: posY,
+		width: offsets.width,
+		height: offsets.height
+	};
+
 	// Update position to reflect the actual drawing
-	posX = posX * window.pixelSize;
-	posY = posY * window.pixelSize;
+	posX = posX * window.zoomFactor;
+	posY = posY * window.zoomFactor;
 
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
@@ -469,8 +498,8 @@ function addVisualEnt(ent) {
 			}
 		}
 	})
-		.css('width', (window.pixelSize * offsets.width) + 'px')
-		.css('height', (window.pixelSize * offsets.height) + 'px')
+		.css('width', (offsets.width * window.zoomFactor) + 'px')
+		.css('height', (offsets.height * window.zoomFactor) + 'px')
 		.css('background-color', cssColor)
 		.css('border', '1px solid ' + cssColor2)
 		.css('position', 'absolute')
@@ -499,15 +528,18 @@ function addVisualEnt(ent) {
 	// Make it dragable
 	ent.lastContainer.draggable({
 		// Not allowed out of terrain area
-		containment: $('#mapRenderTerrain'),
+		containment: $('#helperLayer'),
 		stack: '.mapEntity',
-		grid: [window.pixelSize, window.pixelSize],
+		grid: [window.zoomFactor, window.zoomFactor],
 		stop: function(event, ui) {
-			var xNice = ui.position.left / window.pixelSize;
-			var yNice = ui.position.top / window.pixelSize;
+			var xNice = ui.position.left;
+			var yNice = ui.position.top;
 
 			xNice -= offsets.offsetX;
 			yNice -= offsets.offsetY;
+
+			xNice = xNice / window.zoomFactor;
+			yNice = yNice / window.zoomFactor;
 
 			var x = (width - xNice - 1).toFixed(0);
 			var y = yNice.toFixed(0);
@@ -681,8 +713,44 @@ function loadMapProps(commitUpdate) {
 		'FactorGameDuration',
 		'FactorZombiePopulation',
 		'DifficultyType',
-		'Difficulty'
+		'Difficulty',
+		'PlayableArea',
+		'FactorPlayableArea'
 	];
+
+	// We need two cell size values:
+	/*loadSection(
+		theData,
+		'<Complex name="CurrentGeneratedLevel">',
+		'<Simple name="FactorPlayableArea"',
+		function(interestingData) {
+			loadSection(
+				interestingData,
+				'<Simple name="NCells" value="',
+				'" />',
+				function(res) {
+					storage.__ncells1 = parseInt(res);
+				}
+			);
+		}
+	);*/
+
+	// Real ncells
+	loadSection(
+		theData,
+		'<Complex name="SurvivalModeParams">',
+		'</Complex>',
+		function(theData2) {
+			loadSection(
+				theData2,
+				'<Simple name="NCells" value="',
+				'" />',
+				function(interestingData) {
+					storage._ncellsReal = parseInt(interestingData);
+				}
+			);
+		}
+	);
 
 	// Map Theme
 	if(commitUpdate) {
@@ -1245,9 +1313,11 @@ function loadLevelEvents(commitUpdate) {
 }
 
 function loadFastEntities(commitUpdate) {
-	if(!window.enableEditorFastEntities) return;
-
 	var fastEnts = {};
+
+	if(commitUpdate) {
+		fastEnts = window.layerStore.fastEntities;
+	}
 
 	// Find the part we need to edit
 	var res = loadSection(
@@ -1258,6 +1328,49 @@ function loadFastEntities(commitUpdate) {
 			if(commitUpdate) {
 				// TODO: Commit the update
 
+				var theOutput = '';
+				theOutput += '<Dictionary name="LevelFastSerializedEntities" keyType="System.UInt64, mscorlib" valueType="System.Collections.Generic.List`1[[DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision]], mscorlib">\n';
+				theOutput += '<Items>\n';
+
+				for(var entType in fastEnts) {
+					var theseEnts = fastEnts[entType];
+
+					if(theseEnts.length > 0) {
+						theOutput += '<Item>\n';
+						theOutput += '<Simple value="' + entType + '" />\n';
+						theOutput += '<Collection elementType="DXVision.DXTupla2`2[[System.UInt64, mscorlib],[System.Drawing.PointF, System.Drawing]], DXVision">\n';
+
+						theOutput += '<Properties>\n';
+						theOutput += '<Simple name="Capacity" value="' + theseEnts.length + '" />\n';
+						theOutput += '</Properties>\n';
+
+						theOutput += '<Items>\n';
+
+						for(var i=0; i<theseEnts.length; ++i) {
+							var thisEnt = theseEnts[i];
+
+							var newEntityId = ++window.totalEntities;
+
+							theOutput += '<Complex>\n';
+							theOutput += '<Properties>\n';
+
+							theOutput += '<Simple name="A" value="' + newEntityId + '" />\n';
+							theOutput += '<Simple name="B" value="' + thisEnt.Position + '" />\n';
+
+							theOutput += '</Properties>\n';
+							theOutput += '</Complex>\n';							
+						}
+
+						theOutput += '</Items>\n';
+						theOutput += '</Collection>\n';
+						theOutput += '</Item>\n';
+					}
+				}
+
+				theOutput += '</Items>\n';
+				theOutput += '</Dictionary>\n';
+
+				return theOutput;
 			}
 
 			// We need to break this into individual entities
@@ -1301,5 +1414,90 @@ function loadFastEntities(commitUpdate) {
 	if(commitUpdate && res != null) {
 		// Update the res
 		window.activeMap.Data = res;
+	}
+}
+
+// Generates a map from the fast entities
+function generateFastEntitiesMap(reverse) {
+	// If it's reverse, it means we're converting from a map to fastEntities
+	if(reverse) {
+		window.layerStore.fastEntities = {};
+		var fastEnts = window.layerStore.fastEntities;
+
+		var zombieLayer = window.layerStore.LayerZombies;
+		var width = zombieLayer.width;
+		var height = zombieLayer.height;
+
+		var theData = zombieLayer.data;
+
+		for(var yy=0; yy<height; ++yy) {
+			for(var xx=0; xx<width; ++xx) {
+				var mapPos = width * yy + xx;
+
+				var entType = theData[mapPos];
+
+				// We don't write null zombies back into fast ents
+				if(entType == 0) continue;
+
+				// Ensure we have an array to store the new ent into
+				fastEnts[entType] = fastEnts[entType] || [];
+
+				// Add this entity
+				fastEnts[entType].push({
+					Position: '' + yy + ';' + xx
+				});
+			}
+		}
+
+		return;
+	}
+
+	// We are converting from fast entities to a map
+
+	var width = window.layerStore.LayerTerrain.width;
+	var height = window.layerStore.LayerTerrain.height;
+
+	// Grab the zombie later, update it
+	var zombieLayer = window.layerStore.LayerZombies;
+	zombieLayer.width = width;
+	zombieLayer.height = height;
+
+	// Create an array with one slot for each square
+	var dataArray = new Array(width * height);
+	zombieLayer.data = dataArray;
+
+	// Fill with 0s
+	dataArray.fill(0);
+
+	// Grab the fast entities store
+	var fastEnts = window.layerStore.fastEntities;
+
+	for(var entType in fastEnts) {
+		var theseEnts = fastEnts[entType];
+
+		// Ensure there are some ents to play with
+		if(theseEnts == null || theseEnts.length <= 0) continue;
+
+		// Loop over all the ents
+		for(var i=0; i<theseEnts.length; ++i) {
+			var thisEnt = theseEnts[i];
+
+			var pos = thisEnt.Position.split(';');
+			if(pos.length != 2) continue;
+
+			var posX = Math.round(parseFloat(pos[1]));
+			var posY = Math.round(parseFloat(pos[0]));
+
+			// Sanity checking
+			if(isNaN(posX) || isNaN(posY)) continue;
+			if(posX < 0 || posY < 0) continue;
+			if(posX >= width || posY >= height) continue;
+
+			// Convert to a map pos
+			var mapPos = width * posY + posX;
+
+			// Store the data
+			dataArray[mapPos] = entType;
+		}
 	}
 }

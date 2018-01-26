@@ -33,6 +33,7 @@
 	<script src="js/clipboard.min.js"></script>
 	<script src="js/translate.js"></script>
 	<script src="js/allents.js"></script>
+	<script src="js/mapRender.js"></script>
 	<script src="js/app.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
@@ -70,7 +71,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.12
+				</span> | v1.14
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -172,79 +173,6 @@
 			</div>
 		</div>
 
-		<div class="instructions">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">
-						<span data-translate="trFeatureToggleHeader">
-							Select Features
-						</span>
-					</h3>
-				</div>
-				<div class="card-block">
-					<ul>
-						<li data-translate="trFeatureToggleInfo1">
-							The devs of the game have once again broken the level editor. (likely on purpose)
-						</li>
-						<li data-translate="trFeatureToggleInfo2">
-							To combat the this editor being constantly broken, we have added the option to enable and disable editor features.
-						</li>
-						<li data-translate="trFeatureToggleInfo3">
-							You should only enable the features you intend to actually use, this way the editor won't modify every part of the game file, and you can avoid editing things that are currently broken.
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleTerrain" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleTerrain" data-translate="featureToggleTerrain">Allow Terrain Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleObject" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleObject" data-translate="featureToggleObject">Allow Object Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleFog" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleFog" data-translate="featureToggleFog">Allow Fog?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleEntities" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleEntities" data-translate="featureToggleEntities">Allow Entity Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleExtraEntities" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleExtraEntities" data-translate="featureToggleExtraEntities">Allow Oil Source Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleEventsEditor" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleEventsEditor" data-translate="featureToggleEventsEditor">Allow Events Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<li>
-							<input type="checkbox" id="featureToggleMapProps" onchange="window.updateSelectedFeatures()" checked="checked">
-							<label for="featureToggleMapProps" data-translate="featureToggleMapProps">Allow Map Props Editing?</label>
-							<span data-translate="trWorkingAsOf">Working as of</span>
-							<span>2018/01/09</span>
-						</li>
-						<!--<li>
-							<input type="checkbox" id="featureToggleMapInfo" onchange="window.updateSelectedFeatures()">
-							<label for="featureToggleMapInfo" data-translate="featureToggleMapInfo">Allow Map Info Editing?</label>
-							<span data-translate="trBrokenAsOf">Broken as of</span>
-							<span>2018/01/09</span>
-						</li>-->
-					</ul>
-				</div>
-			</div>
-		</div>
-
 		<input type="file" id="file" name="file" accept=".zxsav" />
 		<button class="btn btn-primary" onclick="$('#file').click();">
 			<span data-translate="trBtnLoadSaveFile">
@@ -319,6 +247,79 @@
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
+						<span data-translate="trFeatureToggleHeader">
+							Select Features
+						</span>
+					</h3>
+				</div>
+				<div class="card-block">
+					<ul>
+						<li data-translate="trFeatureToggleInfo1">
+							The devs of the game have once again broken the level editor. (likely on purpose)
+						</li>
+						<li data-translate="trFeatureToggleInfo2">
+							To combat the this editor being constantly broken, we have added the option to enable and disable editor features.
+						</li>
+						<li data-translate="trFeatureToggleInfo3">
+							You should only enable the features you intend to actually use, this way the editor won't modify every part of the game file, and you can avoid editing things that are currently broken.
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleTerrain" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleTerrain" data-translate="featureToggleTerrain">Allow Terrain Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleObject" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleObject" data-translate="featureToggleObject">Allow Object Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleFog" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleFog" data-translate="featureToggleFog">Allow Fog?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleEntities" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleEntities" data-translate="featureToggleEntities">Allow Entity Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleExtraEntities" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleExtraEntities" data-translate="featureToggleExtraEntities">Allow Oil Source Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleEventsEditor" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleEventsEditor" data-translate="featureToggleEventsEditor">Allow Events Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<li>
+							<input type="checkbox" id="featureToggleMapProps" onchange="window.updateSelectedFeatures()" checked="checked">
+							<label for="featureToggleMapProps" data-translate="featureToggleMapProps">Allow Map Props Editing?</label>
+							<span data-translate="trWorkingAsOf">Working as of</span>
+							<span>2018/01/09</span>
+						</li>
+						<!--<li>
+							<input type="checkbox" id="featureToggleMapInfo" onchange="window.updateSelectedFeatures()">
+							<label for="featureToggleMapInfo" data-translate="featureToggleMapInfo">Allow Map Info Editing?</label>
+							<span data-translate="trBrokenAsOf">Broken as of</span>
+							<span>2018/01/09</span>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="instructions">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
 						<span data-translate="trTutorialsHeader">
 							Tutorials / Dev VLogs:
 						</span>
@@ -327,7 +328,27 @@
 				<div class="card-block">
 					<ul>
 						<li>
-							<a href="https://www.youtube.com/watch?v=acnPJ8WZ60k&feature=youtu.be">
+							<a href="https://www.youtube.com/watch?v=kNijkhC7FMI">
+								<b>(v1.14)</b>
+								<span data-translate="trTutorials_114">
+									Visual Zombie Editor
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=3dSlfWLbtqo">
+								<b>(v1.13)</b>
+								<span data-translate="trTutorials_113">
+									Custom Map Tutorial
+								</span>
+								<br><br>
+								<iframe width="640" height="360" src="https://www.youtube.com/embed/3dSlfWLbtqo">
+								</iframe>
+								<br><br>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=acnPJ8WZ60k">
 								<b>(v1.12)</b>
 								<span data-translate="trTutorials_112">
 									Bonus Entities
@@ -513,6 +534,38 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.14 -->
+						<li>
+							<b>(v1.14)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_114_01">
+										Added a visual zombie editor so that zombies within the fog of war can be edited.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.13 -->
+						<li>
+							<b>(v1.13)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_113_01">
+										Added options to delete all hidden zombies and entities via map settings menu.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-info" data-translate="trPolish">Polish</span>
+									<span data-translate="trChangeLogBody_113_02">
+										Started to improve performance of editor.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.12 -->
 						<li>
 							<b>(v1.12)</b>
@@ -835,13 +888,18 @@
 	</div>
 
 	<div id="mapDisplayHolder">
-		<canvas id="mapRenderTerrain" class="mapLayer"></canvas>
-		<canvas id="mapRenderRoads" class="mapLayer"></canvas>
-		<canvas id="mapRenderObjects" class="mapLayer"></canvas>
-		<canvas id="mapRenderFoW" class="mapLayer"></canvas>
-		<canvas id="mousePreview"></canvas>
-		<canvas id="gridCanvas" class="mapLayer"></canvas>
-		<canvas id="helperLayer" class="mapLayer"></canvas>
+		<div id="mapScaler">
+			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderZombies" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		</div>
+
+		<div id="mousePreview" class="scalePixelated"></div>
+		<canvas id="gridCanvas" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		<canvas id="mapOutline" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+		<canvas id="helperLayer" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 	</div>
 
 	<div id="entityBrowser">
@@ -899,6 +957,14 @@
 						<label for="toggleLayerObjects">
 							<span data-translate="trInfoLayerObjects">
 								Objects
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerZombies" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerZombies">
+							<span data-translate="trInfoLayerZombies">
+								Zombies
 							</span>
 						</label>
 					</li>
@@ -1075,6 +1141,9 @@
 						<option data-translate="trInfoBrushesSelectObj" value="object">
 							Object
 						</option>
+						<option data-translate="trInfoBrushesSelectZombie" value="zombie">
+							Zombies
+						</option>
 						<option data-translate="trInfoBrushesSelectFog" value="fog">
 							Fog
 						</option>
@@ -1176,6 +1245,18 @@
 						</span>
 					</button>
 				</li>
+
+				<div class="requireSubClass_zombie">
+					<li>
+						<b>
+							<span data-translate="trInfoBrushesZombie">
+								Zombies
+							</span>
+						</b>
+					</li>
+
+					<div id="conZombieBrushButtons"></div>
+				</div>
 
 				<li class="requireSubClass_fog">
 					<b>
@@ -1294,16 +1375,32 @@
 			</select>
 		</div>
 		<div>
-			<button class="btn btn-danger" onclick="alertify.closeAll();">Close</button>
+			<button class="btn btn-danger" onclick="alertify.closeAll();" data-translate="trCloseMapSettings">Close</button>
+
+			<button class="btn btn-danger" onclick="window.deleteAllHiddenZombies();" data-translate="trDeleteAllHiddenZombies">Delete All Hidden Zombies</button>
+
+			<button class="btn btn-danger" onclick="window.deleteAllEntities();" data-translate="trDeleteAllEntities">Delete All Entities</button>
 		</div>
 	</div>
 
 	<div id="gridConfiguration">
 		<input type="checkbox" id="checkGridEnabled" onchange="window.redrawGrid()">
 		<label for="checkGridEnabled" data-translate="trGridEnabled">
-			<span data-translate="trGridEnable">
-				Enable Grid?
-			</span>
+			Enable Grid?
+		</label>
+
+		<br>
+
+		<input type="checkbox" id="checkMapBorderCamera" onchange="window.redrawMapOutline()" checked="checked">
+		<label for="checkMapBorderCamera" data-translate="trMapBorderCameraEnable">
+			Enable Map Camera Border?
+		</label>
+
+		<br>
+
+		<input type="checkbox" id="checkMapBorderBuilding" onchange="window.redrawMapOutline()" checked="checked">
+		<label for="checkMapBorderBuilding" data-translate="trMapBorderBuildingEnable">
+			Enable Map Building Border?
 		</label>
 
 		<div class="form-group">

@@ -70,8 +70,20 @@
 	position: absolute;
 	left: 0px;
 	top: 0px;
+}
 
-	border: 1px solid #000;
+.scalePixelated {
+	-ms-interpolation-mode: nearest-neighbor;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: -webkit-crisp-edges;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -o-crisp-edges;
+	image-rendering: pixelated;
+}
+
+#mapScaler {
+	transform: scale(1);
+	transform-origin: 0% 0%;
 }
 
 #mapDisplayHolder {

@@ -52,6 +52,8 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_114": "视觉僵尸编辑器",
+	"trTutorials_113": "自定义地图教程",
 	"trTutorials_112": "奖励实体",
 	"trTutorials_111": "更多的实体和网格设置和道路",
 	"trTutorials_110": "地图设置和原始XML以及删除此实体的所有内容",
@@ -92,6 +94,7 @@
 
 	"trInfoLayerTerrain": "地形",
 	"trInfoLayerObjects": "对象",
+	"trInfoLayerZombies": "植物大战僵尸",
 	"trInfoLayerEntities": "实体",
 	"trInfoLayerEntityLabels": "实体标签",
 	"trInfoLayerFoW": "战争迷雾",
@@ -120,11 +123,13 @@
 
 	"trInfoBrushesSelectTer": "地形",
 	"trInfoBrushesSelectObj": "对象",
+	"trInfoBrushesSelectZombie": "植物大战僵尸",
 	"trInfoBrushesSelectFog": "迷雾",
 	"trInfoBrushesSelectRoad": "道路",
 
 	"trInfoBrushesTerrain": "地形层",
 	"trInfoBrushesObject": "地形层",
+	"trInfoBrushesZombie": "植物大战僵尸",
 	"trInfoBrushesFoW": "战争迷雾层",
 	"trInfoBrushesRoad": "道路层",
 
@@ -243,8 +248,19 @@
 	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
 	"trConfirmDeleteEntityAll": "你确定要删除此类实体吗？ {{entityName}}",
 
+	"trCloseMapSettings": "关",
+	"trDeleteAllHiddenZombies": "删除所有隐藏的僵尸",
+	"trConfirmDeleteAllZombies": "你确定要删除每一个隐藏的僵尸吗?",
+	"trSuccessRemoveEveryZombie": "每一个隐藏的僵尸已被删除",
+
+	"trDeleteAllEntities": "删除所有实体",
+	"trConfirmDeleteAllEntities": "你确定要删除每个实体吗？ 注意：单位发电机和指挥中心将继续。",
+	"trSuccessRemoveEveryEntities": "除了指挥中心和单位发电机以外的每个实体都被移除",
+
 	"trBtnShowGridSelection": "网格设置",
 	"trGridEnable": "启用网格?",
+	"trMapBorderCameraEnable": "启用地图相机边框?",
+	"trMapBorderBuildingEnable": "启用地图建筑边框?",
 	"trGridWidth": "网格宽度",
 	"trGridHeight": "网格高度",
 	"trGridOffsetX": "网格偏移量X",
@@ -259,6 +275,11 @@
 	"trBugFix": "修复",
 
 	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_114_01": "增加了一个视觉僵尸编辑器，以便在战争迷雾中的僵尸可以编辑.",
+
+	"trChangeLogBody_113_01": "增加了选项，通过地图设置菜单删除所有隐藏的僵尸和实体.",
+	"trChangeLogBody_113_02": "开始提高编辑的性能.",
 
 	"trChangeLogBody_112_01": "增加奖励实体编辑器.",
 	"trChangeLogBody_112_02": "改变了左侧的用户界面，使其不那么拥挤.",
