@@ -678,8 +678,12 @@ $(document).ready(function() {
 			// Generate the save file
 			var zip = new JSZip();
 
-			zip.file('Data', window.activeMap.Data);
-			zip.file('Info', window.activeMap.Info);
+			var settings = {
+				date: new Date(2018, 0, 20)
+			};
+
+			zip.file('Data', window.activeMap.Data, settings);
+			zip.file('Info', window.activeMap.Info, settings);
 
 			zip.generateAsync({
 				type: 'blob',
