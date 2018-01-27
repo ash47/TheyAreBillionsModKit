@@ -52,6 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_114_2": "为什么更新很慢?",
 	"trTutorials_114": "可视化僵尸编辑器",
 	"trTutorials_113": "自定义地图教程",
 	"trTutorials_112": "奖励实体",
@@ -327,5 +328,7 @@
 	"trChangeLogBody_100_02": "更新的编辑器更加可用（缩放，画笔大小，滚动.",
 	"trChangeLogBody_100_03": "增加了导出地图的功能.",
 	"trChangeLogBody_100_04": "增加了在地图上编辑地形和资源的功能.",
-	"trChangeLogBody_100_05": "增加了加载保存文件的功能."
+	"trChangeLogBody_100_05": "增加了加载保存文件的功能.",
+
+	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!"
 }

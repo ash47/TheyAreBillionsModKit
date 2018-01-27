@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_114_2": "Why are updates so slow?",
 	"trTutorials_114": "Visual Zombie Editor",
 	"trTutorials_113": "Custom Map Tutorial",
 	"trTutorials_112": "Bonus Entities",
@@ -316,5 +317,7 @@
 	"trChangeLogBody_100_02": "Updated editor to be more useable (zooming, brush size, scrolling).",
 	"trChangeLogBody_100_03": "Added the ability to export the map.",
 	"trChangeLogBody_100_04": "Added the ability to edit the terrain and resources on a map.",
-	"trChangeLogBody_100_05": "Added the ability to load save files."
+	"trChangeLogBody_100_05": "Added the ability to load save files.",
+
+	"trDiscount1": "For a 10% discount on They Are Billions and other games, use <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">this link</a>. It won't be valid for long!"
 }
