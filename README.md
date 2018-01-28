@@ -14,7 +14,13 @@ Tools &amp; Research notes for modding "They Are Billions"
 
 ## Data Editors
  - Currently only `ZXRules.dat` can be edited.
+ - These files are simply ZIP files. You need to extract it using the password `-2099717824-430703793638994083`, and then rezip it without a password, make sure to rename it to `ZXRules.dat` after you've removed the password.
  - Place `.dat` files into `DataEditor/input/` folder.
  - Execute `run.bat` (ensure you ran `npm install` if it's your first use)
  - The `working` folder will contain a JSON editable file, any changes made to this will be updated in the `output` folder after you run `run.bat` again
  - Copy the file from `output` into your game's directory
+
+## ZXCheck Generator
+ - The ZXCheck generator is a tool that will generate .ZXCheck files for you.
+ - Download a copy from the releases section, and put it into your game's directory.
+ - The tool will instruction "TheyAreBillions.exe" to generate a .ZXSav file for you.
