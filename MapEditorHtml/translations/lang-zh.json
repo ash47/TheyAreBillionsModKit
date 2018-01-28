@@ -330,5 +330,7 @@
 	"trChangeLogBody_100_04": "增加了在地图上编辑地形和资源的功能.",
 	"trChangeLogBody_100_05": "增加了加载保存文件的功能.",
 
-	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!"
+	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!",
+
+	"trCheckInfo": "本网站上的.ZXCheck生成过程在6.0及更高版本中被破坏. 如果你想签署你的地图v6.0和更新，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.1/ZXCheckGenerator_v0.1.zip\" target=\"_blank\">这个工具</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
 }
