@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ZXSavGenerator
+namespace ZXCheckGenerator
 {
     class Program
     {
@@ -149,7 +149,7 @@ namespace ZXSavGenerator
 
                                                 File.WriteAllText(zxCheckPath, resultNice);
 
-                                                Console.WriteLine("Successfully created .zxcheck file!");
+                                                Console.WriteLine("Successfully created .zxcheck file! Signature = " + resultNice);
 
                                                 quitAfterDelay();
                                                 return;

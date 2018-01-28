@@ -25,6 +25,6 @@ MapEditor/output/*
 node_modules/*
 MapEditorHtml/tools/Data
 MapEditorHtml/tools/allents.js
-ZXSavGenerator/.vs/*
-ZXSavGenerator/bin/*
-ZXSavGenerator/obj/*
+ZXCheckGenerator/.vs/*
+ZXCheckGenerator/bin/*
+ZXCheckGenerator/obj/*

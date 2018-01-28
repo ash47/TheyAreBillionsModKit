@@ -7,8 +7,8 @@
     <ProjectGuid>{02818D10-176E-45DB-BF1F-B0E10B25B708}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZXSavGenerator</RootNamespace>
-    <AssemblyName>ZXSavGenerator</AssemblyName>
+    <RootNamespace>ZXCheckGenerator</RootNamespace>
+    <AssemblyName>ZXCheckGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
