@@ -12,6 +12,27 @@ Tools &amp; Research notes for modding "They Are Billions"
  - You can use the map editor in your browser [here](https://ash47.github.io/TheyAreBillionsModKit/MapEditorHtml/)
  - Simply load in a save file, and the editor will let you edit it
 
+## Hotkeys
+ - Move Camera: arrow keys, WADS
+ - Map Zoom: Q / E, - =
+ - Undo: ctrl + z
+ - Redo: ctrl + y
+ - Save: ctrl + s
+ - Load: ctrl + o
+ - Decrease Brush Size: [
+ - Increase Brush Size: ]
+ - Paint Earth: shift+e
+ - Paint Water: shift+w
+ - Paint Grass: shift+r
+ - Paint Sky: shift+k
+ - Paint Abyse: shift+a
+ - Paint no object: shift+n
+ - Paint Mountain: shift+m
+ - Paint Wood: shift+o
+ - Paint Gold: shift+g
+ - Paint Stone: shift+t
+ - Paint Iron: shift+i
+
 ## Data Editors
  - Currently only `ZXRules.dat` can be edited.
  - These files are simply ZIP files. You need to extract it using the password `-2099717824-430703793638994083`, and then rezip it without a password, make sure to rename it to `ZXRules.dat` after you've removed the password.

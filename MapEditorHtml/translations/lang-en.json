@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_115_1": "Started to add hotkeys.",
 	"trTutorials_114_3": "Help! My .ZXCheck file is invalid! The new method to create a ZXCheck file.",
 	"trTutorials_114_2": "Why are updates so slow?",
 	"trTutorials_114": "Visual Zombie Editor",
@@ -129,17 +130,17 @@
 	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
 
-	"trBtnBrushTypeEarth": "Earth",
-	"trBtnBrushTypeWater": "Water",
-	"trBtnBrushTypeGrass": "Grass",
-	"trBtnBrushTypeSky": "Sky",
-	"trBtnBrushTypeAbyse": "Abyse",
-	"trBtnBrushTypeNoObject": "No Object",
-	"trBtnBrushTypeMountain": "Mountain",
-	"trBtnBrushTypeWood": "Wood",
-	"trBtnBrushTypeGold": "Gold",
-	"trBtnBrushTypeStone": "Stone",
-	"trBtnBrushTypeIron": "Iron",
+	"trBtnBrushTypeEarth": "<u>E</u>arth",
+	"trBtnBrushTypeWater": "<u>W</u>ater",
+	"trBtnBrushTypeGrass": "G<u>r</u>ass",
+	"trBtnBrushTypeSky": "S<u>k</u>y",
+	"trBtnBrushTypeAbyse": "<u>A</u>byse",
+	"trBtnBrushTypeNoObject": "<u>N</u>o Object",
+	"trBtnBrushTypeMountain": "<u>M</u>ountain",
+	"trBtnBrushTypeWood": "W<u>o</u>od",
+	"trBtnBrushTypeGold": "<u>G</u>old",
+	"trBtnBrushTypeStone": "S<u>t</u>one",
+	"trBtnBrushTypeIron": "<u>I</u>ron",
 
 	"trBtnBrushTypeFoWAdd": "Add FoW",
 	"trBtnBrushTypeFoWRemove": "Remove FoW",
@@ -268,6 +269,8 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_115_01": "Started to add hotkeys. See <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> for a list of hotkeys.",
 
 	"trChangeLogBody_114_01": "Added a visual zombie editor so that zombies within the fog of war can be edited.",
 

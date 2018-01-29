@@ -1067,6 +1067,21 @@ $(document).ready(function() {
 	// Updates the map zoom
 	window.updateMapZoom = function() {
 		var conMapZoom = $('#mapZoom');
+		var conMapScaler = $('#mapScaler');
+		var conMapHolder = $('#mapDisplayHolder');
+
+		var preViewPortWidth = conMapHolder.width() / window.zoomFactor;
+		var preViewPortHeight = conMapHolder.height() / window.zoomFactor;
+
+		var preViewPortX = conMapHolder.scrollLeft() / window.zoomFactor;
+		var preViewPortY = conMapHolder.scrollTop() / window.zoomFactor;
+
+		var preViewCentreX = preViewPortX + preViewPortWidth / 2;
+		var preViewCentreY = preViewPortY + preViewPortHeight / 2;
+
+		//var preViewCentreX = prevX;
+		//var preViewCentreY = prevY;
+
 		var possibleNewZoomSize = parseFloat(conMapZoom.val());
 		possibleNewZoomSize = Math.floor(Math.max(possibleNewZoomSize, 1));
 
@@ -1076,45 +1091,22 @@ $(document).ready(function() {
 		// Update brush size
 		window.updateBrushSize(true);
 
-		$('#mapScaler').css('transform', 'scale(' + window.zoomFactor + ')');
+		conMapScaler.css('transform', 'scale(' + window.zoomFactor + ')');
 
 		// Update the helper stuff
 		updateHelperStuff();
 
-		//var realWidth = window.layerStore.LayerTerrain.width * window.zoomFactor;
-		//var realHeight = window.layerStore.LayerTerrain.height * window.zoomFactor;
+		var newViewPortWidth = conMapHolder.width() / window.zoomFactor;
+		var newViewPortHeight = conMapHolder.height() / window.zoomFactor;
 
-		// Update all the controlled elements
-		//$('.mapSizeControlled').css('width', realWidth + 'px');
-		//$('.mapSizeControlled').css('height', realHeight + 'px');
+		var newViewPortX = preViewCentreX - newViewPortWidth / 2;
+		var newViewPortY = preViewCentreY - newViewPortHeight / 2;
 
-		/*var mapZoomContainer = $('#mapDisplayHolder');
+		var newScrollLeft = newViewPortX * window.zoomFactor;
+		var newScrollTop = newViewPortY * window.zoomFactor;
 
-		// Grab the current percentage
-		var currentScrollLeft = mapZoomContainer.scrollLeft();
-		var currentScrollTop = mapZoomContainer.scrollTop();
-
-		var currentScrollWidth = mapZoomContainer.prop('scrollWidth');
-		var currentScrollHeight = mapZoomContainer.prop('scrollHeight');
-
-		// Perform a full re-render
-		mapFullRender();
-
-		setTimeout(function () {
-			// Calculate new scroll height
-			var newScrollWidth = mapZoomContainer.prop('scrollWidth');
-			var newScrollHeight = mapZoomContainer.prop('scrollHeight');
-
-			console.log(currentScrollWidth, newScrollWidth)
-
-			mapZoomContainer.scrollLeft(
-				(currentScrollLeft / currentScrollWidth) * newScrollWidth
-			);
-
-			mapZoomContainer.scrollTop(
-				(currentScrollTop / currentScrollHeight) * newScrollHeight
-			);
-		}, 2);*/
+		conMapHolder.scrollLeft(newScrollLeft);
+		conMapHolder.scrollTop(newScrollTop);
 	};
 
 	// Update brush sizes
@@ -1498,6 +1490,9 @@ $(document).ready(function() {
 
 			// Map is loaded
 			$('#mainContainer').addClass('mapIsLoaded');
+
+			// A map is loaded now
+			window.mapIsLoaded = true;
 
 			updatePercentage();
 		}, 1);

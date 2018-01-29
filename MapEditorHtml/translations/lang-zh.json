@@ -52,6 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_115_1": "开始添加热键.",
 	"trTutorials_114_3": "帮帮我! 我的.ZXCheck文件无效! 创建ZXCheck文件的新方法.",
 	"trTutorials_114_2": "为什么更新很慢?",
 	"trTutorials_114": "可视化僵尸编辑器",
@@ -279,6 +280,8 @@
 	"trBugFix": "修复",
 
 	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_115_01": "开始添加热键. 请参阅 <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> 获取热键列表.",
 
 	"trChangeLogBody_114_01": "增加了一个可视化僵尸编辑器，以便编辑在战争迷雾中的僵尸.",
 
