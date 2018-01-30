@@ -45,3 +45,4 @@ Tools &amp; Research notes for modding "They Are Billions"
  - The ZXCheck generator is a tool that will generate .ZXCheck files for you.
  - Download a copy from the releases section, and put it into your game's directory.
  - The tool will instruction "TheyAreBillions.exe" to generate a .ZXSav file for you.
+ - This tool will also extract / pull the password directly from the ZXSav for you.
