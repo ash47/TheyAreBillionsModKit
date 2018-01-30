@@ -325,5 +325,5 @@
 
 	"trDiscount1": "For a 10% discount on They Are Billions and other games, use <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">this link</a>. It won't be valid for long!",
 
-	"trCheckInfo": "The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.1/ZXCheckGenerator_v0.1.zip\" target=\"_blank\">this tool</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format."
+	"trCheckInfo": "The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.2/ZXCheckGenerator_v0.2.zip\" target=\"_blank\">this tool</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files."
 }
