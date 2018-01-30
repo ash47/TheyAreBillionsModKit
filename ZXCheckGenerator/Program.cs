@@ -108,29 +108,48 @@ namespace ZXCheckGenerator
         {
             System.IO.File.AppendAllText("_passwords.txt", pathToSaveFile + Environment.NewLine);
 
-            MethodInfo Read = null;
+            PropertyInfo propActiveZip = null;
+            PropertyInfo propPassword = null;
 
             foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
-                    // Loop over all types in the assembly
-                    //Type[] types = ass.GetTypes();
-
                     Type ZipSerialization = ass.GetType("DXVision.Serialization.ZipSerializer");
                     if(ZipSerialization != null)
                     {
-                        Read = ZipSerialization.GetMethod("Read", BindingFlags.Static | BindingFlags.Public);
+                        propActiveZip = ZipSerialization.GetProperty("Current", BindingFlags.Static | BindingFlags.Public);
 
-                        if(Read != null)
+                        if(propActiveZip == null)
+                        {
+                            Console.WriteLine("Error: prop Current is null");
+                        }
+
+                        propPassword = ZipSerialization.GetProperty("Password", BindingFlags.Instance | BindingFlags.Public);
+
+                        if (propPassword == null)
+                        {
+                            Console.WriteLine("Error: prop password is null!");
+                        }
+
+                        if(propActiveZip != null && propPassword != null)
                         {
                             try
                             {
-                                Read.Invoke(null, new object[]
-                                {
-                                        pathToSaveFile,
-                                        "Data"
-                                });
+                                Type ZXGame = theyAreBillionsAssembly.GetType("#=zK5tycTRduhzAxpfPdw==");
+                                MethodInfo getFlag = ZXGame.GetMethod("#=zAzPszW639sG8fJMh$g==", BindingFlags.Static | BindingFlags.NonPublic);
+
+                                int flag = (int)getFlag.Invoke(null, new object[] { pathToSaveFile });
+
+                                MethodInfo unknownMethod = ZXGame.GetMethod("#=zGHHSYp7Uos74rBHHhg==", BindingFlags.Static | BindingFlags.NonPublic);
+
+                                unknownMethod.Invoke(null, new object[] { pathToSaveFile, flag, true });
+
+                                object activeZip = propActiveZip.GetValue(null, null);
+                                string thePassword = (string)propPassword.GetValue(activeZip);
+
+                                Console.WriteLine("Found password = " + thePassword);
+                                System.IO.File.AppendAllText("_passwords.txt", "Password = " + thePassword + Environment.NewLine);
                             }
                             catch
                             {
@@ -144,128 +163,8 @@ namespace ZXCheckGenerator
                     // do nothing
                 }
             }
-
-            foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                try
-                {
-                    Type ionicZip = ass.GetType("Ionic.Zip.ZipFile");
-
-                    if (ionicZip != null)
-                    {
-                        MethodInfo setPassword = ionicZip.GetMethod("set_Password", BindingFlags.Public | BindingFlags.Instance);
-
-                        if(setPassword != null)
-                        {
-                            MethodInfo newMethod = typeof(ZXCheckGenerator.Program).GetMethod("set_Password", BindingFlags.Instance | BindingFlags.Public);
-                            if (newMethod != null)
-                            {
-                                replaceMethod(setPassword, newMethod, true);
-                                
-                                // Invoke again
-                                Read.Invoke(null, new object[]
-                                {
-                                        pathToSaveFile,
-                                        "Data"
-                                });
-                                
-                                Type ZXGame = theyAreBillionsAssembly.GetType("#=zK5tycTRduhzAxpfPdw==");
-
-                                MethodInfo getFlag = ZXGame.GetMethod("#=zAzPszW639sG8fJMh$g==", BindingFlags.Static | BindingFlags.NonPublic);
-
-                                int flag = (int)getFlag.Invoke(null, new object[] { pathToSaveFile });
-
-                                MethodInfo unknownMethod = ZXGame.GetMethod("#=zGHHSYp7Uos74rBHHhg==", BindingFlags.Static | BindingFlags.NonPublic);
-
-                                unknownMethod.Invoke(null, new object[] { pathToSaveFile, flag, true });
-                                
-                                // Invoke again
-                                Read.Invoke(null, new object[]
-                                {
-                                        pathToSaveFile,
-                                        "Data"
-                                });
-                            }
-                        }
-
-                    }
-                }
-                catch
-                {
-                    // do othing
-                }
-            }
         }
-
-        public static void replaceMethod(MethodInfo targetMethod, MethodInfo newMethod, bool bothWays = false)
-        {
-            // Prepare methods
-            RuntimeHelpers.PrepareMethod(targetMethod.MethodHandle);
-            RuntimeHelpers.PrepareMethod(newMethod.MethodHandle);
-
-            unsafe
-            {
-                if (IntPtr.Size == 4)
-                {
-                    int* inj = (int*)newMethod.MethodHandle.Value.ToPointer() + 2;
-                    int* tar = (int*)targetMethod.MethodHandle.Value.ToPointer() + 2;
-
-#if DEBUG
-                        //Console.WriteLine("\nVersion x86 Debug\n");
-
-                        byte* injInst = (byte*)*inj;
-                        byte* tarInst = (byte*)*tar;
-
-                        int* injSrc = (int*)(injInst + 1);
-                        int* tarSrc = (int*)(tarInst + 1);
-
-                        *tarSrc = (((int)injInst + 5) + *injSrc) - ((int)tarInst + 5);
-#else
-                    //Console.WriteLine("\nVersion x86 Release\n");
-                    *tar = *inj;
-#endif
-                }
-                else
-                {
-
-                    long* inj = (long*)newMethod.MethodHandle.Value.ToPointer() + 1;
-                    long* tar = (long*)targetMethod.MethodHandle.Value.ToPointer() + 1;
-                    long tarOriginal = *tar;
-#if DEBUG
-                        //Console.WriteLine("\nVersion x64 Debug\n");
-                        byte* injInst = (byte*)*inj;
-                        byte* tarInst = (byte*)*tar;
-
-
-                        int* injSrc = (int*)(injInst + 1);
-                        int* tarSrc = (int*)(tarInst + 1);
-
-                        *tarSrc = (((int)injInst + 5) + *injSrc) - ((int)tarInst + 5);
-#else
-                    //Console.WriteLine("\nVersion x64 Release\n");
-                    *tar = *inj;
-
-                    // Do we want to patch both directions of the method?
-                    if (bothWays)
-                    {
-                        *inj = tarOriginal;
-                    }
-#endif
-                }
-            }
-        }
-
-        public string Password
-        {
-            get {
-                return "";
-            }
-            set {
-                Console.WriteLine("Got password = " + value);
-                System.IO.File.AppendAllText("_passwords.txt", "Password = " + value + Environment.NewLine);
-            }
-        }
-
+        
         // Called when the program is launched
         static void Main(string[] args)
         {
