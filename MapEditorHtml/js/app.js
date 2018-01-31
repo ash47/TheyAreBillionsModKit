@@ -750,6 +750,7 @@ $(document).ready(function() {
 
 		var exportBtnZip = $('#btnExportSave');
 		var exportBtnChecksum = $('#btnExportChecksum');
+		var exportBtnBoth = $('#btnExportBoth');
 
 		if(upToDate) {
 			if(isChecksum) {
@@ -757,6 +758,10 @@ $(document).ready(function() {
 				exportBtnChecksum.removeAttr('disabled');
 				exportBtnChecksum.removeClass('btn-danger');
 				exportBtnChecksum.addClass('btn-primary');
+
+				exportBtnBoth.removeAttr('disabled');
+				exportBtnBoth.removeClass('btn-danger');
+				exportBtnBoth.addClass('btn-primary');
 			} else {
 				// The Download
 				exportBtnZip.removeAttr('disabled');
@@ -769,6 +774,9 @@ $(document).ready(function() {
 
 			exportBtnChecksum.removeClass('btn-primary');
 			exportBtnChecksum.addClass('btn-danger');
+
+			exportBtnBoth.removeClass('btn-primary');
+			exportBtnBoth.addClass('btn-danger');
 		}
 	}
 
@@ -785,6 +793,38 @@ $(document).ready(function() {
 			new Blob([window.activeMap.checksum], {type : 'text/plain'}),
 			window.layerStore.MapProps._mapName + '.zxcheck'
 		);
+	};
+
+	// Download a pack with both ZXSav and ZXCheck
+	window.downloadPack = function() {
+		$('#btnExportBoth').prop('disabled', true);
+
+		// Generate the save file
+		var zip = new JSZip();
+
+		var settings = {
+			date: new Date(2018, 0, 20)
+		};
+
+		zip.file(window.layerStore.MapProps._mapName + '.zxsav', window.activeMap.downloadableZip, settings);
+		zip.file(window.layerStore.MapProps._mapName + '.zxcheck', new Blob([window.activeMap.checksum], {type : 'text/plain'}), settings);
+
+		zip.generateAsync({
+			type: 'blob',
+			compression: 'DEFLATE',
+		    compressionOptions: {
+		        level: 0
+		    }
+		}).then(function(content) {
+			// Do the saveas
+			saveAs(
+				content,
+				'extract_with_7zip_' + window.layerStore.MapProps._mapName + '.7zip'
+			);
+
+			// Allow downloading again
+			$('#btnExportBoth').prop('disabled', false);
+		});
 	};
 
 	// Updates which tool brush section thing is visible
