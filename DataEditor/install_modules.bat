@@ -1,5 +1,7 @@
 @echo off
 
+mkdir input
+
 echo Installing modules using NPM...
 
 cmd /c npm install
