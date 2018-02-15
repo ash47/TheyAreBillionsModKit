@@ -136,20 +136,48 @@ namespace ZXCheckGenerator
                         {
                             try
                             {
-                                Type ZXGame = theyAreBillionsAssembly.GetType("#=zK5tycTRduhzAxpfPdw==");
-                                MethodInfo getFlag = ZXGame.GetMethod("#=zAzPszW639sG8fJMh$g==", BindingFlags.Static | BindingFlags.NonPublic);
+                                foreach(Type possibleType in theyAreBillionsAssembly.GetTypes())
+                                {
+                                    MethodInfo sigMatch = possibleType.GetMethod("ProcessSpecialKeys_KeyUp", BindingFlags.Instance | BindingFlags.NonPublic);
+                                    if (sigMatch == null) continue;
 
-                                int flag = (int)getFlag.Invoke(null, new object[] { pathToSaveFile });
+                                    foreach (MethodInfo possibleFlag in possibleType.GetMethods(BindingFlags.NonPublic | BindingFlags.Static))
+                                    {
+                                        string retTurn = possibleFlag.ReturnType.FullName;
 
-                                MethodInfo unknownMethod = ZXGame.GetMethod("#=zGHHSYp7Uos74rBHHhg==", BindingFlags.Static | BindingFlags.NonPublic);
+                                        if (retTurn != "System.Int32") continue;
 
-                                unknownMethod.Invoke(null, new object[] { pathToSaveFile, flag, true });
+                                        ParameterInfo[] flagParams = possibleFlag.GetParameters();
+                                        if (flagParams.Length != 1) continue;
+                                        if (flagParams[0].ParameterType.FullName != "System.String") continue;
 
-                                object activeZip = propActiveZip.GetValue(null, null);
-                                string thePassword = (string)propPassword.GetValue(activeZip);
+                                        int flag = (int)possibleFlag.Invoke(null, new object[] { pathToSaveFile });
 
-                                Console.WriteLine("Found password = " + thePassword);
-                                System.IO.File.AppendAllText("_passwords.txt", "Password = " + thePassword + Environment.NewLine);
+                                        foreach (MethodInfo possibleHelper in possibleType.GetMethods(BindingFlags.NonPublic | BindingFlags.Static))
+                                        {
+                                            ParameterInfo[] helperParams = possibleHelper.GetParameters();
+                                            
+                                            if (helperParams.Length != 3) continue;
+                                            if (helperParams[0].ParameterType.FullName != "System.String") continue;
+                                            if (helperParams[1].ParameterType.FullName != "System.Int32") continue;
+                                            if (helperParams[2].ParameterType.FullName != "System.Boolean") continue;
+
+                                            if(possibleHelper.ReturnType.FullName != "System.Void") continue;
+
+                                            possibleHelper.Invoke(null, new object[] { pathToSaveFile, flag, true });
+
+                                            object activeZip = propActiveZip.GetValue(null, null);
+                                            string thePassword = (string)propPassword.GetValue(activeZip);
+
+                                            // Did we find the password?
+                                            if (thePassword == null || thePassword.Length <= 0) continue;
+
+                                            Console.WriteLine("Found password = " + thePassword);
+                                            System.IO.File.AppendAllText("_passwords.txt", "Password = " + thePassword + Environment.NewLine);
+                                        }
+
+                                    }
+                                }
                             }
                             catch
                             {
