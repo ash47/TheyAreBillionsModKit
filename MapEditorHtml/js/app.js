@@ -905,6 +905,10 @@ $(document).ready(function() {
 				case 'setToolMapPainterLine':
 					activeBrush = enum_brushLine;
 				break;
+
+				case 'setToolMapPainterCircle':
+					activeBrush = enum_brushCircle;
+				break;
 			}
 		}
 
@@ -1107,7 +1111,7 @@ $(document).ready(function() {
 	// Updates the map zoom
 	window.updateMapZoom = function() {
 		var conMapZoom = $('#mapZoom');
-		var conMapScaler = $('#mapScaler');
+		var conMapScaler = $('.mapScaler');
 		var conMapHolder = $('#mapDisplayHolder');
 
 		var preViewPortWidth = conMapHolder.width() / window.zoomFactor;
@@ -1171,24 +1175,43 @@ $(document).ready(function() {
 		var theOffsetX = 0;
 		var theOffsetY = 0;
 
+		if(updateSize) {
+			var previewConRaw = document.getElementById('mousePreview');
+			var theSize = window.brushSize * window.zoomFactor;
+			previewConRaw.width = theSize;
+			previewConRaw.height = theSize;
+
+			var ctx = document.getElementById('mousePreview').getContext('2d');
+			//ctx.width = theSize;
+			//ctx.height = theSize;
+			ctx.clearRect(0, 0, previewCon.width(), previewCon.height());
+		}
+
 		if(activePrimaryTool == enum_toolPaint) {
 			theOffsetX = Math.floor( (window.brushSize - 1) / 2);
 			theOffsetY = theOffsetX;
 
 			if(updateSize) {
-				var theSize = window.brushSize * window.zoomFactor;
+				if(activeBrush == enum_brushCircle) {
+					ctx.fillStyle = getRBG({
+						red: 0,
+						green: 0,
+						blue: 0,
+						alpha: 100
+					});
 
-				previewCon.width(theSize);
-				previewCon.height(theSize);
+					for(var x=0; x<window.brushSize; ++x) {
+						for(var y=0; y<window.brushSize; ++y) {
+							if(inCircle(x, y)) {
+								ctx.fillRect(x * window.zoomFactor, y * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+							}
+						}
+					}
+				}
 			}
 		}
 
 		if(activePrimaryTool == enum_toolEntity) {
-			if(updateSize) {
-				previewCon.width(window.activeTemplateSizeInfo.width * window.zoomFactor);
-				previewCon.height(window.activeTemplateSizeInfo.height * window.zoomFactor);
-			}
-
 			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
 			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
 		}
@@ -1229,7 +1252,7 @@ $(document).ready(function() {
   		startY = prevY;
 
   		if(activePrimaryTool == enum_toolPaint) {
-  			if(activeBrush == enum_brushSingle) {
+  			if(activeBrush == enum_brushSingle || activeBrush == enum_brushCircle) {
   				// Run the callback
 				clickPixel(mouseX, mouseY);
   			}
@@ -1333,7 +1356,7 @@ $(document).ready(function() {
 		if(isMouseDown) {
 			if(activePrimaryTool == enum_toolPaint) {
 				// Single point tool
-				if(activeBrush == enum_brushSingle) {
+				if(activeBrush == enum_brushSingle || activeBrush == enum_brushCircle) {
 					// Run the call
 			  		clickPixel(mouseX, mouseY);
 
@@ -1369,16 +1392,24 @@ $(document).ready(function() {
 			  			Math.abs(yDist)
 			  		);
 
+			  		var possibleColor = activeToolColor;
+			  		if(typeof(possibleColor) != 'string' && typeof(possibleColor) != 'number') {
+			  			possibleColor = possibleColor[0];
+			  		}
+
 			  		var width = window.layerStore.LayerTerrain.width;
-			  		var theColor = activeLayer.colorMap[activeToolColor];
+			  		var theColor = activeLayer.colorMap[possibleColor];
+
+			  		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+
+			  		ctx.fillStyle = getRBG(theColor);
 
 			  		// Render a line
 			  		for(var i=0; i<=dist; ++i) {
-			  			var renderPixelAtX = Math.round(startX + i/dist * xDist);
-			  			var renderPixelAtY = Math.round(startY + i/dist * yDist);
+			  			var renderPixelAtX = Math.round(startX + i/dist * xDist) - theOffset;
+			  			var renderPixelAtY = Math.round(startY + i/dist * yDist) - theOffset;
 
-						ctx.fillStyle = getRBG(theColor);
-						ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+						ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor * window.brushSize, window.zoomFactor * window.brushSize);
 			  		}
 			  	}
 			}
@@ -1403,10 +1434,32 @@ $(document).ready(function() {
 
 		for(var xx=0; xx<window.brushSize; ++xx) {
 			for(var yy=0; yy<window.brushSize; ++yy) {
+				if(activeBrush == enum_brushCircle && !inCircle(xx, yy)) continue;
+
 				// Update the pixel
 				updatePixel(activeLayer, x + xx - theOffset, y + yy - theOffset, activeToolColor);
 			}
 		}
+	}
+
+	function inCircle(xx, yy) {
+		if(window.brushSize <= 2) return true;
+
+		var useBrushSize = window.brushSize;
+
+		var mid = (useBrushSize - 1) / 2;
+		var maxRadius = Math.ceil((useBrushSize - 1) / 2);
+
+		if(useBrushSize % 2 == 1) {
+			maxRadius += 0.25;
+		}
+
+		var xDist = Math.abs(mid - xx);
+		var yDist = Math.abs(mid - yy);
+
+		var totalDist = Math.sqrt(xDist * xDist + yDist * yDist);
+
+		return (totalDist <= maxRadius);
 	}
 
 	// Loads a map from data
@@ -1927,8 +1980,8 @@ $(document).ready(function() {
 		mapOutline.width = helperCanvas.width;
 		mapOutline.height = helperCanvas.height;
 
-		$('#mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
-		$('#mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
+		$('.mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
+		$('.mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
 
 		// Render the gridlines
 		window.redrawGrid();
@@ -2780,10 +2833,12 @@ $(document).ready(function() {
 	}
 
 	// When one of these change zombie type buttons is clicked
-	function onClickChangeZombieType() {
+	function onClickChangeZombieType(e) {
 		// Unselect other buttons
-		$('.zombieBrushButtons').removeClass('btn-success');
-		$('.zombieBrushButtons').addClass('btn-primary');
+		if(!e.ctrlKey) {
+			$('.zombieBrushButtons').removeClass('btn-success');
+			$('.zombieBrushButtons').addClass('btn-primary');
+		}
 
 		// Select this button
 		var _this = $(this);
@@ -2792,8 +2847,31 @@ $(document).ready(function() {
 
 		// Update map
 		window.setActiveLayerSelectionGroupSub('zombie');
-		activeLayer = window.layerStore.LayerZombies;
-		activeToolColor = _this.attr('zombieId');
+
+		var newZombieBrush = _this.attr('zombieId');
+
+		if(activeLayer == window.layerStore.LayerZombies && e.ctrlKey) {
+			if(typeof(activeToolColor) == 'string') {
+				activeToolColor = [activeToolColor, newZombieBrush];
+			} else {
+				// Are we removing it?
+				var theIndex = activeToolColor.indexOf(newZombieBrush);
+				if(theIndex != -1) {
+					// Already got this color, remove it
+					activeToolColor.splice(theIndex, 1);
+
+					_this.addClass('btn-primary');
+					_this.removeClass('btn-success');
+
+					return;
+				}
+
+				activeToolColor.push(newZombieBrush);
+			}
+		} else {
+			activeLayer = window.layerStore.LayerZombies;
+			activeToolColor = newZombieBrush;
+		}
 	}
 
 	// Grab the container we are going to push into

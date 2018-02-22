@@ -260,6 +260,11 @@ function renderPixel(mapData, x, y) {
 
 // Updates a pixel
 function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
+	// Is the number well defined, or should we pick a random one?
+	if(typeof(theNumber) != 'string' && typeof(theNumber) != 'number') {
+		theNumber = theNumber[Math.floor(Math.random()*theNumber.length)];
+	}
+
 	var width = mapData.width;
 
 	// do not allow invalid pixels to be updated

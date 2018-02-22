@@ -52,6 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_116_1": "圆绘图工具和僵尸随机器.",
 	"trTutorials_115_3": "更新密码提取器和当前状态.",
 	"trTutorials_115_2": "如何恢复ZXSav文件的密码.",
 	"trTutorials_115_1": "开始添加热键.",
@@ -122,6 +123,7 @@
 
 	"trBtnBrushSinglePoint": "单点工具",
 	"trBtnBrushLine": "连线工具",
+	"trBtnBrushCircle": "圆工具",
 
 	"trInfoBrushSize": "笔刷大小",
 	"trInfoBrushesLayerSelect": "图层",
@@ -282,6 +284,9 @@
 	"trBugFix": "修复",
 
 	"trChangeLogHeader": "更新记录",
+
+	"trChangeLogBody_116_01": "添加了圆形画笔工具.",
+	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力。 选择要绘制的僵尸时按住'控制'.",
 
 	"trChangeLogBody_115_01": "开始添加热键. 请参阅 <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> 获取热键列表.",
 

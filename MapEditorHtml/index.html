@@ -73,7 +73,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.15
+				</span> | v1.16
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -353,6 +353,14 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!--<li>
+							<a href="https://youtu.be/MD3ERRwato4" target="_blank">
+								<b>(v1.16)</b>
+								<span data-translate="trTutorials_116_1">
+									Circle drawing tool and zombie randomiser.
+								</span>
+							</a>
+						</li>-->
 						<li>
 							<a href="https://youtu.be/MD3ERRwato4" target="_blank">
 								<b>(v1.15)</b>
@@ -600,6 +608,25 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.16 -->
+						<li>
+							<b>(v1.16)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_116_01">
+										Added circle brush tool.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_116_02">
+										Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.15 -->
 						<li>
 							<b>(v1.15)</b>
@@ -972,7 +999,7 @@
 	</div>
 
 	<div id="mapDisplayHolder">
-		<div id="mapScaler">
+		<div class="mapScaler">
 			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -980,7 +1007,7 @@
 			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		</div>
 
-		<div id="mousePreview" class="scalePixelated"></div>
+		<canvas id="mousePreview" class="scalePixelated"></canvas>
 		<canvas id="gridCanvas" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		<canvas id="mapOutline" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		<canvas id="helperLayer" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -1195,6 +1222,13 @@
 					<button id="btn_setToolMapPainterLine" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterLine')">
 						<span data-translate="trBtnBrushLine">
 							Line Tool
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_setToolMapPainterCircle" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterCircle')">
+						<span data-translate="trBtnBrushCircle">
+							Circle Tool
 						</span>
 					</button>
 				</li>

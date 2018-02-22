@@ -48,6 +48,7 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_116_1": "Circle drawing tool and zombie randomiser.",
 	"trTutorials_115_3": "Password extractor updated, and current status.",
 	"trTutorials_115_2": "How to recover the passwords for ZXSav files.",
 	"trTutorials_115_1": "Started to add hotkeys.",
@@ -118,6 +119,7 @@
 
 	"trBtnBrushSinglePoint": "Single Point Tool",
 	"trBtnBrushLine": "Line Tool",
+	"trBtnBrushCircle": "Circle Tool",
 
 	"trInfoBrushSize": "Brush Size",
 
@@ -271,6 +273,9 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_116_01": "Added circle brush tool.",
+	"trChangeLogBody_116_02": "Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.",
 
 	"trChangeLogBody_115_01": "Started to add hotkeys. See <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> for a list of hotkeys.",
 

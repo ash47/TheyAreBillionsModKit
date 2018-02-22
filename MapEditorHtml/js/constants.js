@@ -427,6 +427,7 @@ var enum_toolEntity = 3;
 
 var enum_brushSingle = 1;
 var enum_brushLine = 2;
+var enum_brushCircle = 3;
 
 
 // History stuff
