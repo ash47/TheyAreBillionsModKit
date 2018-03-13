@@ -717,8 +717,8 @@ function loadMapProps(commitUpdate) {
 		'ThemeType',
 		'FactorGameDuration',
 		'FactorZombiePopulation',
-		'DifficultyType',
-		'Difficulty',
+		//'DifficultyType',
+		//'Difficulty',
 		'PlayableArea',
 		'FactorPlayableArea'
 	];
