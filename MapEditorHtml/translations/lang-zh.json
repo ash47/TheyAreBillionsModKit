@@ -52,7 +52,7 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
-	"trTutorials_116_1": "圆绘图工具和僵尸随机器.",
+	"trTutorials_116_1": "圆形绘图工具和僵尸随机生成器.",
 	"trTutorials_115_3": "更新密码提取器和当前状态.",
 	"trTutorials_115_2": "如何恢复ZXSav文件的密码.",
 	"trTutorials_115_1": "开始添加热键.",
@@ -88,6 +88,7 @@
 	"trBtnGenerateSaveFile": "保存更改",
 	"trBtnExportZXSav": "导出 .zxsav",
 	"trBtnExportZXCheck": "导出 .zxcheck",
+	"trBtnExportBoth": "导出压缩包(推荐)",
 
 	"trBtnEntityClone": "复制实体",
 	"trBtnEntityDelete": "删除实体",
@@ -286,7 +287,7 @@
 	"trChangeLogHeader": "更新记录",
 
 	"trChangeLogBody_116_01": "添加了圆形画笔工具.",
-	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力。 选择要绘制的僵尸时按住'控制'.",
+	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力.选择要绘制的僵尸时按住'CTRL'选择多个僵尸种类.",
 
 	"trChangeLogBody_115_01": "开始添加热键. 请参阅 <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> 获取热键列表.",
 
@@ -343,5 +344,5 @@
 
 	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!",
 
-	"trCheckInfo": "本网站上的.ZXCheck生成过程在6.0及更高版本中被破坏. 如果你想签署你的地图v6.0和更新，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">这个工具 (v0.3)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
+	"trCheckInfo": "本网站生成的.ZXCheck在6.0及更高版本的游戏中无法使用. 如果你想签署v6.0及以上版本地图，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">这个工具 (v0.3)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
 }
