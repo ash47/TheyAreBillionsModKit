@@ -678,8 +678,12 @@ $(document).ready(function() {
 			// Generate the save file
 			var zip = new JSZip();
 
-			zip.file('Data', window.activeMap.Data);
-			zip.file('Info', window.activeMap.Info);
+			var settings = {
+				date: new Date(2018, 0, 20)
+			};
+
+			zip.file('Data', window.activeMap.Data, settings);
+			zip.file('Info', window.activeMap.Info, settings);
 
 			zip.generateAsync({
 				type: 'blob',
@@ -746,6 +750,7 @@ $(document).ready(function() {
 
 		var exportBtnZip = $('#btnExportSave');
 		var exportBtnChecksum = $('#btnExportChecksum');
+		var exportBtnBoth = $('#btnExportBoth');
 
 		if(upToDate) {
 			if(isChecksum) {
@@ -753,6 +758,10 @@ $(document).ready(function() {
 				exportBtnChecksum.removeAttr('disabled');
 				exportBtnChecksum.removeClass('btn-danger');
 				exportBtnChecksum.addClass('btn-primary');
+
+				exportBtnBoth.removeAttr('disabled');
+				exportBtnBoth.removeClass('btn-danger');
+				exportBtnBoth.addClass('btn-primary');
 			} else {
 				// The Download
 				exportBtnZip.removeAttr('disabled');
@@ -765,6 +774,9 @@ $(document).ready(function() {
 
 			exportBtnChecksum.removeClass('btn-primary');
 			exportBtnChecksum.addClass('btn-danger');
+
+			exportBtnBoth.removeClass('btn-primary');
+			exportBtnBoth.addClass('btn-danger');
 		}
 	}
 
@@ -781,6 +793,38 @@ $(document).ready(function() {
 			new Blob([window.activeMap.checksum], {type : 'text/plain'}),
 			window.layerStore.MapProps._mapName + '.zxcheck'
 		);
+	};
+
+	// Download a pack with both ZXSav and ZXCheck
+	window.downloadPack = function() {
+		$('#btnExportBoth').prop('disabled', true);
+
+		// Generate the save file
+		var zip = new JSZip();
+
+		var settings = {
+			date: new Date(2018, 0, 20)
+		};
+
+		zip.file(window.layerStore.MapProps._mapName + '.zxsav', window.activeMap.downloadableZip, settings);
+		zip.file(window.layerStore.MapProps._mapName + '.zxcheck', new Blob([window.activeMap.checksum], {type : 'text/plain'}), settings);
+
+		zip.generateAsync({
+			type: 'blob',
+			compression: 'DEFLATE',
+		    compressionOptions: {
+		        level: 0
+		    }
+		}).then(function(content) {
+			// Do the saveas
+			saveAs(
+				content,
+				'extract_with_7zip_' + window.layerStore.MapProps._mapName + '.7zip'
+			);
+
+			// Allow downloading again
+			$('#btnExportBoth').prop('disabled', false);
+		});
 	};
 
 	// Updates which tool brush section thing is visible
@@ -860,6 +904,10 @@ $(document).ready(function() {
 
 				case 'setToolMapPainterLine':
 					activeBrush = enum_brushLine;
+				break;
+
+				case 'setToolMapPainterCircle':
+					activeBrush = enum_brushCircle;
 				break;
 			}
 		}
@@ -1063,6 +1111,21 @@ $(document).ready(function() {
 	// Updates the map zoom
 	window.updateMapZoom = function() {
 		var conMapZoom = $('#mapZoom');
+		var conMapScaler = $('.mapScaler');
+		var conMapHolder = $('#mapDisplayHolder');
+
+		var preViewPortWidth = conMapHolder.width() / window.zoomFactor;
+		var preViewPortHeight = conMapHolder.height() / window.zoomFactor;
+
+		var preViewPortX = conMapHolder.scrollLeft() / window.zoomFactor;
+		var preViewPortY = conMapHolder.scrollTop() / window.zoomFactor;
+
+		var preViewCentreX = preViewPortX + preViewPortWidth / 2;
+		var preViewCentreY = preViewPortY + preViewPortHeight / 2;
+
+		//var preViewCentreX = prevX;
+		//var preViewCentreY = prevY;
+
 		var possibleNewZoomSize = parseFloat(conMapZoom.val());
 		possibleNewZoomSize = Math.floor(Math.max(possibleNewZoomSize, 1));
 
@@ -1072,45 +1135,22 @@ $(document).ready(function() {
 		// Update brush size
 		window.updateBrushSize(true);
 
-		$('#mapScaler').css('transform', 'scale(' + window.zoomFactor + ')');
+		conMapScaler.css('transform', 'scale(' + window.zoomFactor + ')');
 
 		// Update the helper stuff
 		updateHelperStuff();
 
-		//var realWidth = window.layerStore.LayerTerrain.width * window.zoomFactor;
-		//var realHeight = window.layerStore.LayerTerrain.height * window.zoomFactor;
+		var newViewPortWidth = conMapHolder.width() / window.zoomFactor;
+		var newViewPortHeight = conMapHolder.height() / window.zoomFactor;
 
-		// Update all the controlled elements
-		//$('.mapSizeControlled').css('width', realWidth + 'px');
-		//$('.mapSizeControlled').css('height', realHeight + 'px');
+		var newViewPortX = preViewCentreX - newViewPortWidth / 2;
+		var newViewPortY = preViewCentreY - newViewPortHeight / 2;
 
-		/*var mapZoomContainer = $('#mapDisplayHolder');
+		var newScrollLeft = newViewPortX * window.zoomFactor;
+		var newScrollTop = newViewPortY * window.zoomFactor;
 
-		// Grab the current percentage
-		var currentScrollLeft = mapZoomContainer.scrollLeft();
-		var currentScrollTop = mapZoomContainer.scrollTop();
-
-		var currentScrollWidth = mapZoomContainer.prop('scrollWidth');
-		var currentScrollHeight = mapZoomContainer.prop('scrollHeight');
-
-		// Perform a full re-render
-		mapFullRender();
-
-		setTimeout(function () {
-			// Calculate new scroll height
-			var newScrollWidth = mapZoomContainer.prop('scrollWidth');
-			var newScrollHeight = mapZoomContainer.prop('scrollHeight');
-
-			console.log(currentScrollWidth, newScrollWidth)
-
-			mapZoomContainer.scrollLeft(
-				(currentScrollLeft / currentScrollWidth) * newScrollWidth
-			);
-
-			mapZoomContainer.scrollTop(
-				(currentScrollTop / currentScrollHeight) * newScrollHeight
-			);
-		}, 2);*/
+		conMapHolder.scrollLeft(newScrollLeft);
+		conMapHolder.scrollTop(newScrollTop);
 	};
 
 	// Update brush sizes
@@ -1135,24 +1175,43 @@ $(document).ready(function() {
 		var theOffsetX = 0;
 		var theOffsetY = 0;
 
+		if(updateSize) {
+			var previewConRaw = document.getElementById('mousePreview');
+			var theSize = window.brushSize * window.zoomFactor;
+			previewConRaw.width = theSize;
+			previewConRaw.height = theSize;
+
+			var ctx = document.getElementById('mousePreview').getContext('2d');
+			//ctx.width = theSize;
+			//ctx.height = theSize;
+			ctx.clearRect(0, 0, previewCon.width(), previewCon.height());
+		}
+
 		if(activePrimaryTool == enum_toolPaint) {
 			theOffsetX = Math.floor( (window.brushSize - 1) / 2);
 			theOffsetY = theOffsetX;
 
 			if(updateSize) {
-				var theSize = window.brushSize * window.zoomFactor;
+				if(activeBrush == enum_brushCircle) {
+					ctx.fillStyle = getRBG({
+						red: 0,
+						green: 0,
+						blue: 0,
+						alpha: 100
+					});
 
-				previewCon.width(theSize);
-				previewCon.height(theSize);
+					for(var x=0; x<window.brushSize; ++x) {
+						for(var y=0; y<window.brushSize; ++y) {
+							if(inCircle(x, y)) {
+								ctx.fillRect(x * window.zoomFactor, y * window.zoomFactor, window.zoomFactor, window.zoomFactor);
+							}
+						}
+					}
+				}
 			}
 		}
 
 		if(activePrimaryTool == enum_toolEntity) {
-			if(updateSize) {
-				previewCon.width(window.activeTemplateSizeInfo.width * window.zoomFactor);
-				previewCon.height(window.activeTemplateSizeInfo.height * window.zoomFactor);
-			}
-
 			theOffsetX = -window.activeTemplateSizeInfo.offsetX;
 			theOffsetY = -window.activeTemplateSizeInfo.offsetY;
 		}
@@ -1193,7 +1252,7 @@ $(document).ready(function() {
   		startY = prevY;
 
   		if(activePrimaryTool == enum_toolPaint) {
-  			if(activeBrush == enum_brushSingle) {
+  			if(activeBrush == enum_brushSingle || activeBrush == enum_brushCircle) {
   				// Run the callback
 				clickPixel(mouseX, mouseY);
   			}
@@ -1297,7 +1356,7 @@ $(document).ready(function() {
 		if(isMouseDown) {
 			if(activePrimaryTool == enum_toolPaint) {
 				// Single point tool
-				if(activeBrush == enum_brushSingle) {
+				if(activeBrush == enum_brushSingle || activeBrush == enum_brushCircle) {
 					// Run the call
 			  		clickPixel(mouseX, mouseY);
 
@@ -1333,16 +1392,24 @@ $(document).ready(function() {
 			  			Math.abs(yDist)
 			  		);
 
+			  		var possibleColor = activeToolColor;
+			  		if(typeof(possibleColor) != 'string' && typeof(possibleColor) != 'number') {
+			  			possibleColor = possibleColor[0];
+			  		}
+
 			  		var width = window.layerStore.LayerTerrain.width;
-			  		var theColor = activeLayer.colorMap[activeToolColor];
+			  		var theColor = activeLayer.colorMap[possibleColor];
+
+			  		var theOffset = Math.floor( (window.brushSize - 1) / 2);
+
+			  		ctx.fillStyle = getRBG(theColor);
 
 			  		// Render a line
 			  		for(var i=0; i<=dist; ++i) {
-			  			var renderPixelAtX = Math.round(startX + i/dist * xDist);
-			  			var renderPixelAtY = Math.round(startY + i/dist * yDist);
+			  			var renderPixelAtX = Math.round(startX + i/dist * xDist) - theOffset;
+			  			var renderPixelAtY = Math.round(startY + i/dist * yDist) - theOffset;
 
-						ctx.fillStyle = getRBG(theColor);
-						ctx.fillRect(renderPixelAtX * window.pixelSize, renderPixelAtY * pixelSize, window.pixelSize, window.pixelSize);
+						ctx.fillRect(renderPixelAtX * window.zoomFactor, renderPixelAtY * window.zoomFactor, window.zoomFactor * window.brushSize, window.zoomFactor * window.brushSize);
 			  		}
 			  	}
 			}
@@ -1367,10 +1434,32 @@ $(document).ready(function() {
 
 		for(var xx=0; xx<window.brushSize; ++xx) {
 			for(var yy=0; yy<window.brushSize; ++yy) {
+				if(activeBrush == enum_brushCircle && !inCircle(xx, yy)) continue;
+
 				// Update the pixel
 				updatePixel(activeLayer, x + xx - theOffset, y + yy - theOffset, activeToolColor);
 			}
 		}
+	}
+
+	function inCircle(xx, yy) {
+		if(window.brushSize <= 2) return true;
+
+		var useBrushSize = window.brushSize;
+
+		var mid = (useBrushSize - 1) / 2;
+		var maxRadius = Math.ceil((useBrushSize - 1) / 2);
+
+		if(useBrushSize % 2 == 1) {
+			maxRadius += 0.25;
+		}
+
+		var xDist = Math.abs(mid - xx);
+		var yDist = Math.abs(mid - yy);
+
+		var totalDist = Math.sqrt(xDist * xDist + yDist * yDist);
+
+		return (totalDist <= maxRadius);
 	}
 
 	// Loads a map from data
@@ -1494,6 +1583,9 @@ $(document).ready(function() {
 
 			// Map is loaded
 			$('#mainContainer').addClass('mapIsLoaded');
+
+			// A map is loaded now
+			window.mapIsLoaded = true;
 
 			updatePercentage();
 		}, 1);
@@ -1888,8 +1980,8 @@ $(document).ready(function() {
 		mapOutline.width = helperCanvas.width;
 		mapOutline.height = helperCanvas.height;
 
-		$('#mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
-		$('#mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
+		$('.mapScaler').css('width', window.layerStore.LayerTerrain.width + 'px');
+		$('.mapScaler').css('height', window.layerStore.LayerTerrain.height + 'px');
 
 		// Render the gridlines
 		window.redrawGrid();
@@ -2741,10 +2833,12 @@ $(document).ready(function() {
 	}
 
 	// When one of these change zombie type buttons is clicked
-	function onClickChangeZombieType() {
+	function onClickChangeZombieType(e) {
 		// Unselect other buttons
-		$('.zombieBrushButtons').removeClass('btn-success');
-		$('.zombieBrushButtons').addClass('btn-primary');
+		if(!e.ctrlKey) {
+			$('.zombieBrushButtons').removeClass('btn-success');
+			$('.zombieBrushButtons').addClass('btn-primary');
+		}
 
 		// Select this button
 		var _this = $(this);
@@ -2753,8 +2847,31 @@ $(document).ready(function() {
 
 		// Update map
 		window.setActiveLayerSelectionGroupSub('zombie');
-		activeLayer = window.layerStore.LayerZombies;
-		activeToolColor = _this.attr('zombieId');
+
+		var newZombieBrush = _this.attr('zombieId');
+
+		if(activeLayer == window.layerStore.LayerZombies && e.ctrlKey) {
+			if(typeof(activeToolColor) == 'string') {
+				activeToolColor = [activeToolColor, newZombieBrush];
+			} else {
+				// Are we removing it?
+				var theIndex = activeToolColor.indexOf(newZombieBrush);
+				if(theIndex != -1) {
+					// Already got this color, remove it
+					activeToolColor.splice(theIndex, 1);
+
+					_this.addClass('btn-primary');
+					_this.removeClass('btn-success');
+
+					return;
+				}
+
+				activeToolColor.push(newZombieBrush);
+			}
+		} else {
+			activeLayer = window.layerStore.LayerZombies;
+			activeToolColor = newZombieBrush;
+		}
 	}
 
 	// Grab the container we are going to push into

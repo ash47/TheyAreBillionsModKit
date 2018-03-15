@@ -52,6 +52,12 @@
 	"trRecentMapsEmpty": "无",
 
 	"trTutorialsHeader": "视频教程",
+	"trTutorials_116_1": "圆绘图工具和僵尸随机器.",
+	"trTutorials_115_3": "更新密码提取器和当前状态.",
+	"trTutorials_115_2": "如何恢复ZXSav文件的密码.",
+	"trTutorials_115_1": "开始添加热键.",
+	"trTutorials_114_3": "帮帮我! 我的.ZXCheck文件无效! 创建ZXCheck文件的新方法.",
+	"trTutorials_114_2": "为什么更新很慢?",
 	"trTutorials_114": "可视化僵尸编辑器",
 	"trTutorials_113": "自定义地图教程",
 	"trTutorials_112": "奖励实体",
@@ -117,6 +123,7 @@
 
 	"trBtnBrushSinglePoint": "单点工具",
 	"trBtnBrushLine": "连线工具",
+	"trBtnBrushCircle": "圆工具",
 
 	"trInfoBrushSize": "笔刷大小",
 	"trInfoBrushesLayerSelect": "图层",
@@ -278,6 +285,11 @@
 
 	"trChangeLogHeader": "更新记录",
 
+	"trChangeLogBody_116_01": "添加了圆形画笔工具.",
+	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力。 选择要绘制的僵尸时按住'控制'.",
+
+	"trChangeLogBody_115_01": "开始添加热键. 请参阅 <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> 获取热键列表.",
+
 	"trChangeLogBody_114_01": "增加了一个可视化僵尸编辑器，以便编辑在战争迷雾中的僵尸.",
 
 	"trChangeLogBody_113_01": "增加了选项，通过地图设置菜单删除所有隐藏的僵尸和实体.",
@@ -327,5 +339,9 @@
 	"trChangeLogBody_100_02": "更新的编辑器更加可用（缩放，画笔大小，滚动.",
 	"trChangeLogBody_100_03": "增加了导出地图的功能.",
 	"trChangeLogBody_100_04": "增加了在地图上编辑地形和资源的功能.",
-	"trChangeLogBody_100_05": "增加了加载保存文件的功能."
+	"trChangeLogBody_100_05": "增加了加载保存文件的功能.",
+
+	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!",
+
+	"trCheckInfo": "本网站上的.ZXCheck生成过程在6.0及更高版本中被破坏. 如果你想签署你的地图v6.0和更新，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">这个工具 (v0.3)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
 }

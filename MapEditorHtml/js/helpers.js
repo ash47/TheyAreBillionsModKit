@@ -260,6 +260,11 @@ function renderPixel(mapData, x, y) {
 
 // Updates a pixel
 function updatePixel(mapData, xReverse, y, theNumber, noHistory) {
+	// Is the number well defined, or should we pick a random one?
+	if(typeof(theNumber) != 'string' && typeof(theNumber) != 'number') {
+		theNumber = theNumber[Math.floor(Math.random()*theNumber.length)];
+	}
+
 	var width = mapData.width;
 
 	// do not allow invalid pixels to be updated
@@ -712,8 +717,8 @@ function loadMapProps(commitUpdate) {
 		'ThemeType',
 		'FactorGameDuration',
 		'FactorZombiePopulation',
-		'DifficultyType',
-		'Difficulty',
+		//'DifficultyType',
+		//'Difficulty',
 		'PlayableArea',
 		'FactorPlayableArea'
 	];
@@ -847,11 +852,30 @@ function loadInfo(commitUpdate) {
 
 // Allows loading of extra entities
 function loadLevelExtraEntites(commitUpdate) {
+	var matchStart = '<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">';
+	var matchEnd = /<\/Complex>[\n\r ]*<\/Items>[\n\r ]*<\/Collection>/;
+
+	// Attempt to load using standard mode
+	var useAltMode = true;
+	loadSection(window.activeMap.Data,
+		matchStart,
+		matchEnd,
+		function() {
+			// Standard mode works, don't use alt
+			useAltMode = false;
+		}, false, true
+	);
+
+	// If we should use alt, change it
+	if(useAltMode) {
+		matchEnd = /<\/Collection>/
+	}
+
 	// Find the part we need to edit
 	var res = loadSection(
 		window.activeMap.Data,
-		'<Collection name="ExtraEntities" elementType="DXVision.DXEntity, DXVision">',
-		/<\/Complex>[\n\r ]*<\/Items>[\n\r ]*<\/Collection>/,
+		matchStart,
+		matchEnd,
 		function(theData) {
 			var theStorage;
 			if(commitUpdate) {

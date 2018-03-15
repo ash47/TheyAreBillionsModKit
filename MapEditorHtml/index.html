@@ -17,6 +17,7 @@
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/jqueryTranslator.min.js"></script>
+	<script src="js/jquery.hotkeys.js"></script>
 	<script src="js/tether.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-treeview.min.js"></script>
@@ -35,6 +36,7 @@
 	<script src="js/allents.js"></script>
 	<script src="js/mapRender.js"></script>
 	<script src="js/app.js"></script>
+	<script src="js/shortcuts.js"></script>
 
 	<link rel="stylesheet" href="css/alertify.min.css"/>
 	<link rel="stylesheet" href="css/alertify.bootstrap.min.css"/>
@@ -71,7 +73,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.14
+				</span> | v1.16
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -92,24 +94,14 @@
 				</button>
 			</p>
 
-			<div class="alert alert-info alert-dismissable">
+			<div class="alert alert-success alert-dismissable">
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 					x
 				</button>
 
 				<p>
-					<span data-translate="trMessage1">
-						Make sure you tell the devs of the game that you <b>want modding to be allowed</b>, or we may <b>lose modding (and this level editor) forever!</b>
-					</span>
-				</p>
-				<p>
-					<span data-translate="trMessage2">
-						Go and post on the <a href="https://steamcommunity.com/app/644930/discussions/" target="_blank">Steam Discussion boards</a> &amp; <a href="https://www.reddit.com/r/TheyAreBillions/" target="_blank">SubReddit (/r/TheyAreBillions)</a>, post anywhere else you can think of where you think the devs may see the message.
-					</span>
-				</p>
-				<p>
-					<span data-translate="trMessage3">
-						The game devs are banning modders from the forums and trying to prevent tools such as this map editor from being released to the community.
+					<span data-translate="trCheckInfo">
+						The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use  <a href="https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip" target="_blank">this tool (v0.3)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files.
 					</span>
 				</p>
 			</div>
@@ -173,7 +165,7 @@
 			</div>
 		</div>
 
-		<input type="file" id="file" name="file" accept=".zxsav" />
+		<input type="file" id="file" name="file" accept=".zxsav,.zip" />
 		<button class="btn btn-primary" onclick="$('#file').click();">
 			<span data-translate="trBtnLoadSaveFile">
 				Load Save File
@@ -328,7 +320,55 @@
 				<div class="card-block">
 					<ul>
 						<li>
-							<a href="https://www.youtube.com/watch?v=kNijkhC7FMI">
+							<a href="https://youtu.be/ZbTADrbjeaM" target="_blank">
+								<b>(v1.16)</b>
+								<span data-translate="trTutorials_116_1">
+									Circle drawing tool and zombie randomiser.
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/MD3ERRwato4" target="_blank">
+								<b>(v1.15)</b>
+								<span data-translate="trTutorials_115_3">
+									Password extractor updated, and current status.
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/3Cwq4HUcl7M" target="_blank">
+								<b>(v1.15)</b>
+								<span data-translate="trTutorials_115_2">
+									How to recover the passwords for ZXSav files.
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/8uKfPtZSDeY" target="_blank">
+								<b>(v1.15)</b>
+								<span data-translate="trTutorials_115_1">
+									Started to add hotkeys.
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/jsosS1o0QDE" target="_blank">
+								<b>(v1.14)</b>
+								<span data-translate="trTutorials_114_3">
+									Help! My .ZXCheck file is invalid! The new method to create a ZXCheck file.
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://youtu.be/kp_MP_S9jo0" target="_blank">
+								<b>(v1.14)</b>
+								<span data-translate="trTutorials_114_2">
+									Why are updates so slow?
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=kNijkhC7FMI" target="_blank">
 								<b>(v1.14)</b>
 								<span data-translate="trTutorials_114">
 									Visual Zombie Editor
@@ -336,7 +376,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://www.youtube.com/watch?v=3dSlfWLbtqo">
+							<a href="https://www.youtube.com/watch?v=3dSlfWLbtqo" target="_blank">
 								<b>(v1.13)</b>
 								<span data-translate="trTutorials_113">
 									Custom Map Tutorial
@@ -348,7 +388,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://www.youtube.com/watch?v=acnPJ8WZ60k">
+							<a href="https://www.youtube.com/watch?v=acnPJ8WZ60k" target="_blank">
 								<b>(v1.12)</b>
 								<span data-translate="trTutorials_112">
 									Bonus Entities
@@ -356,7 +396,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://youtu.be/c1qFjezkguQ">
+							<a href="https://youtu.be/c1qFjezkguQ" target="_blank">
 								<b>(v1.11)</b>
 								<span data-translate="trTutorials_111">
 									More entities, Grid Settings, Roads
@@ -364,7 +404,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://youtu.be/HLu4jYhIZLU">
+							<a href="https://youtu.be/HLu4jYhIZLU" target="_blank">
 								<b>(v1.10)</b>
 								<span data-translate="trTutorials_110">
 									Map settings, Raw XML &amp; Delete All of this Entity
@@ -372,7 +412,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://youtu.be/k4tsmJbuqRs">
+							<a href="https://youtu.be/k4tsmJbuqRs" target="_blank">
 								<b>(v1.09)</b>
 								<span data-translate="trTutorials_109">
 									Entity Tool
@@ -380,7 +420,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="https://youtu.be/BW833qNArPY">
+							<a href="https://youtu.be/BW833qNArPY" target="_blank">
 								<b>(v1.08)</b>
 								<span data-translate="trTutorials_108">
 									Feature Toggles
@@ -534,6 +574,38 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.16 -->
+						<li>
+							<b>(v1.16)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_116_01">
+										Added circle brush tool.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_116_02">
+										Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.15 -->
+						<li>
+							<b>(v1.15)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_115_01">
+										Started to add hotkeys. See <a href="https://github.com/ash47/TheyAreBillionsModKit#Hotkeys" target="_blank">GitHub</a> for a list of hotkeys.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.14 -->
 						<li>
 							<b>(v1.14)</b>
@@ -882,13 +954,18 @@
 					Export .zxcheck
 				</span>
 			</button>
+			<button id="btnExportBoth" class="btn btn-primary" disabled="disabled" onclick="window.downloadPack();">
+				<span data-translate="trBtnExportBoth">
+					Export as Pack (Recommended)
+				</span>
+			</button>
 		</div>
 
 		
 	</div>
 
 	<div id="mapDisplayHolder">
-		<div id="mapScaler">
+		<div class="mapScaler">
 			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -896,7 +973,7 @@
 			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		</div>
 
-		<div id="mousePreview" class="scalePixelated"></div>
+		<canvas id="mousePreview" class="scalePixelated"></canvas>
 		<canvas id="gridCanvas" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		<canvas id="mapOutline" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 		<canvas id="helperLayer" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -1111,6 +1188,13 @@
 					<button id="btn_setToolMapPainterLine" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterLine')">
 						<span data-translate="trBtnBrushLine">
 							Line Tool
+						</span>
+					</button>
+				</li>
+				<li>
+					<button id="btn_setToolMapPainterCircle" class="btn btn-primary btnSelectPaintType" onclick="window.setTool('brushType', 'setToolMapPainterCircle')">
+						<span data-translate="trBtnBrushCircle">
+							Circle Tool
 						</span>
 					</button>
 				</li>

@@ -48,6 +48,12 @@
 	"trRecentMapsEmpty": "None",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
+	"trTutorials_116_1": "Circle drawing tool and zombie randomiser.",
+	"trTutorials_115_3": "Password extractor updated, and current status.",
+	"trTutorials_115_2": "How to recover the passwords for ZXSav files.",
+	"trTutorials_115_1": "Started to add hotkeys.",
+	"trTutorials_114_3": "Help! My .ZXCheck file is invalid! The new method to create a ZXCheck file.",
+	"trTutorials_114_2": "Why are updates so slow?",
 	"trTutorials_114": "Visual Zombie Editor",
 	"trTutorials_113": "Custom Map Tutorial",
 	"trTutorials_112": "Bonus Entities",
@@ -113,6 +119,7 @@
 
 	"trBtnBrushSinglePoint": "Single Point Tool",
 	"trBtnBrushLine": "Line Tool",
+	"trBtnBrushCircle": "Circle Tool",
 
 	"trInfoBrushSize": "Brush Size",
 
@@ -127,17 +134,17 @@
 	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
 
-	"trBtnBrushTypeEarth": "Earth",
-	"trBtnBrushTypeWater": "Water",
-	"trBtnBrushTypeGrass": "Grass",
-	"trBtnBrushTypeSky": "Sky",
-	"trBtnBrushTypeAbyse": "Abyse",
-	"trBtnBrushTypeNoObject": "No Object",
-	"trBtnBrushTypeMountain": "Mountain",
-	"trBtnBrushTypeWood": "Wood",
-	"trBtnBrushTypeGold": "Gold",
-	"trBtnBrushTypeStone": "Stone",
-	"trBtnBrushTypeIron": "Iron",
+	"trBtnBrushTypeEarth": "<u>E</u>arth",
+	"trBtnBrushTypeWater": "<u>W</u>ater",
+	"trBtnBrushTypeGrass": "G<u>r</u>ass",
+	"trBtnBrushTypeSky": "S<u>k</u>y",
+	"trBtnBrushTypeAbyse": "<u>A</u>byse",
+	"trBtnBrushTypeNoObject": "<u>N</u>o Object",
+	"trBtnBrushTypeMountain": "<u>M</u>ountain",
+	"trBtnBrushTypeWood": "W<u>o</u>od",
+	"trBtnBrushTypeGold": "<u>G</u>old",
+	"trBtnBrushTypeStone": "S<u>t</u>one",
+	"trBtnBrushTypeIron": "<u>I</u>ron",
 
 	"trBtnBrushTypeFoWAdd": "Add FoW",
 	"trBtnBrushTypeFoWRemove": "Remove FoW",
@@ -267,6 +274,11 @@
 
 	"trChangeLogHeader": "Change Log",
 
+	"trChangeLogBody_116_01": "Added circle brush tool.",
+	"trChangeLogBody_116_02": "Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.",
+
+	"trChangeLogBody_115_01": "Started to add hotkeys. See <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\" target=\"_blank\">GitHub</a> for a list of hotkeys.",
+
 	"trChangeLogBody_114_01": "Added a visual zombie editor so that zombies within the fog of war can be edited.",
 
 	"trChangeLogBody_113_01": "Added options to delete all hidden zombies and entities via map settings menu.",
@@ -316,5 +328,9 @@
 	"trChangeLogBody_100_02": "Updated editor to be more useable (zooming, brush size, scrolling).",
 	"trChangeLogBody_100_03": "Added the ability to export the map.",
 	"trChangeLogBody_100_04": "Added the ability to edit the terrain and resources on a map.",
-	"trChangeLogBody_100_05": "Added the ability to load save files."
+	"trChangeLogBody_100_05": "Added the ability to load save files.",
+
+	"trDiscount1": "For a 10% discount on They Are Billions and other games, use <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">this link</a>. It won't be valid for long!",
+
+	"trCheckInfo": "The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">this tool (v0.3)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files."
 }
