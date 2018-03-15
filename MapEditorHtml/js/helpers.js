@@ -446,14 +446,25 @@ function getEntityOffsets(ent) {
 }
 
 function addVisualEnt(ent) {
-	var pos = ent.Position;
-	if(pos == null) return;
+	if(ent.Position == null) return;
 
-	var width = window.layerStore.LayerTerrain.width;
+	// Update the posinfo
+	updatePosInfo(ent);
 
-	var posParts = pos.split(';');
-	var posX = (width - parseInt(posParts[1]) - 1);
-	var posY = parseInt(posParts[0]);
+	var __posInfo = ent.__posInfo;
+
+	var posX = __posInfo.posX;
+	var posY = __posInfo.posY;
+
+	var offsetWidth = __posInfo.width;
+	var offsetHeight = __posInfo.height;
+
+	var offsetX = __posInfo.offsetX;
+	var offsetY = __posInfo.offsetY;
+
+	// Update position to reflect the actual drawing
+	posX = posX * window.zoomFactor;
+	posY = posY * window.zoomFactor;
 
 	// Remove it if it already exist
 	if(ent.lastContainer != null) {
@@ -475,23 +486,6 @@ function addVisualEnt(ent) {
 	var cssColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
 	var cssColor2 = 'rgb(' + (255-red) + ',' + (255-green) + ',' + (255-blue) + ')';
 
-	// Grab offsets and make adjustments
-	var offsets = getEntityOffsets(ent);
-	posX += offsets.offsetX;
-	posY += offsets.offsetY;
-
-	// Store vars onto it
-	ent.__posInfo = {
-		posX: posX,
-		posY: posY,
-		width: offsets.width,
-		height: offsets.height
-	};
-
-	// Update position to reflect the actual drawing
-	posX = posX * window.zoomFactor;
-	posY = posY * window.zoomFactor;
-
 	ent.lastContainer = $('<div>', {
 		class: 'mapEntity',
 		mousedown: function() {
@@ -503,8 +497,8 @@ function addVisualEnt(ent) {
 			}
 		}
 	})
-		.css('width', (offsets.width * window.zoomFactor) + 'px')
-		.css('height', (offsets.height * window.zoomFactor) + 'px')
+		.css('width', (offsetWidth * window.zoomFactor) + 'px')
+		.css('height', (offsetHeight * window.zoomFactor) + 'px')
 		.css('background-color', cssColor)
 		.css('border', '1px solid ' + cssColor2)
 		.css('position', 'absolute')
@@ -540,13 +534,13 @@ function addVisualEnt(ent) {
 			var xNice = ui.position.left;
 			var yNice = ui.position.top;
 
-			xNice -= offsets.offsetX;
-			yNice -= offsets.offsetY;
+			xNice -= offsetX;
+			yNice -= offsetY;
 
 			xNice = xNice / window.zoomFactor;
 			yNice = yNice / window.zoomFactor;
 
-			var x = (width - xNice - 1).toFixed(0);
+			var x = (window.layerStore.LayerTerrain.width - xNice - 1).toFixed(0);
 			var y = yNice.toFixed(0);
 
 			var mapCoords = y + ';' + x;
@@ -555,8 +549,39 @@ function addVisualEnt(ent) {
 
 			// When props are changed
 			window.onPropsChanged(ent);
+
+			// Update the posinfo
+			updatePosInfo(ent);
 		}
 	});
+}
+
+function updatePosInfo(ent) {
+	if(ent == null) return;
+
+	var pos = ent.Position;
+	if(pos == null) return;
+
+	var width = window.layerStore.LayerTerrain.width;
+
+	var posParts = pos.split(';');
+	var posX = (width - parseInt(posParts[1]) - 1);
+	var posY = parseInt(posParts[0]);
+
+	// Grab offsets and make adjustments
+	var offsets = getEntityOffsets(ent);
+	posX += offsets.offsetX;
+	posY += offsets.offsetY;
+
+	// Store vars onto it
+	ent.__posInfo = {
+		posX: posX,
+		posY: posY,
+		width: offsets.width,
+		height: offsets.height,
+		offsetX: offsets.offsetX,
+		offsetY: offsets.offsetY
+	};
 }
 
 // Generates a checksum for a string
@@ -1215,6 +1240,9 @@ function loadLevelEvents(commitUpdate) {
 		window.activeMap.Data,
 		'<Collection name="LevelEvents" elementType="ZX.GameSystems.ZXLevelEvent, TheyAreBillions">',
 		/<\/Properties>[\n\r ]*<\/Complex>[\n\r ]*<\/Items>[\n\r ]*<\/Collection>/, function(theData) {
+			// Used to change the name of events
+			var _editorName = '_editorName';
+
 			if(commitUpdate) {
 				var events = window.layerStore.events || [];
 
@@ -1240,6 +1268,12 @@ function loadLevelEvents(commitUpdate) {
 						var thisXML = thisEntity.rawXML;
 
 						var newEntityId = ++totalEvents;
+
+						// Do we have the editor property?
+						if(thisXML.indexOf(_editorName) == -1) {
+							var posSearchFor = '<Simple name="ID" value="';
+							thisXML = thisXML.replace(posSearchFor, '<Simple name="' + _editorName + '" value="unnamed" />\n' + posSearchFor);
+						}
 
 						// Normal properties
 						for(propertyName in thisEntity) {
@@ -1323,6 +1357,11 @@ function loadLevelEvents(commitUpdate) {
 
 					// Add a reference to the store
 					thisEntityStore.__theStore = allEvents;
+
+					// Do we have the editor generated property?
+					if(thisEntityStore[_editorName] == null) {
+						thisEntityStore[_editorName] = 'Event ' + (thisEntityStore.ID || 'unknown');
+					}
 				},
 				true, true
 			);

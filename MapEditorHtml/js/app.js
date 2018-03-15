@@ -1607,8 +1607,11 @@ $(document).ready(function() {
 	}
 
 	var entityExpandedPath = {};
-	function generateEntityMenu(entityText, entities) {
+	function generateEntityMenu(entityText, entities, args) {
 		if(entities == null) return;
+
+		// Ensure we have args
+		args = args || {};
 
 		// Entity Expansion remembering
 		entityExpandedPath[entityText] = entityExpandedPath[entityText] || {};
@@ -1659,6 +1662,14 @@ $(document).ready(function() {
 				}
 
 				var displayText = myEntity.ID;
+
+				var getNameFrom = args.getNameFrom;
+				if(getNameFrom) {
+					var myText = myEntity[getNameFrom];
+					if(myText) {
+						displayText = myText;
+					}
+				}
 
 				thisEntityList.push({
 					text: displayText,
@@ -1755,6 +1766,8 @@ $(document).ready(function() {
 
 		var treeEnts = generateEntityMenu('Events', {
 			addDirect: window.layerStore.events
+		}, {
+			getNameFrom: '_editorName'
 		});
 		if(treeEnts != null) theNodeTree.push(treeEnts);
 
@@ -1807,7 +1820,7 @@ $(document).ready(function() {
 					}
 
 					if(node.__sort == 'Events') {
-						window.viewEntityProps(window.layerStore.events[ref.entryNumber]);
+						window.viewEntityProps(window.layerStore.events[ref.entryNumber], null, node);
 					}
 					
 					if(node.__sort == 'MapProps') {
@@ -2050,6 +2063,10 @@ $(document).ready(function() {
 
 			// Copy keys
 			newEnt[key] = toClone[key];
+
+			if(key == '_editorName') {
+				newEnt[key] = newEnt[key] + ' (clone)';
+			}
 		}
 
 		// Copy the rawXML
@@ -2276,7 +2293,7 @@ $(document).ready(function() {
 		alertify.closeAll();
 	};
 
-	window.viewEntityProps = function(props, doNotShow) {
+	window.viewEntityProps = function(props, doNotShow, nodeToEdit) {
 		// Remove that the old entity is active
 		if(window.viewEntityActive != null) {
 			window.viewEntityActive.isActive = false;
@@ -2325,7 +2342,18 @@ $(document).ready(function() {
 		}
 
 		// Sort a-z
-		toAdd.sort();
+		toAdd.sort(function(a, b) {
+			if(a[0] == '_' && b[0] != '_') return -1;
+			if(b[0] == '_' && a[0] != '_') return 1;
+
+			if(a < b) {
+				return -1;
+			} else if(a > b) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
 
 		// Add tables
 		for(var i=0; i<toAdd.length; ++i) {
@@ -2356,6 +2384,13 @@ $(document).ready(function() {
 				// Update the value
 				props[propertyName] = '' + newValue;
 
+				// Are we editing the name field?
+				if(nodeToEdit != null && propertyName == '_editorName') {
+					// Update the text
+					$('#entityTree').treeview('getNode', [nodeToEdit.nodeId]).text = newValue;
+					$('#entityTree').treeview('selectNode', [nodeToEdit.nodeId]);
+				}
+
 				// Notify
 				alertify.success(window.getTranslation(
 					'trSuccessEntityPropertyUpdated',
@@ -2367,6 +2402,13 @@ $(document).ready(function() {
 
 				// Mark dirty
 				window.setMapExportUpToDate(false);
+
+				// Was this the position
+				if(propertyName == 'Position') {
+					if(props.lastContainer != null) {
+						addVisualEnt(props);
+					}
+				}
 			});
 	}
 

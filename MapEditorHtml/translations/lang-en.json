@@ -40,8 +40,8 @@
 
 	"trTemplateMapsHeader": "Template Maps",
 	"trTemplate256": "256x256 Template",
-	"trTemplate384": "384x384 Template",
-	"trTemplate512": "512x512 Template",
+	"trTemplate384": "384x384 Template (Not Recommended)",
+	"trTemplate512": "512x512 Template (Not Recommended)",
 
 	"trRecentMapsHeader": "Recently Edited Maps",
 	"trRecentMapsLimit": "<b>Note:</b> There is a limit of 50MB.",
