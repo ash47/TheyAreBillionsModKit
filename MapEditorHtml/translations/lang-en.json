@@ -47,6 +47,8 @@
 	"trRecentMapsLimit": "<b>Note:</b> There is a limit of 50MB.",
 	"trRecentMapsEmpty": "None",
 
+	"trTutorials_fanMap01": "Fan Created Map Trailer",
+
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
 	"trTutorials_116_1": "Circle drawing tool and zombie randomiser.",
 	"trTutorials_115_3": "Password extractor updated, and current status.",
