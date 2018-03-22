@@ -28,3 +28,4 @@ MapEditorHtml/tools/allents.js
 ZXCheckGenerator/.vs/*
 ZXCheckGenerator/bin/*
 ZXCheckGenerator/obj/*
+ZXCheckGenerator/packages/*

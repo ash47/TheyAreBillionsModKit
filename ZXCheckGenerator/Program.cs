@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -156,13 +157,13 @@ namespace ZXCheckGenerator
                                         foreach (MethodInfo possibleHelper in possibleType.GetMethods(BindingFlags.NonPublic | BindingFlags.Static))
                                         {
                                             ParameterInfo[] helperParams = possibleHelper.GetParameters();
-                                            
+
                                             if (helperParams.Length != 3) continue;
                                             if (helperParams[0].ParameterType.FullName != "System.String") continue;
                                             if (helperParams[1].ParameterType.FullName != "System.Int32") continue;
                                             if (helperParams[2].ParameterType.FullName != "System.Boolean") continue;
 
-                                            if(possibleHelper.ReturnType.FullName != "System.Void") continue;
+                                            if (possibleHelper.ReturnType.FullName != "System.Void") continue;
 
                                             possibleHelper.Invoke(null, new object[] { pathToSaveFile, flag, true });
 
@@ -174,6 +175,53 @@ namespace ZXCheckGenerator
 
                                             Console.WriteLine("Found password = " + thePassword);
                                             System.IO.File.AppendAllText("_passwords.txt", "Password = " + thePassword + Environment.NewLine);
+                                            
+                                            // Get a working directory
+                                            string myDir = GetTemporaryDirectory();
+
+                                            using (ZipFile zip = ZipFile.Read(pathToSaveFile))
+                                            {
+                                                // Add the password
+                                                zip.Password = thePassword;
+
+                                                // Extract all
+                                                try
+                                                {
+                                                    zip.ExtractAll(myDir);
+
+                                                    using (ZipFile newZip = new ZipFile())
+                                                    {
+                                                        // Add the contents of the directory to my file
+                                                        newZip.AddDirectory(myDir);
+
+                                                        // Write it to disk
+                                                        string saveFolder = Path.GetDirectoryName(pathToSaveFile);
+                                                        string saveBaseName = Path.GetFileNameWithoutExtension(pathToSaveFile);
+
+                                                        // Set the filename
+                                                        string newRawFileName = saveBaseName + "_decrpyted.zxsav";
+                                                        string newFileName = Path.Combine(saveFolder, newRawFileName); ;
+                                                        newZip.Name = saveFolder + @"\" + saveBaseName + "_decrpyted.zxsav";
+
+                                                        // Save it
+                                                        newZip.Save();
+
+                                                        // Sign it
+                                                        generateZXCheck(newFileName);
+
+                                                        // Cleanup the temp directory
+                                                        DeleteDirectory(myDir);
+
+                                                        // Tell the user that we decrypted it
+                                                        Console.WriteLine("Successfully decrypted save file! New file called '" + newRawFileName + "'");
+                                                    }
+                                                }
+                                                catch(Exception e)
+                                                {
+                                                    Console.WriteLine("Failed to extract zxsav :/");
+                                                    Console.WriteLine(e.Message);
+                                                }
+                                            }
                                         }
 
                                     }
@@ -192,7 +240,35 @@ namespace ZXCheckGenerator
                 }
             }
         }
-        
+
+        // Deletes a directory
+        public static void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(target_dir, false);
+        }
+
+        // Returns a random temp directory to work with
+        public static string GetTemporaryDirectory()
+        {
+            string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempDirectory);
+            return tempDirectory;
+        }
+
         // Called when the program is launched
         static void Main(string[] args)
         {
