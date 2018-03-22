@@ -346,5 +346,5 @@
 
 	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!",
 
-	"trCheckInfo": "本网站生成的.ZXCheck在6.0及更高版本的游戏中无法使用. 如果你想签署v6.0及以上版本地图，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.4/ZXCheckGenerator_v0.4.zip\" target=\"_blank\">这个工具 (v0.3)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
+	"trCheckInfo": "本网站生成的.ZXCheck在6.0及更高版本的游戏中无法使用. 如果你想签署v6.0及以上版本地图，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.4/ZXCheckGenerator_v0.4.zip\" target=\"_blank\">这个工具 (v0.4)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
 }
