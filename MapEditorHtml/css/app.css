@@ -350,3 +350,7 @@
 #gridConfiguration {
 	padding: 8px;
 }
+
+.alertify-notifier {
+	pointer-events:none;
+}

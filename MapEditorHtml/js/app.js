@@ -2946,4 +2946,7 @@ $(document).ready(function() {
 	window.onbeforeunload = function() {
 	    return true;
 	};
+
+	// Move the alerts to bottom left
+	alertify.set('notifier','position', 'top-right');
 });
