@@ -105,7 +105,7 @@ namespace ZXCheckGenerator
             Console.WriteLine("Failed to generate .zxcheck :(");
         }
 
-        public static void extractPassword(string pathToSaveFile)
+        public static void extractPassword(string pathToSaveFile, bool addPassword=false)
         {
             System.IO.File.AppendAllText("_passwords.txt", pathToSaveFile + Environment.NewLine);
 
@@ -188,39 +188,102 @@ namespace ZXCheckGenerator
                                                 try
                                                 {
                                                     zip.ExtractAll(myDir);
-
-                                                    using (ZipFile newZip = new ZipFile())
-                                                    {
-                                                        // Add the contents of the directory to my file
-                                                        newZip.AddDirectory(myDir);
-
-                                                        // Write it to disk
-                                                        string saveFolder = Path.GetDirectoryName(pathToSaveFile);
-                                                        string saveBaseName = Path.GetFileNameWithoutExtension(pathToSaveFile);
-
-                                                        // Set the filename
-                                                        string newRawFileName = saveBaseName + "_decrpyted.zxsav";
-                                                        string newFileName = Path.Combine(saveFolder, newRawFileName); ;
-                                                        newZip.Name = saveFolder + @"\" + saveBaseName + "_decrpyted.zxsav";
-
-                                                        // Save it
-                                                        newZip.Save();
-
-                                                        // Sign it
-                                                        generateZXCheck(newFileName);
-
-                                                        // Cleanup the temp directory
-                                                        DeleteDirectory(myDir);
-
-                                                        // Tell the user that we decrypted it
-                                                        Console.WriteLine("Successfully decrypted save file! New file called '" + newRawFileName + "'");
-                                                    }
                                                 }
                                                 catch(Exception e)
                                                 {
                                                     Console.WriteLine("Failed to extract zxsav :/");
                                                     Console.WriteLine(e.Message);
+                                                    return;
                                                 }
+                                            }
+
+                                            // Craete a decrypted one
+                                            using (ZipFile newZip = new ZipFile())
+                                            {
+                                                //newZip.Password = thePassword;
+
+                                                // Add the contents of the directory to my file
+                                                newZip.AddDirectory(myDir);
+
+                                                // Write it to disk
+                                                string saveFolder = Path.GetDirectoryName(pathToSaveFile);
+                                                string saveBaseName = Path.GetFileNameWithoutExtension(pathToSaveFile);
+
+                                                // Set the filename
+                                                string newRawFileName = saveBaseName + "_decrpyted.zxsav";
+                                                string newFileNameBackup = Path.Combine(saveFolder, newRawFileName); ;
+                                                newZip.Name = saveFolder + @"\" + saveBaseName + "_decrpyted.zxsav";
+
+                                                // Save it
+                                                newZip.Save();
+
+                                                // Sign it
+                                                generateZXCheck(newFileNameBackup);
+                                                
+                                                // Tell the user that we decrypted it
+                                                Console.WriteLine("Successfully decrypted save file! New file called '" + newRawFileName + "'");
+                                            }
+
+                                            // Figure out a filename that isn't taken
+                                            int i = 1;
+                                            string newFileName = null;
+                                            while(true)
+                                            {
+                                                newFileName = pathToSaveFile + ".bak" + i;
+
+                                                if(File.Exists(newFileName))
+                                                {
+                                                    ++i;
+                                                }
+                                                else
+                                                {
+                                                    break;
+                                                }
+                                            }
+
+                                            // Move the old zip
+                                            try
+                                            {
+                                                File.Move(pathToSaveFile, newFileName);
+                                            }
+                                            catch
+                                            {
+                                                // Cleanup the temp directory
+                                                DeleteDirectory(myDir);
+
+                                                Console.WriteLine("Unable to backup zxsav -- Is it open? " + pathToSaveFile);
+                                                return;
+                                            }
+
+                                            // Add a password to teh original
+                                            using (ZipFile newZip = new ZipFile())
+                                            {
+                                                // Add a password
+                                                newZip.Password = thePassword;
+
+                                                // Add the contents of the directory to my file
+                                                newZip.AddDirectory(myDir);
+
+                                                // Write it to disk
+                                                string saveFolder = Path.GetDirectoryName(pathToSaveFile);
+                                                string saveBaseName = Path.GetFileNameWithoutExtension(pathToSaveFile);
+
+                                                // Set the filename
+                                                string newRawFileName = saveBaseName + ".zxsav";
+                                                string newFileNameBackup = Path.Combine(saveFolder, newRawFileName); ;
+                                                newZip.Name = saveFolder + @"\" + saveBaseName + ".zxsav";
+
+                                                // Save it
+                                                newZip.Save();
+
+                                                // Sign it
+                                                generateZXCheck(newFileNameBackup);
+
+                                                // Cleanup the temp directory
+                                                DeleteDirectory(myDir);
+
+                                                // Tell the user that we decrypted it
+                                                Console.WriteLine("Added a password successfully to '" + newRawFileName + "'");
                                             }
                                         }
 
