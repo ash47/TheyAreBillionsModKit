@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXCheckGenerator", "ZXCheckGenerator.csproj", "{02818D10-176E-45DB-BF1F-B0E10B25B708}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXCheckGenerator_SignForGame", "ZXCheckGenerator_SignForGame.csproj", "{02818D10-176E-45DB-BF1F-B0E10B25B708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXCheckLib", "ZXCheckLib\ZXCheckLib.csproj", "{B5BACBA6-75FC-4F16-9546-9281C930CA84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXCheckGenerator_DecryptZXSav", "ZXCheckGenerator_DecryptZXSav\ZXCheckGenerator_DecryptZXSav.csproj", "{958F5B24-B717-46C8-B914-76110E8E395F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,22 @@ Global
 		{02818D10-176E-45DB-BF1F-B0E10B25B708}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02818D10-176E-45DB-BF1F-B0E10B25B708}.Release|x64.ActiveCfg = Release|x64
 		{02818D10-176E-45DB-BF1F-B0E10B25B708}.Release|x64.Build.0 = Release|x64
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Debug|x64.Build.0 = Debug|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Release|x64.ActiveCfg = Release|Any CPU
+		{B5BACBA6-75FC-4F16-9546-9281C930CA84}.Release|x64.Build.0 = Release|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Debug|x64.Build.0 = Debug|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Release|x64.ActiveCfg = Release|Any CPU
+		{958F5B24-B717-46C8-B914-76110E8E395F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
