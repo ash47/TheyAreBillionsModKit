@@ -92,6 +92,7 @@
 	"trBtnExportZXCheck": "导出 .zxcheck",
 	"trBtnExportBoth": "导出压缩包(推荐)",
 	"trBtnExportMap": "导出地图",
+	"trBtnDownload": "下载签名工具",
 
 	"trSettingsHeaderMapSettings": "地图设置:",
 	"trSettingsHeaderMapExport": "导出地图:",

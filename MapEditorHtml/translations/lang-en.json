@@ -87,6 +87,7 @@
 	"trBtnExportZXSav": "Export .zxsav",
 	"trBtnExportZXCheck": "Export .zxcheck",
 	"trBtnExportMap": "Export Map",
+	"trBtnDownload": "Download Signing Tool",
 
 	"trSettingsHeaderMapSettings": "Map Settings:",
 	"trSettingsHeaderMapExport": "Map Export:",
