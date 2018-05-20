@@ -409,6 +409,12 @@ $(document).ready(function() {
 		);
 	};
 
+	window.showLoadingHelp = function() {
+		alertify.mapSettingsDialog(
+			$('#mapLoadingHelp')[0]
+		);
+	};
+
 	// Shows the bonus entity editor
 	window.editBonusEntities = function() {
 		alertify.editBonusEntitiesDialog(
@@ -559,7 +565,7 @@ $(document).ready(function() {
 	};
 
 	// Saving the map
-	window.saveMap = function() {
+	window.saveMap = function(callback) {
 		// Set that we are saving
 		setIsSaving(true);
 
@@ -708,6 +714,11 @@ $(document).ready(function() {
 
 						// Set that we are no longer saving
 						setIsSaving(false);
+
+						// Is there a callback?
+						if(callback != null) {
+							callback();
+						}
 					});
 
 					// You can now export the map
@@ -743,6 +754,9 @@ $(document).ready(function() {
 	var _isUpToDate = null;
 	var _isChecksumUpToDate = null;
 	window.setMapExportUpToDate = function(upToDate, isChecksum) {
+		// This is no longer used, we changed the system
+		if(1 == 1) return;
+
 		if(!isChecksum && _isUpToDate == upToDate) return;
 		if(isChecksum && _isChecksumUpToDate == upToDate) return;
 		if(!isChecksum) _isUpToDate = upToDate;
@@ -782,8 +796,11 @@ $(document).ready(function() {
 
 	// Downloading the zxsav
 	window.downloadZXSave = function() {
-		// Do the save
-		saveAs(window.activeMap.downloadableZip, window.layerStore.MapProps._mapName + '.zxsav');
+		// Save the map
+		window.saveMap(function() {
+			// Try to download the map
+			saveAs(window.activeMap.downloadableZip, window.layerStore.MapProps._mapName + '.zxsav');
+		});
 	};
 
 	// Download the checksum
@@ -2691,6 +2708,9 @@ $(document).ready(function() {
 				}
 			));
         	setIsLoading(false);
+
+        	// Teach them how to load a zip
+        	window.showLoadingHelp();
         });
     }
 

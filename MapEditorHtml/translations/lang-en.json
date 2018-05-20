@@ -86,6 +86,20 @@
 	"trBtnGenerateSaveFile": "Save Changes",
 	"trBtnExportZXSav": "Export .zxsav",
 	"trBtnExportZXCheck": "Export .zxcheck",
+	"trBtnExportMap": "Export Map",
+
+	"trSettingsHeaderMapSettings": "Map Settings:",
+	"trSettingsHeaderMapExport": "Map Export:",
+	"trSettingsHeaderMapTools": "Tools:",
+
+	"trExportHelpZXSavStep1": "<b>Step 1:</b> Export .ZXSav file, and save it to:",
+	"trExportHelpZXSavStep2": "<b>Step 2:</b> Download signing tool",
+	"trExportHelpZXSavStep2a": "Extract the signing tool into the same directory as your copy of \"They Are Billions\". This is usually:",
+	"trExportHelpZXSavStep3": "<b>Step 3:</b> Drag the .zxsav file into the signing tool. They will produce a \".zxcheck\" file and encrypt the save file so that it can be loaded into the game.",
+
+	"trSettingsHeaderMapLoadHelpHeader": "How to load a map:",
+	"trSettingsHeaderMapLoadHelpStep1": "<b>Step 1:</b> Download signing tool",
+	"trSettingsHeaderMapLoadHelpStep2": "<b>Step 2:</b> Drag the .zxsav file into the signing tool. They will produce a new file that ends with \"_decrypted\", which can be loaded into the level editor.",
 
 	"trBtnEntityClone": "Clone Entity",
 	"trBtnEntityDelete": "Delete Entity",
@@ -174,6 +188,7 @@
 
 	"trSettingsEditorMapName": "Map Name",
 	"trSettingsEditorMapTheme": "Map Theme",
+	"trSettingsEditorZombieLayerMultiplier": "Zombie Layer Multiplier (whole numbers only)",
 
 	"trThemeTheDarkMoorland": "The Dark Moorland",
 	"trThemeThePeacefulLowlands": "The Peaceful Lowlands",

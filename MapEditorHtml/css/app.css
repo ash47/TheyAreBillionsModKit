@@ -343,6 +343,10 @@
 	padding: 8px;
 }
 
+#mapLoadingHelp {
+	padding: 8px;
+}
+
 #layerSelectionGroupSub {
 	width: 140px;
 }

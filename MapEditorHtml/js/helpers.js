@@ -1493,6 +1493,18 @@ function generateFastEntitiesMap(reverse) {
 
 		var theData = zombieLayer.data;
 
+		var zombieMult = 1;
+
+		try {
+			zombieMult = parseInt($('#inputZombieMultiplier').val());
+
+			if(typeof(zombieMult) != 'number' || isNaN(zombieMult) || zombieMult < 1) {
+				zombieMult = 1;
+			}
+		} catch(e) {
+			zombieMult = 1;
+		}
+
 		for(var yy=0; yy<height; ++yy) {
 			for(var xx=0; xx<width; ++xx) {
 				var mapPos = width * yy + xx;
@@ -1506,9 +1518,11 @@ function generateFastEntitiesMap(reverse) {
 				fastEnts[entType] = fastEnts[entType] || [];
 
 				// Add this entity
-				fastEnts[entType].push({
-					Position: '' + yy + ';' + xx
-				});
+				for(var i=0; i<zombieMult; ++i) {
+					fastEnts[entType].push({
+						Position: '' + yy + ';' + xx
+					});
+				}
 			}
 		}
 

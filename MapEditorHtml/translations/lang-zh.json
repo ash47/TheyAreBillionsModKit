@@ -91,6 +91,22 @@
 	"trBtnExportZXSav": "导出 .zxsav",
 	"trBtnExportZXCheck": "导出 .zxcheck",
 	"trBtnExportBoth": "导出压缩包(推荐)",
+	"trBtnExportMap": "导出地图",
+
+	"trSettingsHeaderMapSettings": "地图设置:",
+	"trSettingsHeaderMapExport": "导出地图:",
+	"trSettingsHeaderMapTools": "工具:",
+
+	"trExportHelpZXSavStep1": "<b>步骤1:</b> 导出.ZXSav文件并将其保存到:",
+	"trExportHelpZXSavStep2": "<b>第2步:</b> 下载签名工具",
+	"trExportHelpZXSavStep2a": "将签名工具解压缩到与“他们是十亿”副本相同的目录中。 这通常是:",
+	"trExportHelpZXSavStep3": "<b>第3步:</b> 将.zxsav文件拖放到签名工具中. 他们将生成一个\"。zxcheck \"文件并加密保存文件，以便将其加载到游戏中.",
+
+	"trBtnDownload": "下载",
+
+	"trSettingsHeaderMapLoadHelpHeader": "如何加载地图:",
+	"trSettingsHeaderMapLoadHelpStep1": "<b>步骤1:</b> 下载签名工具",
+	"trSettingsHeaderMapLoadHelpStep2": "<b>第2步:</b> 将.zxsav文件拖放到签名工具中。 他们将产生一个以\"_ decrypted \"结尾的新文件，该文件可以加载到关卡编辑器中。",
 
 	"trBtnEntityClone": "复制实体",
 	"trBtnEntityDelete": "删除实体",
@@ -187,6 +203,7 @@
 
 	"trSettingsEditorMapName": "地图名称",
 	"trSettingsEditorMapTheme": "地图主题",
+	"trSettingsEditorZombieLayerMultiplier": "僵尸层乘数 (仅限整数)",
 
 	"trThemeTheDarkMoorland": "黑暗的荒野",
 	"trThemeThePeacefulLowlands": "和平的低地",
