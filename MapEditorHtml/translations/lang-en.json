@@ -291,6 +291,9 @@
 
 	"trChangeLogHeader": "Change Log",
 
+	"trChangeLogBody_117_01": "Added screens to explain how to save and load maps easily.",
+	"trChangeLogBody_117_02": "Updated the zombie randomisation tool, holding control and clicking will change the number of each zombie category that appears, holding shift will decrease the number of that zombie type.",
+
 	"trChangeLogBody_116_01": "Added circle brush tool.",
 	"trChangeLogBody_116_02": "Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.",
 

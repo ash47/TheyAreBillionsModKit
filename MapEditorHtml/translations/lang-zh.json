@@ -305,6 +305,9 @@
 
 	"trChangeLogHeader": "更新记录",
 
+	"trChangeLogBody_117_01": "添加屏幕来解释如何轻松保存和加载地图.",
+	"trChangeLogBody_117_02": "更新僵尸随机工具，按住控制并点击将更改出现的每个僵尸类别的数量，按住Shift键将减少僵尸类型的数量.",
+
 	"trChangeLogBody_116_01": "添加了圆形画笔工具.",
 	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力.选择要绘制的僵尸时按住'CTRL'选择多个僵尸种类.",
 
