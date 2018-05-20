@@ -354,3 +354,12 @@
 .alertify-notifier {
 	pointer-events:none;
 }
+
+.zombieBrushButtonsText {
+	display: none;
+	margin-right: 8px;
+}
+
+.btn-success .zombieBrushButtonsText {
+	display: inline-block;
+}

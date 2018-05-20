@@ -2896,24 +2896,46 @@ $(document).ready(function() {
 			if(typeof(activeToolColor) == 'string') {
 				activeToolColor = [activeToolColor, newZombieBrush];
 			} else {
-				// Are we removing it?
-				var theIndex = activeToolColor.indexOf(newZombieBrush);
-				if(theIndex != -1) {
-					// Already got this color, remove it
-					activeToolColor.splice(theIndex, 1);
-
-					_this.addClass('btn-primary');
-					_this.removeClass('btn-success');
-
-					return;
+				// control + shift removes
+				if(e.shiftKey) {
+					// Are we removing it?
+					var theIndex = activeToolColor.indexOf(newZombieBrush);
+					if(theIndex != -1) {
+						// Already got this color, remove it
+						activeToolColor.splice(theIndex, 1);
+					}
+				} else {
+					activeToolColor.push(newZombieBrush);
 				}
-
-				activeToolColor.push(newZombieBrush);
 			}
 		} else {
 			activeLayer = window.layerStore.LayerZombies;
 			activeToolColor = newZombieBrush;
 		}
+
+		// Get the count
+		var relativePower = 0;
+
+		if(typeof(activeToolColor) == 'string') {
+			if(activeToolColor == newZombieBrush) {
+				relativePower = 1;
+			}
+		} else {
+			for(var i=0; i<activeToolColor.length; ++i) {
+				if(activeToolColor[i] == newZombieBrush) {
+					++relativePower;
+				}
+			}
+		}
+
+		// How low did we go?
+		if(relativePower <= 0) {
+			_this.addClass('btn-primary');
+			_this.removeClass('btn-success');
+		}
+
+		// Adjust the power
+		$('.zombieBrushButtonsText', _this).text('x' + relativePower);
 	}
 
 	// Grab the container we are going to push into
@@ -2939,7 +2961,10 @@ $(document).ready(function() {
 		}).appendTo(
 			$('<li>')
 				.appendTo(zombieBrushContainer)
-		);
+		).prepend($('<span>', {
+			class: 'zombieBrushButtonsText',
+			text: ''
+		}));
 	}
 
 	// Prevent leaving
