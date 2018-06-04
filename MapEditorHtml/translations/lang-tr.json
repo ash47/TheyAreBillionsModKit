@@ -246,7 +246,7 @@
 
 	"trErrorUnknownLengthForLayer": "Ara katman için bilinmeyen uzunluk - {{id}}",
 	"trErrorSaveMapLocal": "HARİTAYI BÖLGESEL OLARAK KAYDETME BAŞARISIZ!",
-	"trErrorInvalidSaveFile": "Bu geçerli bir \"They Are Billions\" kayıt dosyası olarak görünmüyor. \"Data\" veya \ "Info\" eksik.",
+	"trErrorInvalidSaveFile": "Bu geçerli bir \"They Are Billions\" kayıt dosyası olarak görünmüyor. \"Data\" veya \"Info\" eksik.",
 	"trErrorLoadingZip": "Zip dosyası yüklenirken hata oluştu! {{fileName}} - {{errorMessage}}",
 	"trErrorMultipleFilesSelected": "Lütfen SADECE BİR TANE \"They Are Billions\" kayıt dosyasını seçin.",
 	"trErrorUndoNothingLeft": "Geri almak için hiçbir şey kalmadı.",
