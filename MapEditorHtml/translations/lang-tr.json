@@ -1,0 +1,358 @@
+{
+	"trTitle": "They Are Billions | Harita Düzenleyicisi",
+
+	"trHeader": "They Are Billions Kayıt Düzenleyicisi",
+	"trHeaderSub": "Daha fazla orijinal modlar, haritalar ve oyun içeriği için <a href=\"https://www.youtube.com/AzzaFortysix/videos\" target=\"_blank\">YouTube'da AzzaFortysix Kanalı</a>na abone olabilirsiniz .",
+
+	"trLanguageTurkish": "Türkçe (Turkish)",
+	"trLanguageEnglish": "İngilizce (English)",
+	"trLanguageChinese": "Çince (Chinese)",
+
+	"trMessage1": "Oyunun geliştiricilerine, <b>modlanmasına izin vermek istediğinizi</b> belirttiğinizden emin olun, aksi takdirde <b>modlamayı (ve bu seviye düzenleyicisini) sonsuza kadar kaybedebiliriz!</b>",
+	"trMessage2": "<a href=\"https://steamcommunity.com/app/644930/discussions/\" target=\"_blank\">Steam Tartışma Panosu</a>'na &amp; <a href=\"https://www.reddit.com/r/TheyAreBillions/\" target=\"_blank\"> SubReddit (/r/TheyAreBillions)</a>. Oyun Geliştiricilerinin görebileceği herhangi bir yerde paylaşım veya açıklama yapınız.",
+	"trMessage3": "Oyun geliştiricileri, moderatörleri forumlardan uzaklaştırıyor ve bu harita düzenleyicisi gibi araçları topluluğa bırakılmasını önlemeye çalışıyor.",
+
+	"trExplainWhatHeader": "Bu nedir?",
+	"trExplainWhatBody1": "Bu, \"They Are Billions\" oyunu için kayıt düzenleyicisidir.",
+	"trExplainWhatBody2": "Kayıt dosyalarını nispeten kolayca düzenlemenizi sağlar.",
+
+	"trExplainHowHeader": "Bunu nasıl kullanırım?",
+	"trExplainHowBody1": "Uygulamanın en son sürümüne sahip olduğunuzdan emin olmak için <b>\"CTRL + F5\"</b> tuşlarına basın.",
+	"trExplainHowBody2": "\"They Are Billions\" kayıt dosyasını yükleyin.",
+	"trExplainHowBody3": "Kayıt dosyaları bu konumdadır: \"Belgeler\" --&gt; \"My Games\" --&gt; \"They Are Billions\" --&gt; \"Saves\".",
+	"trExplainHowBody4": "Düzenleme işlemine başlamak için \".zxsav\" dosyalarından birini seçin.",
+
+	"trFeatureToggleHeader": "Özellikleri Seçme",
+	"trFeatureToggleInfo1": "Oyunun geliştiricileri seviye düzenleyicisini bir kez daha kırdılar. (büyük olasılıkla)",
+	"trFeatureToggleInfo2": "Bu düzenleyicinin sürekli olarak kırılmasıyla mücadele etmek için, düzenleyici özelliklerini etkinleştirip devre dışı bırakma seçeneğini ekledik.",
+	"trFeatureToggleInfo3": "Gerçekte kullanmak istediğiniz özellikleri etkinleştirmelisiniz, bu şekilde düzenleyici oyun dosyasının her parçasını değiştirmeyecek ve şu anda bozuk olan şeyleri düzenlemekten kaçınabilirsiniz.",
+
+	"featureToggleTerrain": "Arazi Düzenlemeye İzin Verilsin mi?",
+	"featureToggleObject": "Nesne Düzenlemeye İzin Verilsin mi?",
+	"featureToggleFog": "Sis Düzenlemeye İzin Verilsin mi?",
+	"featureToggleEntities": "Varlık Düzenlemeye İzin Verilsin mi?",
+	"featureToggleExtraEntities": "Yağ Kaynağı Düzenlenmesine İzin Verilsin mi?",
+	"featureToggleEventsEditor": "Etkinlik Düzenlemeye İzin Verilsin mi?",
+	"featureToggleMapProps": "Harita Özellikleri Düzenlemeye İzin Verilsin mi?",
+	"featureToggleMapInfo": "Harita Bilgisi Düzenlemeye İzin Verilsin mi?",
+
+	"trWorkingAsOf": "Güncellenme tarihi",
+	"trBrokenAsOf": "Bozulma tarihi",
+
+	"trTemplateMapsHeader": "Harita Şablonları",
+	"trTemplate256": "256x256 Şablon",
+	"trTemplate384": "384x384 Şablon (Önerilmez)",
+	"trTemplate512": "512x512 Şablon (Önerilmez)",
+
+	"trRecentMapsHeader": " Düzenlenmiş Haritalar Geçmişi",
+	"trRecentMapsLimit": "<b>Not:</b> 50 MB limiti var.",
+	"trRecentMapsEmpty": "Yok",
+
+	"trTutorials_fanMap01": "Hayran Haritası - The Last Stand by Kellar",
+
+	"trTutorialsHeader": "Tanıtımlar / Dev VLogs",
+	"trTutorials_116_1": "Daire çizim aracı ve zombi rastgele dağıtıcısı.",
+	"trTutorials_115_3": "Şifre çıkarıcı güncellendi ve mevcut durum.",
+	"trTutorials_115_2": "ZXSav dosyaları için şifre nasıl kurtarılır.",
+	"trTutorials_115_1": "Kısayol tuşları ekleme başladı.",
+	"trTutorials_114_3": "Yardım edin! .ZXCheck dosyası geçersiz! Bir ZXCheck dosyası oluşturmak için yeni bir yöntem.",
+	"trTutorials_114_2": "Güncellemeler neden bu kadar yavaş?",
+	"trTutorials_114": "Görsel Zombi Düzenleyici",
+	"trTutorials_113": "Özel Harita Tanıtımı",
+	"trTutorials_112": "Bonus Varlıklar",
+	"trTutorials_111": "Daha fazla varlıklar, ızgara ayarları, yollar",
+	"trTutorials_110": "Harita ayarları, Raw XML &amp; Bu varlığın tümünü sil",
+	"trTutorials_109": "Varlık Aracı",
+	"trTutorials_108": "Feature Toggles",
+	"trTutorials_107": "Savaş Sisi",
+	"trTutorials_106": "Çince Çeviri &amp; Doğru varlıklar",
+	"trTutorials_105": "Yağ Kaynakları",
+	"trTutorials_104": "Kullanılabilirlik #1 - Geri Al, Yinele, Menü Hata Düzeltmeleri, Yeni Araçlar, Harita Özelliği Düzenleyici",
+	"trTutorials_103": "Dalga Düzenleyici, Varlık Klonlama &amp; Dev VLog'u Silme",
+	"trTutorials_102": "Görsel Varlık Düzenleyicisi Dev VLog",
+	"trTutorials_101": "Varlık Düzenleyicisi Dev VLog",
+	"trTutorials_100": "Dev VLog Giriş",
+
+	"trHelpTranslations": "Çeviriler",
+	"trHelpTranslations_01": "Bu seviye düzenleyici çevirileri tamamen destekler.",
+	"trHelpTranslations_02": "Dil dosyaları <a href=\"https://github.com/ash47/TheyAreBillionsModKit/tree/master/MapEditorHtml/translations\" target=\"_blank\">burada</a> depolanmaktadır.",
+	"trHelpTranslations_03": "Her dil için bir dosya vardır.",
+	"trHelpTranslations_04": "Güncelleştirilmiş dil dosyalarını göndermek için depoda bir çekme isteği oluşturun.",
+	"trHelpTranslations_05": "Eksik olan çeviriler için tarayıcı konsoluna bakın.",
+
+	"trHintLoading": "Yükleniyor..",
+	"trHintSaving": "Kaydediliyor..",
+
+	"trBtnLoadSaveFile": "Kayıt dosyasını yükle",
+	"trBtnGenerateSaveFile": "Değişiklikleri Kaydet",
+	"trBtnExportZXSav": ".zxsav Dışa Aktar",
+	"trBtnExportZXCheck": ".zxcheck Dışa Aktar",
+	"trBtnExportMap": "Haritayı Dışa Aktar",
+	"trBtnDownload": "İmzalama Aracı İndir",
+
+	"trSettingsHeaderMapSettings": "Harita Ayarları:",
+	"trSettingsHeaderMapExport": "Haritayı Dışa Aktar:",
+	"trSettingsHeaderMapTools": "Araçlar:",
+
+	"trExportHelpZXSavStep1": "<b>Adım 1:</b> Export .ZXSav file, and save it to:",
+	"trExportHelpZXSavStep2": "<b>Adım 2:</b> Download signing tool",
+	"trExportHelpZXSavStep2a": "Extract the signing tool into the same directory as your copy of \"They Are Billions\". This is usually:",
+	"trExportHelpZXSavStep3": "<b>Adım 3:</b> Drag the .zxsav file into the signing tool. They will produce a \".zxcheck\" file and encrypt the save file so that it can be loaded into the game.",
+
+	"trSettingsHeaderMapLoadHelpHeader": "Harita nasıl yüklenir:",
+	"trSettingsHeaderMapLoadHelpStep1": "<b>Adım 1:</b> İmzalama aracını indir",
+	"trSettingsHeaderMapLoadHelpStep2": "<b>Adım 2:</b> .zxsav dosyasını imzalama aracına sürükleyin. Seviye düzenleyicisi \"_decrypted\" ile biten yeni bir dosya üretecek.",
+
+	"trBtnEntityClone": "Varlığı Klonla",
+	"trBtnEntityDelete": "Varlığı Sil",
+	"trBtnEntityDeleteAll": "Bu varlığın tümünü sil",
+
+	"trHelpEntitySelection": "Özelliklerini görmek için bir varlık seçin.",
+
+	"trInfoToggleLayers": "Geçiş Katmanları",
+
+	"trInfoBrushesLayerSelect": "Katman",
+
+	"trInfoLayerTerrain": "Arazi",
+	"trInfoLayerObjects": "Nesneler",
+	"trInfoLayerZombies": "Zombiler",
+	"trInfoLayerEntities": "Varlıklar",
+	"trInfoLayerEntityLabels": "Varlık Etiketleri",
+	"trInfoLayerFoW": "Savaş Sisi",
+
+	"trInfoMapZoom": "Harita Yakınlığı",
+
+	"trInfoCursorPosition": "Gösterge:",
+
+	"trBtnUndo": "Geri Al",
+	"trBtnRedo": "Yinele",
+
+	"trInfoTools": "Araçlar",
+
+	"trBtnToolPaint": "Boya Aracı",
+	"trBtnToolSelection": "Seçim Aracı",
+	"trBtnToolEntity": "Varlık Aracı",
+
+	"trInfoBrushes": "Fırçalar",
+
+	"trBtnBrushSinglePoint": "Tek Nokta Aracı",
+	"trBtnBrushLine": "Çizgi Aracı",
+	"trBtnBrushCircle": "Daire Aracı",
+
+	"trInfoBrushSize": "Fırça Boyutu",
+
+	"trInfoBrushesSelectTer": "Arazi",
+	"trInfoBrushesSelectObj": "Nesneler",
+	"trInfoBrushesSelectZombie": "Zombiler",
+	"trInfoBrushesSelectFog": "Sis",
+	"trInfoBrushesSelectRoad": "Yol",
+
+	"trInfoBrushesTerrain": "Arazi Katmanı",
+	"trInfoBrushesObject": "Nesne Katmanı",
+	"trInfoBrushesZombie": "Zombi Katmanları",
+	"trInfoBrushesFoW": "Savaş Katmanı Sisi",
+
+	"trBtnBrushTypeEarth": "<u>E</u>arth",
+	"trBtnBrushTypeWater": "<u>W</u>ater",
+	"trBtnBrushTypeGrass": "G<u>r</u>ass",
+	"trBtnBrushTypeSky": "S<u>k</u>y",
+	"trBtnBrushTypeAbyse": "<u>A</u>byse",
+	"trBtnBrushTypeNoObject": "<u>N</u>o Object",
+	"trBtnBrushTypeMountain": "<u>M</u>ountain",
+	"trBtnBrushTypeWood": "W<u>o</u>od",
+	"trBtnBrushTypeGold": "<u>G</u>old",
+	"trBtnBrushTypeStone": "S<u>t</u>one",
+	"trBtnBrushTypeIron": "<u>I</u>ron",
+
+	"trBtnBrushTypeFoWAdd": "Add FoW",
+	"trBtnBrushTypeFoWRemove": "Remove FoW",
+
+	"trInfoEntityTool": "Varlık Aracı",
+	"trBtnSelectEntity": "Varlık Seç...",
+
+	"trBtnOldSaveLoad": "Yükle",
+	"trBtnOldSaveDelete": "Sil",
+
+	"trInfoMapProperties": "Harita Özellikleri",
+	"trInfoMapProperties_menu_Entities": "Varlıklar",
+	"trInfoMapProperties_menu_ExtraEntities": "Ek Varlıklar",
+	"trInfoMapProperties_menu_Events": "Olaylar",
+
+	"trBtnMapSettings": "Harita Ayarları",
+	"trBtnBonusEntities": "Bonus Varlıklar",
+
+	"trBtnAddBonusEntity": "Bonus varlık ekle",
+	"trBonusEntityEditorHeaderName": "Varlık Türü",
+	"trBonusEntityEditorHeaderAmount": "Miktar",
+	"trBonusEntityEditorHeaderDelete": "Sil",
+	"trBonusEntityEditorItemDelete": "Sil",
+	"trBtnCloseBonusEntity": "Kapat",
+
+	"trSettingsEditorMapName": "Harita Adı",
+	"trSettingsEditorMapTheme": "Harita Teması",
+	"trSettingsEditorZombieLayerMultiplier": "Zombi katmanı çarpanı (sadece tam sayı)",
+
+	"trThemeTheDarkMoorland": "Karanlık bozkır",
+	"trThemeThePeacefulLowlands": "Huzurlu Ova",
+	"trThemeTheFrozenHighlands": "Donmuş Yayla",
+	"trThemeTheDesolatedWasteland": "Issız Topraklar",
+
+	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "Ordu yemek cezası maliyeti",
+	"trInfoMapProperties_key_ArmyGoldCost": "Ordu altın maliyeti",
+	"trInfoMapProperties_key_Date": "Tarih",
+	"trInfoMapProperties_key_Difficulty": "Zorluk",
+	"trInfoMapProperties_key_DifficultyType": "Zorluk Türü",
+	"trInfoMapProperties_key_EnergyReserved": "Enerji Ayrıldı",
+	"trInfoMapProperties_key_FactorGameDuration": "Oyun süresi faktörü",
+	"trInfoMapProperties_key_FactorZombiePopulation": "Zombi nüfusu faktörü",
+	"trInfoMapProperties_key_FoodReserved": "Yiyecek ayrıldı",
+	"trInfoMapProperties_key_GameTime": "Oyun Zamanı",
+	"trInfoMapProperties_key_Gold": "Altın",
+	"trInfoMapProperties_key_GoldProduction": "Altın üretimi",
+	"trInfoMapProperties_key_Iron": "Demir",
+	"trInfoMapProperties_key_IronProduction": "Demir üretimi",
+	"trInfoMapProperties_key_IronProductionReserved": "Demir üretimi ayırıldı",
+	"trInfoMapProperties_key_LastGameTimeIAUpdate": "Son Oyun Zamanı IA Güncellemesi",
+	"trInfoMapProperties_key_MaxColonists": "En fazla kolonist",
+	"trInfoMapProperties_key_MaxGoldByExportingExcedents": "Fazlalık altın satıldı",
+	"trInfoMapProperties_key_NColonistsDead": "N kolonist öldü",
+	"trInfoMapProperties_key_NColonistsInfected": "N koloniste hastalık bulaştı",
+	"trInfoMapProperties_key_NMarkets": "N Pazar",
+	"trInfoMapProperties_key_NSoldiersDead": "N asker öldü",
+	"trInfoMapProperties_key_NTurnsWithNegativeFood": "N negatif yiyecek ile döndü",
+	"trInfoMapProperties_key_NTurnsWithNegativeGold": "N negatif altın ile döndü",
+	"trInfoMapProperties_key_NZombiesDead": "N zombi oldü",
+	"trInfoMapProperties_key_Oil": "Yağ",
+	"trInfoMapProperties_key_OilProduction": "Yağ üretimi",
+	"trInfoMapProperties_key_OilProductionReserved": "Yağ üretimi ayırıldı",
+	"trInfoMapProperties_key_Physics_FactorTimeForInterpolation": "Enterpolasyon için Fizik Faktör Zamanı",
+	"trInfoMapProperties_key_Physics_TimeBodyPosition": "Fizik Zamanı Vücut Pozisyonu",
+	"trInfoMapProperties_key_Physics_TimeLastBodyPosition": "Fizik Zamanı Son Vücut Pozisyonu",
+	"trInfoMapProperties_key_Seed": "Tohum",
+	"trInfoMapProperties_key_ShowFullMap": "Tüm haritayı göster",
+	"trInfoMapProperties_key_Stone": "Taş",
+	"trInfoMapProperties_key_StoneProduction": "Taş üretimi",
+	"trInfoMapProperties_key_StoneProductionReserved": "Taş üretimi ayırıldı",
+	"trInfoMapProperties_key_StructuresGoldCost": "Yapılar için altın maliyeti",
+	"trInfoMapProperties_key_ThemeType": "Tema Türü",
+	"trInfoMapProperties_key_TotalGoldPerColonists": "Kolonistler Başına Toplam Altın",
+	"trInfoMapProperties_key_Wood": "Odun",
+	"trInfoMapProperties_key_WoodProduction": "Odun Üretimi",
+	"trInfoMapProperties_key_WoodProductionReserved": "Odun üretimi ayırıldı",
+	"trInfoMapProperties_key_WorkersReserved": "İşçi Ayırıldı",
+
+	"trMapPropertiesKey": "Anahtar",
+	"trMapPropertiesValue": "Değer",
+
+	"trErrorUnknownLengthForLayer": "Ara katman için bilinmeyen uzunluk - {{id}}",
+	"trErrorSaveMapLocal": "HARİTAYI BÖLGESEL OLARAK KAYDETME BAŞARISIZ!",
+	"trErrorInvalidSaveFile": "Bu geçerli bir \"They Are Billions\" kayıt dosyası olarak görünmüyor. \"Data\" veya \ "Info\" eksik.",
+	"trErrorLoadingZip": "Zip dosyası yüklenirken hata oluştu! {{fileName}} - {{errorMessage}}",
+	"trErrorMultipleFilesSelected": "Lütfen SADECE BİR TANE \"They Are Billions\" kayıt dosyasını seçin.",
+	"trErrorUndoNothingLeft": "Geri almak için hiçbir şey kalmadı.",
+	"trErrorNoActionSortHandler": "{{actionSort}} için geri alma isteği yok",
+	"trErrorRedoNothingLeft": "Yinelemek için hiçbir şey kalmadı.",
+	"trErrorNoEntitySelected": "Lütfen bir varlık seçin.",
+	"trErrorNoEntityReference": "Varlık referansı alınamadı!",
+	"trErrorInvalidTemplate": "Bilinmeyen şablon: {{template}}",
+
+	"trSuccessEntityCloned": "{{entityName}} başarıyla klonlandı!",
+	"trSuccessEntityDeleted": "{{entityName}} başarıyla kaldırıldı.",
+	"trSuccessEntityDeletedAll": "Tüm {{entityName}} başarıyla kaldırıldı.",
+	"trSuccessEntityPropertyUpdated": "\"{{propertyName}}\", \"{{newValue}}\" olarak değiştirildi",
+
+	"trConfirmDeleteMap": "{{mapName}} silmek istediğinizden emin misiniz?",
+	"trConfirmDeleteEntity": "{{entityName}} silmek istediğinizden emin misiniz?",
+	"trConfirmDeleteEntityAll": "TÜM {{entityName}} silmek istediğinizden emin misiniz?",
+
+	"trCloseMapSettings": "Kapat",
+	"trDeleteAllHiddenZombies": "Tüm Gizli Zombileri Sil",
+	"trConfirmDeleteAllZombies": "TÜM gizli zombileri silmek istediğinizden emin misiniz?",
+	"trSuccessRemoveEveryZombie": "Tüm gizli zombiler kaldırıldı.",
+
+	"trDeleteAllEntities": "Tüm Varlıkları Sil",
+	"trConfirmDeleteAllEntities": "TÜM varlığı silmek istediğinizden emin misiniz? Not: Birim üreticileri ve komuta merkezi kalacaktır.",
+	"trSuccessRemoveEveryEntities": "Komuta merkezi ve birim üreticileri hariç her varlık kaldırıldı.",
+
+	"trBtnShowGridSelection": "Izgara Ayarları",
+	"trGridEnable": "Izgarayı Etkinleştir?",
+	"trMapBorderCameraEnable": "Harita Kamera Sınırını Etkinleştir?",
+	"trMapBorderBuildingEnable": "Harita Oluşturma Sınırını Etkinleştir",
+	"trGridWidth": "Grid Width",
+	"trGridHeight": "Grid Height",
+	"trGridOffsetX": "Grid Offset X",
+	"trGridOffsetY": "Grid Offset Y",
+	"trGridBtnUpdate": "Izgarayı Güncelle",
+	"trGridBtnCloseSettings": "Ayarları Kapat",
+
+	"trRecentMapsDisabled": "Bu özelliği devre dışı bıraktık, bu özellik çok sayıda RAM ve yerel kaynakların yanı sıra haritalar kaydederken/yüklerken CPU kullanıyor.",
+
+	"trNewFeature": "Yeni özellik",
+	"trPolish": "Polish",
+	"trBugFix": "Hata Düzeltmesi",
+
+	"trChangeLogHeader": "Değişiklikler",
+
+	"trChangeLogBody_117_01": "Haritaları nasıl kolayca kaydedip yükleyeceğinizi açıklayan ekranlar eklendi.",
+	"trChangeLogBody_117_02": "Zombi rastgeleleştirme aracını güncelledikten sonra, CTRL tuşuna basılı tutarak tıkladığınızda her bir zombi kategorisinin sayısını değiştirecek, vardiya tutan bu zombi türünün sayısını azaltacaktır.",
+
+	"trChangeLogBody_116_01": "Daire fırça aracı eklendi.",
+	"trChangeLogBody_116_02": "Haritaya rastgele zombiler çizme yeteneği eklendi. Hangi zombi çizileceğini seçerken 'CTRL' tuşunu basılı tutun.",
+
+	"trChangeLogBody_115_01": "Kısayol tuşları eklenmeye başlandı. Kısayol tuşlarının listesi için <a href=\"https://github.com/ash47/TheyAreBillionsModKit#Hotkeys\"target=\"_blank\">GitHub</a> sayfasına bakın.",
+
+	"trChangeLogBody_114_01": "Görsel bir zombi düzenleyicisi eklendi, böylece savaşın içindeki zombiler düzenlenebilir.",
+
+	"trChangeLogBody_113_01": "Tüm gizli zombileri ve varlıkları, harita ayarları menüsünden silmek için seçenekler eklendi.",
+	"trChangeLogBody_113_02": "Düzenleyici performansını artırmak için başlandı.",
+
+	"trChangeLogBody_112_01": "Bonus Varlık Düzenleyicisi eklendi.",
+	"trChangeLogBody_112_02": "Kullanıcı arayüzünü sol tarafa değiştirdi, böylece daha az ezildi.",
+
+	"trChangeLogBody_111_01": "Izgara Ayarları eklendi.",
+	"trChangeLogBody_111_02": "Yollar eklendi.",
+	"trChangeLogBody_111_03": "Boyamak için ek varlıklar eklendi.",
+
+	"trChangeLogBody_110_01": "Harita Ayarları Düzenleyicisi eklendi.",
+	"trChangeLogBody_110_02": "Tüm Varlıkları Sil özelliği eklendi.",
+	"trChangeLogBody_110_03": "Ham XML düzenleyici seçeneği eklendi.",
+
+	"trChangeLogBody_109_01": "Haritaya yeni öğeler ekleyebilmenizi sağlayan varlık aracı eklendi.",
+
+	"trChangeLogBody_108_01": "Özellik geçişleri eklendi.",
+
+	"trChangeLogBody_107_01": "Savaş Sisi Düzenleyicisi eklendi.",
+	"trChangeLogBody_107_02": "Alandan tasarruf etmek için fırçaların düzenini ayrı bölümlere değiştirildi.",
+	"trChangeLogBody_107_03": "Yağ varlığı düzenleyici ile ilgili sorunlar giderildi.",
+
+	"trChangeLogBody_106_01": "Çince çeviri dosyaları eklendi.",
+	"trChangeLogBody_106_02": "Kullanıcı arayüzü daha güzel hale getirildi.",
+	"trChangeLogBody_106_03": "Geliştirilmiş doğruluk ve varlıkların boyutu.",
+	"trChangeLogBody_106_04": "Varlık etiketleri için geçiş seçeneği eklendi.",
+
+	"trChangeLogBody_105_01": "Yağ kaynağı düzenleme eklendi.",
+
+	"trChangeLogBody_104_01": "512x512 harita şablonu eklendi.",
+	"trChangeLogBody_104_02": "Harita özellikleri düzenleyicisi eklendi.",
+	"trChangeLogBody_104_03": "Varlıkları silerken / klonlarken sabit varlık menüsü kapanır.",
+	"trChangeLogBody_104_04": "Seçim aracı eklendi.",
+	"trChangeLogBody_104_05": "Satır aracı eklendi.",
+	"trChangeLogBody_104_06": "Katmanları Geri Alma &amp; Yineleme eklendi.",
+
+	"trChangeLogBody_103_01": "Varlık Klonlama ve Silme eklendi.",
+	"trChangeLogBody_103_02": "Dalgaların nasıl oluşacağını değiştirmek için Dalga Düzenleyici eklendi.",
+
+	"trChangeLogBody_102_01": "Görsel varlık ekranı eklendi.",
+
+	"trChangeLogBody_101_01": "Varlık düzenleyicisi eklendi.",
+
+	"trChangeLogBody_100_01": "Önceki haritalar listesi eklendi.",
+	"trChangeLogBody_100_02": "Düzenleyici daha kullanışlı (yakınlaştırma, fırça boyutu, kaydırma) olacak şekilde güncellendi.",
+	"trChangeLogBody_100_03": "Harita dışa aktarma özelliği eklendi.",
+	"trChangeLogBody_100_04": "Haritadaki araziyi ve kaynakları düzenleme olanağı eklendi.",
+	"trChangeLogBody_100_05": "Kayıt dosyaları yükleme özelliği eklendi.",
+
+	"trDiscount1": "They Are Billions ve diğer oyunlar için %10 indirimden yararlanmak için <a href=\"https: //www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\"target=\"_ blank\">bu linki</a> kullanın. Uzun süre geçerli olmayacak!",
+
+	"trCheckInfo": "Bu web sitesindeki .ZXCheck oluşturma işlemi, sürüm 6.0 ve sonrası için bozuldu. Haritanızı v6.0 ve daha yenisi için imzalamak isterseniz, <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip\" target=\"_blank\">bu aracı (v0.5)</a> kullanabilirsiniz. 6.0 .zxcheck biçimi için destek eklemeye çalışıyoruz. Bu araç ayrıca .ZXSav dosyaları için şifreleri de kurtarabilir."
+}
