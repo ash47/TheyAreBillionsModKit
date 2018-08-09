@@ -73,7 +73,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.17
+				</span> | v1.18
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -229,7 +229,7 @@
 				</div>
 			</div>
 			
-			<div class="card">
+			<div class="card" style="display: none;">
 				<div class="card-header">
 					<h3 class="card-title">
 						<span data-translate="trRecentMapsHeader">
@@ -255,7 +255,7 @@
 			</div>
 		</div>
 
-		<div class="instructions">
+		<div class="instructions" style="display: none;">
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
@@ -339,17 +339,6 @@
 				</div>
 				<div class="card-block">
 					<ul>
-						<li>
-							<a href="https://www.youtube.com/watch?v=Hu7jw1ALHIs" target="_blank">
-								<span data-translate="trTutorials_fanMap01">
-									Fan Created Map Trailer
-								</span>
-								<br><br>
-								<iframe width="640" height="360" src="https://www.youtube.com/embed/Hu7jw1ALHIs">
-								</iframe>
-								<br><br>
-							</a>
-						</li>
 						<li>
 							<a href="https://youtu.be/ZbTADrbjeaM" target="_blank">
 								<b>(v1.16)</b>
@@ -605,6 +594,25 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.18 -->
+						<li>
+							<b>(v1.18)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_118_01">
+										Added support for the new "Fortress Layer" although this doesn't appear to render in game at this stage for some reason.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
+									<span data-translate="trChangeLogBody_118_02">
+										The game will no longer crash upon loading a map made with the editor for version 9.0.0 and newer.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.17 -->
 						<li>
 							<b>(v1.17)</b>
@@ -1026,6 +1034,7 @@
 		<div class="mapScaler">
 			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderFortress" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderZombies" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -1132,6 +1141,14 @@
 						<label for="toggleLayerRoad">
 							<span data-translate="trInfoLayerRoads">
 								Roads
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerFortress" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerFortress">
+							<span data-translate="trInfoLayerFortress">
+								Fortress
 							</span>
 						</label>
 					</li>
@@ -1292,6 +1309,9 @@
 						<option data-translate="trInfoBrushesSelectRoad" value="road">
 							Road
 						</option>
+						<option data-translate="trInfoBrushesSelectFortress" value="fortress">
+							Fortress
+						</option>
 					</select>
 				</li>
 
@@ -1440,6 +1460,57 @@
 					<button id="btn_toolRoadRemove" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolRoadRemove')">
 						<span data-translate="trBtnBrushTypeRoadRemove">
 							Remove Road
+						</span>
+					</button>
+				</li>
+
+				<!-- Begin fortress -->
+				<li class="requireSubClass_fortress">
+					<b>
+						<span data-translate="trInfoBrushesFortress">
+							Fortress Layer
+						</span>
+					</b>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortressRemove" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortressRemove')">
+						<span data-translate="trBtnBrushTypeFortressRemove">
+							Remove Fortress
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortWallSolid" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortWallSolid')">
+						<span data-translate="trBtnBrushTypeFortWallSolid">
+							Fortress Wall Solid
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortWallWithBars" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortWallWithBars')">
+						<span data-translate="trBtnBrushTypeFortWallWithBars">
+							Fortress Wall With Bars
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortLowWithBars" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortLowWithBars')">
+						<span data-translate="trBtnBrushTypeFortLowWithBars">
+							Fortress Low With Bars
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortCross" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortCross')">
+						<span data-translate="trBtnBrushTypeFortCross">
+							Fortress Cross
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortHighCross" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortHighCross')">
+						<span data-translate="trBtnBrushTypeFortHighCross">
+							Fortress High Cross
 						</span>
 					</button>
 				</li>

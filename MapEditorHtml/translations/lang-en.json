@@ -119,6 +119,8 @@
 	"trInfoLayerEntities": "Entities",
 	"trInfoLayerEntityLabels": "Entity Labels",
 	"trInfoLayerFoW": "Fog of War",
+	"trInfoLayerRoads": "Roads",
+	"trInfoLayerFortress": "Fortress",
 
 	"trInfoMapZoom": "Map Zoom",
 
@@ -146,11 +148,13 @@
 	"trInfoBrushesSelectZombie": "Zombies",
 	"trInfoBrushesSelectFog": "Fog",
 	"trInfoBrushesSelectRoad": "Road",
+	"trInfoBrushesSelectFortress": "Fortress",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
 	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
+	"trInfoBrushesFortress": "Fortress Layer",
 
 	"trBtnBrushTypeEarth": "<u>E</u>arth",
 	"trBtnBrushTypeWater": "<u>W</u>ater",
@@ -166,6 +170,13 @@
 
 	"trBtnBrushTypeFoWAdd": "Add FoW",
 	"trBtnBrushTypeFoWRemove": "Remove FoW",
+
+	"trBtnBrushTypeFortressRemove": "Remove Fortress",
+	"trBtnBrushTypeFortWallSolid": "Fortress Wall Solid",
+	"trBtnBrushTypeFortWallWithBars": "Fortress Wall With Bars",
+	"trBtnBrushTypeFortLowWithBars": "Fortress Low With Bars",
+	"trBtnBrushTypeFortCross": "Fortress Cross",
+	"trBtnBrushTypeFortHighCross": "Fortress High Cross",
 
 	"trInfoEntityTool": "Entity Tool",
 	"trBtnSelectEntity": "Select Entity...",
@@ -292,6 +303,9 @@
 	"trBugFix": "Bug Fix",
 
 	"trChangeLogHeader": "Change Log",
+
+	"trChangeLogBody_118_01": "Added support for the new \"Fortress Layer\" although this doesn't appear to render in game at this stage for some reason.",
+	"trChangeLogBody_118_02": "The game will no longer crash upon loading a map made with the editor for version 9.0.0 and newer.",
 
 	"trChangeLogBody_117_01": "Added screens to explain how to save and load maps easily.",
 	"trChangeLogBody_117_02": "Updated the zombie randomisation tool, holding control and clicking will change the number of each zombie category that appears, holding shift will decrease the number of that zombie type.",

@@ -1375,6 +1375,41 @@ function loadLevelEvents(commitUpdate) {
 	}
 }
 
+function loadMinimapIndicators(commitUpdate) {
+	// MiniMapIndicators
+
+	var res = loadSection(
+		window.activeMap.Data,
+		'<Collection name="MiniMapIndicators" elementType="ZX.ZXMiniMapIndicator, TheyAreBillions">',
+		'</Collection>',
+		function(theData) {
+			if(commitUpdate) {
+				// TODO: Commit the update
+
+				var theOutput = '';
+				theOutput += '<Collection name="MiniMapIndicators" elementType="ZX.ZXMiniMapIndicator, TheyAreBillions">';
+				
+				theOutput += '<Properties>';
+				theOutput += '<Simple name="Capacity" value="0" />';
+				theOutput += '</Properties>';
+
+				theOutput += '<Items>';
+				theOutput += '</Items>';
+
+				theOutput += '</Collection>';
+
+
+				return theOutput;
+			}
+		}, false, true
+	);
+
+	if(commitUpdate && res != null) {
+		// Update the res
+		window.activeMap.Data = res;
+	}
+}
+
 function loadFastEntities(commitUpdate) {
 	var fastEnts = {};
 

@@ -60,6 +60,7 @@ $(document).ready(function() {
 	var mapRenderObjectsCanvas = document.getElementById('mapRenderObjects');
 	var mapRenderZombiesCanvas = document.getElementById('mapRenderZombies');
 	var mapRenderRoadsCanvas = document.getElementById('mapRenderRoads');
+	var mapRenderFortressCanvas = document.getElementById('mapRenderFortress');
 	var mapRenderFoWCanvas = document.getElementById('mapRenderFoW');
 	var helperCanvas = document.getElementById('helperLayer');
 	var gridCanvas = document.getElementById('gridCanvas');
@@ -102,6 +103,12 @@ $(document).ready(function() {
 			name: 'LayerRoads',
 			canvas: mapRenderRoadsCanvas,
 			colorMap: colorRoad,
+			defaultColor: colorNone,
+		},
+		LayerFortress: {
+			name: 'LayerFortress',
+			canvas: mapRenderFortressCanvas,
+			colorMap: colorFortress,
 			defaultColor: colorNone,
 		},
 		LayerFog: {
@@ -569,7 +576,7 @@ $(document).ready(function() {
 		// Set that we are saving
 		setIsSaving(true);
 
-		var totalParts = 15;
+		var totalParts = 16;
 		var currentPart = 0;
 
 		// Update to be 0%
@@ -602,6 +609,12 @@ $(document).ready(function() {
 		setTimeout(function() {
 			if(enableEditorRoads) {
 				loadLayer('LayerRoads', true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(enableEditorRoads) {
+				loadLayer('LayerFortress', true);
 			}
 			updatePercentage();
 
@@ -644,6 +657,13 @@ $(document).ready(function() {
 
 				// Commit updates to fast entities
 				loadFastEntities(true);
+			}
+			updatePercentage();
+
+		setTimeout(function() {
+			if(window.enableEditorFastEntities) {
+				// Commit updates to fast entities
+				loadMinimapIndicators(true);
 			}
 			updatePercentage();
 
@@ -725,6 +745,8 @@ $(document).ready(function() {
 					window.setMapExportUpToDate(true);
 				}, 1);
 			});
+		}, 1);
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -857,7 +879,7 @@ $(document).ready(function() {
 		$('.layerSelectionGroupSub').addClass('btn-primary');
 
 		var header = 'requireSubClass_';
-		var classes = ['terrain', 'object', 'zombie', 'fog', 'road'];
+		var classes = ['terrain', 'object', 'zombie', 'fog', 'road', 'fortress'];
 
 		for(var i=0; i<classes.length; ++i) {
 			var fullClass = header + classes[i];
@@ -1029,6 +1051,44 @@ $(document).ready(function() {
 					activeLayer = window.layerStore.LayerRoads;
 					activeToolColor = 0;
 				break;
+
+				case 'toolFortressRemove':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 0;
+				break;
+
+				case 'toolFortWallSolid':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 1;
+				break;
+
+				case 'toolFortWallWithBars':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 2;
+				break;
+
+				case 'toolFortLowWithBars':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 3;
+				break;
+
+				case 'toolFortCross':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 4;
+				break;
+
+				case 'toolFortHighCross':
+					window.setActiveLayerSelectionGroupSub('fortress');
+					activeLayer = window.layerStore.LayerFortress;
+					activeToolColor = 5;
+				break;
+
+
 			}
 		}
 
@@ -1088,12 +1148,14 @@ $(document).ready(function() {
 		var entityLabelsVisible = $('#toggleLayerEntityLabels').is(':checked');
 		var fogOfWarVisible = $('#toggleLayerFoW').is(':checked');
 		var roadVisible = $('#toggleLayerRoad').is(':checked');
+		var fortressVisible = $('#toggleLayerFortress').is(':checked');
 
 		var cTerrain = $(window.layerStore.LayerTerrain.canvas);
 		var cObjects = $(window.layerStore.LayerObjects.canvas);
 		var cZombies = $(window.layerStore.LayerZombies.canvas);
 		var cFoW = $(window.layerStore.LayerFog.canvas);
 		var cRoad = $(window.layerStore.LayerRoads.canvas);
+		var cFortress = $(window.layerStore.LayerFortress.canvas);
 		var mainWindow = $('#mainContainer');
 
 		// Toggle terrain layer
@@ -1116,10 +1178,15 @@ $(document).ready(function() {
 			cFoW.show() :
 			cFoW.hide();
 
-		// Roads later
+		// Roads layer
 		roadVisible ?
 			cRoad.show() :
 			cRoad.hide();
+
+		// Fortress later
+		fortressVisible ?
+			cFortress.show() :
+			cFortress.hide();
 
 		entitiesVisible ? mainWindow.removeClass('hideEntities') : mainWindow.addClass('hideEntities');
 		entityLabelsVisible ? mainWindow.removeClass('hideEntityLabels') : mainWindow.addClass('hideEntityLabels');
@@ -1489,7 +1556,7 @@ $(document).ready(function() {
 
 		// We are loading
 		setIsLoading(true);
-		var totalParts = 15;
+		var totalParts = 16;
 		var currentPart = 0;
 
 		var updatePercentage = function() {
@@ -1520,8 +1587,13 @@ $(document).ready(function() {
 			updatePercentage();
 
 		setTimeout(function() {
-			// Load Objects
+			// Load Roads
 			loadLayer('LayerRoads');
+			updatePercentage();
+
+		setTimeout(function() {
+			// Load Fortress
+			loadLayer('LayerFortress');
 			updatePercentage();
 
 		setTimeout(function() {
@@ -1605,6 +1677,7 @@ $(document).ready(function() {
 			window.mapIsLoaded = true;
 
 			updatePercentage();
+		}, 1);
 		}, 1);
 		}, 1);
 		}, 1);
@@ -2033,6 +2106,9 @@ $(document).ready(function() {
 
 			// Render Roads
 			renderLayer('LayerRoads');
+
+			// Render Fortress
+			renderLayer('LayerFortress');
 
 			// Render Objects
 			renderLayer('LayerObjects');
