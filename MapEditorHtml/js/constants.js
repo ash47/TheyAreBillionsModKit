@@ -136,6 +136,57 @@ var colorRoad = {
 	1: colorRoad
 };
 
+var colorFortWallSolid = {
+	red: 150,
+	green: 150,
+	blue: 150,
+	alpha: 255
+};
+
+var colorFortWallSolid = {
+	red: 160,
+	green: 160,
+	blue: 160,
+	alpha: 255
+};
+
+var colorFortWallWithBars = {
+	red: 170,
+	green: 170,
+	blue: 170,
+	alpha: 255
+};
+
+var colorFortLowWithBars = {
+	red: 180,
+	green: 180,
+	blue: 180,
+	alpha: 255
+};
+
+var colorFortCross = {
+	red: 190,
+	green: 190,
+	blue: 190,
+	alpha: 255
+};
+
+var colorFortHighCross = {
+	red: 200,
+	green: 200,
+	blue: 200,
+	alpha: 255
+};
+
+var colorFortress = {
+	0: colorNone,
+	1: colorFortWallSolid,
+	2: colorFortWallWithBars,
+	3: colorFortLowWithBars,
+	4: colorFortCross,
+	5: colorFortHighCross
+};
+
 var colorTerrain = {
 	0: colorEarth,
 	1: colorWater,

@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ZXCheckGenerator
+namespace ZXCheckGenerator_DecryptZXSav
 {
     class Program
     {
-        // Called when the program is launched
         static void Main(string[] args)
         {
             // Grab the save file
             string pathToSaveFile = ZXCheckLib.ZXCheckLib.getSavFileFromArgs(args);
 
-            Console.WriteLine("Save file signer was started!");
+            Console.WriteLine("Save file decrypter started!");
 
             // Prepare billions
             ZXCheckLib.ZXCheckLib.prepareBillions();
 
-            Console.WriteLine("Attempting to sign: ");
+            Console.WriteLine("Attempting to decrypt: ");
             Console.WriteLine(pathToSaveFile);
 
             // Spin up a thread
@@ -36,8 +32,8 @@ namespace ZXCheckGenerator
                 ZXCheckLib.ZXCheckLib.generateZXCheck(pathToSaveFile);
 
                 // Attempt to extract the password
-                ZXCheckLib.ZXCheckLib.extractPassword(pathToSaveFile, true);
-                
+                ZXCheckLib.ZXCheckLib.extractPassword(pathToSaveFile, false, true);
+
                 ZXCheckLib.ZXCheckLib.quitAfterDelay();
             }).Start();
 

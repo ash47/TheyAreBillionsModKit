@@ -343,10 +343,27 @@
 	padding: 8px;
 }
 
+#mapLoadingHelp {
+	padding: 8px;
+}
+
 #layerSelectionGroupSub {
 	width: 140px;
 }
 
 #gridConfiguration {
 	padding: 8px;
+}
+
+.alertify-notifier {
+	pointer-events:none;
+}
+
+.zombieBrushButtonsText {
+	display: none;
+	margin-right: 8px;
+}
+
+.btn-success .zombieBrushButtonsText {
+	display: inline-block;
 }

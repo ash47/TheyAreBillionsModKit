@@ -73,7 +73,7 @@
 			<h1 class="text-center">
 				<span data-translate="trHeader">
 					They Are Billions Save Editor
-				</span> | v1.16
+				</span> | v1.18
 				</h1>
 			<p class="text-center">
 				<span data-translate="trHeaderSub">
@@ -92,6 +92,12 @@
 						Chinese
 					</span>
 				</button>
+
+				<button class="btn btn-primary" onclick="window.setLanguage('tr');">
+					<span data-translate="trLanguageTurkish">
+						Turkish
+					</span>
+				</button>
 			</p>
 
 			<div class="alert alert-success alert-dismissable">
@@ -100,11 +106,23 @@
 				</button>
 
 				<p>
-					<span data-translate="trCheckInfo">
-						The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use  <a href="https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip" target="_blank">this tool (v0.3)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files.
-					</span>
+					<!--<span data-translate="trCheckInfo">-->
+						Subscribe to <a href="https://www.youtube.com/AzzaFortysix/videos" target="_blank">AzzaFortysix on YouTube</a> for more mods, hacks and gaming related content.
+					<!--</span>-->
 				</p>
 			</div>
+			
+			<!--<div class="alert alert-success alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+					x
+				</button>
+
+				<p>
+					<span data-translate="trCheckInfo">
+						The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use  <a href="https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip" target="_blank">this tool (v0.5)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files.
+					</span>
+				</p>
+			</div>-->
 
 			<div class="card">
 				<div class="card-header">
@@ -191,15 +209,17 @@
 								</span>
 							</button>
 						</li>
+						<br>
 						<li>
-							<button class="btn btn-primary" onclick="window.loadTemplateSave('384x384');">
+							<button class="btn btn-danger" onclick="window.loadTemplateSave('384x384');">
 								<span data-translate="trTemplate384">
 									384x384 Template
 								</span>
 							</button>
 						</li>
+						<br>
 						<li>
-							<button class="btn btn-primary" onclick="window.loadTemplateSave('template512');">
+							<button class="btn btn-danger" onclick="window.loadTemplateSave('template512');">
 								<span data-translate="trTemplate512">
 									512x512 Template
 								</span>
@@ -209,7 +229,7 @@
 				</div>
 			</div>
 			
-			<div class="card">
+			<div class="card" style="display: none;">
 				<div class="card-header">
 					<h3 class="card-title">
 						<span data-translate="trRecentMapsHeader">
@@ -235,7 +255,7 @@
 			</div>
 		</div>
 
-		<div class="instructions">
+		<div class="instructions" style="display: none;">
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">
@@ -574,6 +594,44 @@
 				</div>
 				<div class="card-block">
 					<ul>
+						<!-- v1.18 -->
+						<li>
+							<b>(v1.18)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_118_01">
+										Added support for the new "Fortress Layer" although this doesn't appear to render in game at this stage for some reason.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-danger" data-translate="trBugFix">Bug Fix</span>
+									<span data-translate="trChangeLogBody_118_02">
+										The game will no longer crash upon loading a map made with the editor for version 9.0.0 and newer.
+									</span>
+								</li>
+							</ul>
+						</li>
+
+						<!-- v1.17 -->
+						<li>
+							<b>(v1.17)</b>
+							<ul>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_117_01">
+										Added screens to explain how to save and load maps easily.
+									</span>
+								</li>
+								<li>
+									<span class="badge badge-success" data-translate="trNewFeature">New Feature</span>
+									<span data-translate="trChangeLogBody_117_02">
+										Updated the zombie randomisation tool, holding control and clicking will change the number of each zombie category that appears, holding shift will decrease the number of that zombie type.
+									</span>
+								</li>
+							</ul>
+						</li>
+
 						<!-- v1.16 -->
 						<li>
 							<b>(v1.16)</b>
@@ -938,27 +996,35 @@
 		</div>
 
 		<div id="saveButtons">
-			<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
-				<span data-translate="trBtnGenerateSaveFile">
-					Save Changes
+			<button class="btn btn-primary" onclick="window.editMapSettings()">
+				<span data-translate="trBtnExportMap">
+					Export Map
 				</span>
 			</button>
 
-			<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
-				<span data-translate="trBtnExportZXSav">
-					Export .zxsav
-				</span>
-			</button>
-			<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">
-				<span data-translate="trBtnExportZXCheck">
-					Export .zxcheck
-				</span>
-			</button>
-			<button id="btnExportBoth" class="btn btn-primary" disabled="disabled" onclick="window.downloadPack();">
-				<span data-translate="trBtnExportBoth">
-					Export as Pack (Recommended)
-				</span>
-			</button>
+			<!--
+				<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
+					<span data-translate="trBtnGenerateSaveFile">
+						Save Changes
+					</span>
+				</button>
+
+				<button id="btnExportSave" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXSave()">
+					<span data-translate="trBtnExportZXSav">
+						Export .zxsav
+					</span>
+				</button>
+				<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">
+					<span data-translate="trBtnExportZXCheck">
+						Export .zxcheck
+					</span>
+				</button>
+				<button id="btnExportBoth" class="btn btn-primary" disabled="disabled" onclick="window.downloadPack();">
+					<span data-translate="trBtnExportBoth">
+						Export as Pack (Recommended)
+					</span>
+				</button>
+			-->
 		</div>
 
 		
@@ -968,6 +1034,7 @@
 		<div class="mapScaler">
 			<canvas id="mapRenderTerrain" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderRoads" class="mapLayer scalePixelated mapSizeControlled"></canvas>
+			<canvas id="mapRenderFortress" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderObjects" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderZombies" class="mapLayer scalePixelated mapSizeControlled"></canvas>
 			<canvas id="mapRenderFoW" class="mapLayer scalePixelated mapSizeControlled"></canvas>
@@ -1074,6 +1141,14 @@
 						<label for="toggleLayerRoad">
 							<span data-translate="trInfoLayerRoads">
 								Roads
+							</span>
+						</label>
+					</li>
+					<li>
+						<input type="checkbox" checked="checked" id="toggleLayerFortress" onchange="window.updateLayerToggles()">
+						<label for="toggleLayerFortress">
+							<span data-translate="trInfoLayerFortress">
+								Fortress
 							</span>
 						</label>
 					</li>
@@ -1234,6 +1309,9 @@
 						<option data-translate="trInfoBrushesSelectRoad" value="road">
 							Road
 						</option>
+						<option data-translate="trInfoBrushesSelectFortress" value="fortress">
+							Fortress
+						</option>
 					</select>
 				</li>
 
@@ -1385,6 +1463,57 @@
 						</span>
 					</button>
 				</li>
+
+				<!-- Begin fortress -->
+				<li class="requireSubClass_fortress">
+					<b>
+						<span data-translate="trInfoBrushesFortress">
+							Fortress Layer
+						</span>
+					</b>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortressRemove" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortressRemove')">
+						<span data-translate="trBtnBrushTypeFortressRemove">
+							Remove Fortress
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortWallSolid" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortWallSolid')">
+						<span data-translate="trBtnBrushTypeFortWallSolid">
+							Fortress Wall Solid
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortWallWithBars" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortWallWithBars')">
+						<span data-translate="trBtnBrushTypeFortWallWithBars">
+							Fortress Wall With Bars
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortLowWithBars" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortLowWithBars')">
+						<span data-translate="trBtnBrushTypeFortLowWithBars">
+							Fortress Low With Bars
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortCross" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortCross')">
+						<span data-translate="trBtnBrushTypeFortCross">
+							Fortress Cross
+						</span>
+					</button>
+				</li>
+				<li class="requireSubClass_fortress">
+					<button id="btn_toolFortHighCross" class="btn btn-primary btnSelectToolColor" onclick="window.setTool('brushColor', 'toolFortHighCross')">
+						<span data-translate="trBtnBrushTypeFortHighCross">
+							Fortress High Cross
+						</span>
+					</button>
+				</li>
 			</div>
 			<div class="requireEntityTool">
 				<li>
@@ -1427,7 +1556,70 @@
 		</div>
 	</div>
 
+	<div id="mapLoadingHelp">
+		<div class="form-group">
+			<h3 data-translate="trSettingsHeaderMapLoadHelpHeader">How to load a map:</h3>
+		</div>
+
+		<div class="form-group">
+			<label for="btnDownloadSigningTool2">
+				<span data-translate="trSettingsHeaderMapLoadHelpStep1">
+					<b>Step 1:</b> Download signing tool
+				</span>
+
+				<span>
+					<b>V0.5</b>
+				</span>
+
+				<br>
+
+				<span data-translate="trExportHelpZXSavStep2a">
+					Extract the signing tool into the same directory as your copy of "They Are Billions". This is usually:
+				</span>
+				<br>
+				<span>
+					<i>C:\Program Files (x86)\Steam\SteamApps\Common\They Are Billions\</i>
+				</span>
+			</label>
+
+			<a href="https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip" target="_blank">
+				<button id="btnDownloadSigningTool2" class="btn btn-primary form-control">
+					<span data-translate="trBtnDownload">
+						Download Signing Tool
+					</span>
+				</button>
+			</a>
+		</div>
+
+		<div class="form-group">
+			<label>
+				<span data-translate="trSettingsHeaderMapLoadHelpStep2">
+					<b>Step 2:</b> Drag the .zxsav file into the signing tool. They will produce a new file that ends with "_decrypted", which can be loaded into the level editor.
+				</span>
+			</label>
+
+			<!--<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">
+				<span data-translate="trBtnExportZXCheck">
+					Export .zxcheck
+				</span>
+			</button>-->
+			<!--<button id="btnExportBoth" class="btn btn-primary" disabled="disabled" onclick="window.downloadPack();">
+				<span data-translate="trBtnExportBoth">
+					Export as Pack (Recommended)
+				</span>
+			</button>-->
+		</div>
+
+		<div class="form-group">
+			<button class="btn btn-danger" onclick="alertify.closeAll();" data-translate="trCloseMapSettings">Close</button>
+		</div>
+	</div>
+
 	<div id="mapSettingsEditor">
+		<div class="form-group">
+			<h3 data-translate="trSettingsHeaderMapSettings">Map Settings:</h3>
+		</div>
+
 		<div class="form-group">
 			<label for="inputSaveFileName">
 				<span data-translate="trSettingsEditorMapName">
@@ -1458,7 +1650,98 @@
 				</option>
 			</select>
 		</div>
-		<div>
+		<div class="form-group">
+			<label for="inputZombieMultiplier">
+				<span data-translate="trSettingsEditorZombieLayerMultiplier">
+					Zombie Layer Multiplier (whole numbers only)
+				</span>
+			</label>
+			<input type="text" class="form-control" id="inputZombieMultiplier" placeholder="1" value="1">
+		</div>
+
+		<div class="form-group">
+			<h3 data-translate="trSettingsHeaderMapExport">Map Export:</h3>
+		</div>
+
+		<div class="form-group">
+			<label for="btnExportSave">
+				<span data-translate="trExportHelpZXSavStep1">
+					<b>Step 1:</b> Export .ZXSav file, and save it to:
+				</span>
+				<br>
+				<span>
+					<i>Documents\My Games\They Are Billions\Saves\</i>
+				</span>
+			</label>
+
+			<!--<button id="btnSaveChanges" class="btn btn-primary" disabled="disabled" onclick="window.saveMap()">
+				<span data-translate="trBtnGenerateSaveFile">
+					Save Changes
+				</span>
+			</button>-->
+
+			<button id="btnExportSave" class="btn btn-primary form-control" onclick="window.downloadZXSave()">
+				<span data-translate="trBtnExportZXSav">
+					Export .zxsav
+				</span>
+			</button>
+
+		</div>
+
+		<div class="form-group">
+			<label for="btnDownloadSigningTool">
+				<span data-translate="trExportHelpZXSavStep2">
+					<b>Step 2:</b> Download signing tool
+				</span>
+
+				<span>
+					<b>V0.5</b>
+				</span>
+
+				<br>
+
+				<span data-translate="trExportHelpZXSavStep2a">
+					Extract the signing tool into the same directory as your copy of "They Are Billions". This is usually:
+				</span>
+				<br>
+				<span>
+					<i>C:\Program Files (x86)\Steam\SteamApps\Common\They Are Billions\</i>
+				</span>
+			</label>
+
+			<a href="https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip" target="_blank">
+				<button id="btnDownloadSigningTool" class="btn btn-primary form-control">
+					<span data-translate="trBtnDownload">
+						Download Signing Tool
+					</span>
+				</button>
+			</a>
+		</div>
+
+		<div class="form-group">
+			<label>
+				<span data-translate="trExportHelpZXSavStep3">
+					<b>Step 3:</b> Drag the .zxsav file into the signing tool. They will produce a ".zxcheck" file and encrypt the save file so that it can be loaded into the game.
+				</span>
+			</label>
+
+			<!--<button id="btnExportChecksum" class="btn btn-primary" disabled="disabled" onclick="window.downloadZXChecksum()">
+				<span data-translate="trBtnExportZXCheck">
+					Export .zxcheck
+				</span>
+			</button>-->
+			<!--<button id="btnExportBoth" class="btn btn-primary" disabled="disabled" onclick="window.downloadPack();">
+				<span data-translate="trBtnExportBoth">
+					Export as Pack (Recommended)
+				</span>
+			</button>-->
+		</div>
+
+		<div class="form-group">
+			<h3 data-translate="trSettingsHeaderMapTools">Tools:</h3>
+		</div>
+
+		<div class="form-group">
 			<button class="btn btn-danger" onclick="alertify.closeAll();" data-translate="trCloseMapSettings">Close</button>
 
 			<button class="btn btn-danger" onclick="window.deleteAllHiddenZombies();" data-translate="trDeleteAllHiddenZombies">Delete All Hidden Zombies</button>

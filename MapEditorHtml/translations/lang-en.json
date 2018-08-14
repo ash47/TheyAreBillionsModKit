@@ -6,6 +6,7 @@
 
 	"trLanguageEnglish": "English",
 	"trLanguageChinese": "Chinese (中文)",
+	"trLanguageTurkish": "Turkish (Türkçe)",
 
 	"trMessage1": "Make sure you tell the devs of the game that you <b>want modding to be allowed</b>, or we may <b>lose modding (and this level editor) forever!</b>",
 	"trMessage2": "Go and post on the <a href=\"https://steamcommunity.com/app/644930/discussions/\" target=\"_blank\">Steam Discussion boards</a> &amp; <a href=\"https://www.reddit.com/r/TheyAreBillions/\" target=\"_blank\">SubReddit (/r/TheyAreBillions)</a>, post anywhere else you can think of where you think the devs may see the message.",
@@ -40,12 +41,14 @@
 
 	"trTemplateMapsHeader": "Template Maps",
 	"trTemplate256": "256x256 Template",
-	"trTemplate384": "384x384 Template",
-	"trTemplate512": "512x512 Template",
+	"trTemplate384": "384x384 Template (Not Recommended)",
+	"trTemplate512": "512x512 Template (Not Recommended)",
 
 	"trRecentMapsHeader": "Recently Edited Maps",
 	"trRecentMapsLimit": "<b>Note:</b> There is a limit of 50MB.",
 	"trRecentMapsEmpty": "None",
+
+	"trTutorials_fanMap01": "Fan Map - The Last Stand by Kellar",
 
 	"trTutorialsHeader": "Tutorials / Dev VLogs",
 	"trTutorials_116_1": "Circle drawing tool and zombie randomiser.",
@@ -84,6 +87,21 @@
 	"trBtnGenerateSaveFile": "Save Changes",
 	"trBtnExportZXSav": "Export .zxsav",
 	"trBtnExportZXCheck": "Export .zxcheck",
+	"trBtnExportMap": "Export Map",
+	"trBtnDownload": "Download Signing Tool",
+
+	"trSettingsHeaderMapSettings": "Map Settings:",
+	"trSettingsHeaderMapExport": "Map Export:",
+	"trSettingsHeaderMapTools": "Tools:",
+
+	"trExportHelpZXSavStep1": "<b>Step 1:</b> Export .ZXSav file, and save it to:",
+	"trExportHelpZXSavStep2": "<b>Step 2:</b> Download signing tool",
+	"trExportHelpZXSavStep2a": "Extract the signing tool into the same directory as your copy of \"They Are Billions\". This is usually:",
+	"trExportHelpZXSavStep3": "<b>Step 3:</b> Drag the .zxsav file into the signing tool. They will produce a \".zxcheck\" file and encrypt the save file so that it can be loaded into the game.",
+
+	"trSettingsHeaderMapLoadHelpHeader": "How to load a map:",
+	"trSettingsHeaderMapLoadHelpStep1": "<b>Step 1:</b> Download signing tool",
+	"trSettingsHeaderMapLoadHelpStep2": "<b>Step 2:</b> Drag the .zxsav file into the signing tool. They will produce a new file that ends with \"_decrypted\", which can be loaded into the level editor.",
 
 	"trBtnEntityClone": "Clone Entity",
 	"trBtnEntityDelete": "Delete Entity",
@@ -101,6 +119,8 @@
 	"trInfoLayerEntities": "Entities",
 	"trInfoLayerEntityLabels": "Entity Labels",
 	"trInfoLayerFoW": "Fog of War",
+	"trInfoLayerRoads": "Roads",
+	"trInfoLayerFortress": "Fortress",
 
 	"trInfoMapZoom": "Map Zoom",
 
@@ -128,11 +148,13 @@
 	"trInfoBrushesSelectZombie": "Zombies",
 	"trInfoBrushesSelectFog": "Fog",
 	"trInfoBrushesSelectRoad": "Road",
+	"trInfoBrushesSelectFortress": "Fortress",
 
 	"trInfoBrushesTerrain": "Terrain Layer",
 	"trInfoBrushesObject": "Object Layer",
 	"trInfoBrushesZombie": "Zombie Layers",
 	"trInfoBrushesFoW": "Fog of War Layer",
+	"trInfoBrushesFortress": "Fortress Layer",
 
 	"trBtnBrushTypeEarth": "<u>E</u>arth",
 	"trBtnBrushTypeWater": "<u>W</u>ater",
@@ -148,6 +170,13 @@
 
 	"trBtnBrushTypeFoWAdd": "Add FoW",
 	"trBtnBrushTypeFoWRemove": "Remove FoW",
+
+	"trBtnBrushTypeFortressRemove": "Remove Fortress",
+	"trBtnBrushTypeFortWallSolid": "Fortress Wall Solid",
+	"trBtnBrushTypeFortWallWithBars": "Fortress Wall With Bars",
+	"trBtnBrushTypeFortLowWithBars": "Fortress Low With Bars",
+	"trBtnBrushTypeFortCross": "Fortress Cross",
+	"trBtnBrushTypeFortHighCross": "Fortress High Cross",
 
 	"trInfoEntityTool": "Entity Tool",
 	"trBtnSelectEntity": "Select Entity...",
@@ -172,6 +201,7 @@
 
 	"trSettingsEditorMapName": "Map Name",
 	"trSettingsEditorMapTheme": "Map Theme",
+	"trSettingsEditorZombieLayerMultiplier": "Zombie Layer Multiplier (whole numbers only)",
 
 	"trThemeTheDarkMoorland": "The Dark Moorland",
 	"trThemeThePeacefulLowlands": "The Peaceful Lowlands",
@@ -274,6 +304,12 @@
 
 	"trChangeLogHeader": "Change Log",
 
+	"trChangeLogBody_118_01": "Added support for the new \"Fortress Layer\" although this doesn't appear to render in game at this stage for some reason.",
+	"trChangeLogBody_118_02": "The game will no longer crash upon loading a map made with the editor for version 9.0.0 and newer.",
+
+	"trChangeLogBody_117_01": "Added screens to explain how to save and load maps easily.",
+	"trChangeLogBody_117_02": "Updated the zombie randomisation tool, holding control and clicking will change the number of each zombie category that appears, holding shift will decrease the number of that zombie type.",
+
 	"trChangeLogBody_116_01": "Added circle brush tool.",
 	"trChangeLogBody_116_02": "Added the ability to draw random zombies onto the map. Hold 'control' when selecting which zombie to draw.",
 
@@ -332,5 +368,5 @@
 
 	"trDiscount1": "For a 10% discount on They Are Billions and other games, use <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">this link</a>. It won't be valid for long!",
 
-	"trCheckInfo": "The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">this tool (v0.3)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files."
+	"trCheckInfo": "The .ZXCheck generation process on this website is broken for version 6.0 and beyond. If you want to sign your map for v6.0 and newer, you can use <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip\" target=\"_blank\">this tool (v0.5)</a> to sign the file. We are working towards adding support for the version 6.0 .zxcheck format. This tool will also recover passwords for the .ZXSav files."
 }

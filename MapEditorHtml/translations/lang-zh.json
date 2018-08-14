@@ -6,6 +6,7 @@
 
 	"trLanguageEnglish": "英语 (English)",
 	"trLanguageChinese": "中文 (Chinese)",
+	"trLanguageTurkish": "土耳其 (Turkish)",
 
 	"trMessage1": "请告诉开发者你希望允许制作游戏mod,否则你可能会永远失去mod(以及存档编辑器)!",
 	"trMessage2": "请前往 <a href=\"https://steamcommunity.com/app/644930/discussions/\" target=\"_blank\">Steam 社区</a> &amp; <a href=\"https://www.reddit.com/r/TheyAreBillions/\" target=\"_blank\">SubReddit (/r/TheyAreBillions)</a> 发帖, 或者任意你认为开发者能看到的地方发帖.",
@@ -51,6 +52,8 @@
 	"trRecentMapsLimit": "<b>注意:</b> 文件大小限制为50MB.",
 	"trRecentMapsEmpty": "无",
 
+	"trTutorials_fanMap01": "粉丝地图 - 凯勒的最后一站",
+
 	"trTutorialsHeader": "视频教程",
 	"trTutorials_116_1": "圆形绘图工具和僵尸随机生成器.",
 	"trTutorials_115_3": "更新密码提取器和当前状态.",
@@ -89,6 +92,23 @@
 	"trBtnExportZXSav": "导出 .zxsav",
 	"trBtnExportZXCheck": "导出 .zxcheck",
 	"trBtnExportBoth": "导出压缩包(推荐)",
+	"trBtnExportMap": "导出地图",
+	"trBtnDownload": "下载签名工具",
+
+	"trSettingsHeaderMapSettings": "地图设置:",
+	"trSettingsHeaderMapExport": "导出地图:",
+	"trSettingsHeaderMapTools": "工具:",
+
+	"trExportHelpZXSavStep1": "<b>步骤1:</b> 导出.ZXSav文件并将其保存到:",
+	"trExportHelpZXSavStep2": "<b>第2步:</b> 下载签名工具",
+	"trExportHelpZXSavStep2a": "将签名工具解压缩到与“他们是十亿”副本相同的目录中。 这通常是:",
+	"trExportHelpZXSavStep3": "<b>第3步:</b> 将.zxsav文件拖放到签名工具中. 他们将生成一个\"。zxcheck \"文件并加密保存文件，以便将其加载到游戏中.",
+
+	"trBtnDownload": "下载",
+
+	"trSettingsHeaderMapLoadHelpHeader": "如何加载地图:",
+	"trSettingsHeaderMapLoadHelpStep1": "<b>步骤1:</b> 下载签名工具",
+	"trSettingsHeaderMapLoadHelpStep2": "<b>第2步:</b> 将.zxsav文件拖放到签名工具中。 他们将产生一个以\"_ decrypted \"结尾的新文件，该文件可以加载到关卡编辑器中。",
 
 	"trBtnEntityClone": "复制实体",
 	"trBtnEntityDelete": "删除实体",
@@ -106,6 +126,7 @@
 	"trInfoLayerEntityLabels": "实体标签",
 	"trInfoLayerFoW": "战争迷雾",
 	"trInfoLayerRoads": "道路",
+	"trInfoLayerFortress": "堡垒",
 	
 	"trInfoMapZoom": "地图缩放",
 
@@ -185,6 +206,7 @@
 
 	"trSettingsEditorMapName": "地图名称",
 	"trSettingsEditorMapTheme": "地图主题",
+	"trSettingsEditorZombieLayerMultiplier": "僵尸层乘数 (仅限整数)",
 
 	"trThemeTheDarkMoorland": "黑暗的荒野",
 	"trThemeThePeacefulLowlands": "和平的低地",
@@ -286,6 +308,9 @@
 
 	"trChangeLogHeader": "更新记录",
 
+	"trChangeLogBody_117_01": "添加屏幕来解释如何轻松保存和加载地图.",
+	"trChangeLogBody_117_02": "更新僵尸随机工具，按住控制并点击将更改出现的每个僵尸类别的数量，按住Shift键将减少僵尸类型的数量.",
+
 	"trChangeLogBody_116_01": "添加了圆形画笔工具.",
 	"trChangeLogBody_116_02": "增加了在地图上绘制随机僵尸的能力.选择要绘制的僵尸时按住'CTRL'选择多个僵尸种类.",
 
@@ -344,5 +369,5 @@
 
 	"trDiscount1": "他们是十亿和其他游戏10％的折扣，使用 <a href=\"https://www.humblebundle.com/store/they-are-billions?partner=AzzaFortysix\" target=\"_blank\">这个链接</a>. 这将不会有效很长时间!",
 
-	"trCheckInfo": "本网站生成的.ZXCheck在6.0及更高版本的游戏中无法使用. 如果你想签署v6.0及以上版本地图，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.3/ZCheckGenerator_v0.3.zip\" target=\"_blank\">这个工具 (v0.3)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
+	"trCheckInfo": "本网站生成的.ZXCheck在6.0及更高版本的游戏中无法使用. 如果你想签署v6.0及以上版本地图，你可以使用 <a href=\"https://github.com/ash47/TheyAreBillionsModKit/releases/download/zxcheck_0.5/ZXCheckGenerator_v0.5.zip\" target=\"_blank\">这个工具 (v0.5)</a> 签署文件. 我们正在努力添加对版本6.0 .zxcheck格式的支持."
 }
