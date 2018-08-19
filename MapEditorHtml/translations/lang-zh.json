@@ -27,9 +27,9 @@
 	"trHelpBody2": "你可以在 <a href=\"https://www.reddit.com/r/TheyAreBillionsModded/\" target=\"_blank\">https://www.reddit.com/r/TheyAreBillionsModded/</a> 上发帖",
 
 	"trFeatureToggleHeader": "选择功能",
-	"trFeatureToggleInfo1": "游戏的开发者又一次让存档编辑器失效了。 （可能是故意的）",
+	"trFeatureToggleInfo1": "游戏的开发者又一次让存档编辑器失效了。（可能是故意的）",
 	"trFeatureToggleInfo2": "为了应对这个不断被破坏的编辑器，我们添加了启用和禁用编辑器功能的选项。",
-	"trFeatureToggleInfo3": "您只应启用您打算实际使用的功能，这样编辑器将不会修改游戏文件的每个部分，并且可以避免编辑当前被破坏的内容。",
+	"trFeatureToggleInfo3": "您只应启用您打算实际使用的功能，这样编辑器将不会修改游戏文件的每个部分，可以避免编辑当前被破坏的内容。",
 
 	"featureToggleTerrain": "允许地形编辑?",
 	"featureToggleObject": "允许对象编辑?",
@@ -101,8 +101,8 @@
 
 	"trExportHelpZXSavStep1": "<b>步骤1:</b> 导出.ZXSav文件并将其保存到:",
 	"trExportHelpZXSavStep2": "<b>第2步:</b> 下载签名工具",
-	"trExportHelpZXSavStep2a": "将签名工具解压缩到与“他们是十亿”副本相同的目录中。 这通常是:",
-	"trExportHelpZXSavStep3": "<b>第3步:</b> 将.zxsav文件拖放到签名工具中. 他们将生成一个\"。zxcheck \"文件并加密保存文件，以便将其加载到游戏中.",
+	"trExportHelpZXSavStep2a": "将签名工具解压缩到与“亿万僵尸”相同的目录中。路径一般是:",
+	"trExportHelpZXSavStep3": "<b>第3步:</b> 将.zxsav文件拖放到签名工具中. 他们将生成一个\".zxcheck \"文件并加密保存文件，以便将其加载到游戏中.",
 
 	"trBtnDownload": "下载",
 
@@ -208,10 +208,10 @@
 	"trSettingsEditorMapTheme": "地图主题",
 	"trSettingsEditorZombieLayerMultiplier": "僵尸层乘数 (仅限整数)",
 
-	"trThemeTheDarkMoorland": "黑暗的荒野",
-	"trThemeThePeacefulLowlands": "和平的低地",
-	"trThemeTheFrozenHighlands": "冻结的高地",
-	"trThemeTheDesolatedWasteland": "荒废荒地",
+	"trThemeTheDarkMoorland": "黑暗荒原",
+	"trThemeThePeacefulLowlands": "和平低地",
+	"trThemeTheFrozenHighlands": "霜冻高原",
+	"trThemeTheDesolatedWasteland": "荒废荒原",
 
 	"trInfoMapProperties_key_ArmyFoodPenaltyCost": "军队食物消耗",
 	"trInfoMapProperties_key_ArmyGoldCost": "军队维持费用",
@@ -280,10 +280,10 @@
 	"trConfirmDeleteEntity": "你确定要删除这个实体吗？ {{entityName}}",
 	"trConfirmDeleteEntityAll": "你确定要删除此类实体吗？ {{entityName}}",
 
-	"trCloseMapSettings": "关",
+	"trCloseMapSettings": "关闭",
 	"trDeleteAllHiddenZombies": "删除所有隐藏的僵尸",
-	"trConfirmDeleteAllZombies": "你确定要删除每一个隐藏的僵尸吗?",
-	"trSuccessRemoveEveryZombie": "每一个隐藏的僵尸已被删除",
+	"trConfirmDeleteAllZombies": "你确定要删除所有隐藏的僵尸吗?",
+	"trSuccessRemoveEveryZombie": "所有隐藏的僵尸已被删除",
 
 	"trDeleteAllEntities": "删除所有实体",
 	"trConfirmDeleteAllEntities": "你确定要删除每个实体吗？ 注意：单位发电机和指挥中心将继续。",
