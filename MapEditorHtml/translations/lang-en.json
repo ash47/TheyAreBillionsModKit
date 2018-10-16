@@ -304,6 +304,8 @@
 
 	"trChangeLogHeader": "Change Log",
 
+	"trChangeLogBody_119_01": "Added missing units / buildings from the editor prefabs / zombie layer.",
+
 	"trChangeLogBody_118_01": "Added support for the new \"Fortress Layer\" although this doesn't appear to render in game at this stage for some reason.",
 	"trChangeLogBody_118_02": "The game will no longer crash upon loading a map made with the editor for version 9.0.0 and newer.",
 

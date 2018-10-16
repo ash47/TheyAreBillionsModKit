@@ -420,7 +420,7 @@ var colorZombies = {
 	},
 	'6179780658058987152': /* ZombieGiant */ {	// Coral
 		name: 'ZombieGiant',
-		hidden: true,
+		//hidden: true,
 		red: 255,
 		green: 127,
 		blue: 80,
