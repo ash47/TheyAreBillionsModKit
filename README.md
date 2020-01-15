@@ -1,3 +1,12 @@
+# This is no longer Maintained or Supported
+ - This tool was killed by the developers of the game
+ - The developers of the game didn't want to support modding
+ - The developers constantly tried to patch / ruin this level editor
+ - We will provide NO support for it
+ - The code is here for anyone who wants to learn / reference
+ - People keep abusing us because we won't update it
+ - This was made for FREE in my own time, and getting abused for not updating something that is free is not acceptable
+
 # TheyAreBillionsModKit
 Tools &amp; Research notes for modding "They Are Billions"
 
